@@ -2,12 +2,45 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    --main-bg-color: #1B9AAA;
+    --card-bg-color: #06D6A0;
+    --board-bg-color: #FFC43D;
+    --bg-color: #EF476F;
+    --bg-color-2: #F8FFE5;
 }
 
 body {
     height: 100vh;
     display: flex;
-    background: #060AB2;
+    background: var(--main-bg-color);
+    background-position: 0;
+}
+
+#main {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+}
+
+#memory-controls {
+    background: var(--board-bg-color);
+    border-radius: 50px;
+    padding: 25px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.controls {
+    margin: 5px;
+}
+
+#memory-board {
+    width: 980px;
+    background: var(--board-bg-color);
+    border-radius: 50px;
+    padding: 25px;
+    margin-left: 50px;
 }
 
 .memory-game {
@@ -20,11 +53,11 @@ body {
 }
 
 .memory-card {
-    width: calc(25% - 10px);
-    height: calc(33% - 10px);
+    width: calc(16% - 5px);
+    height: calc(30% - 10px);
     margin: 5px;
     position: relative;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 3);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
     transform: scale(1);
     transform-style: preserve-3d;
     transition: transform .5s;
@@ -51,5 +84,6 @@ body {
 }
 
 .front-face {
+    background: var(--bg-color);
     transform: rotateY(180deg);
 }
