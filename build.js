@@ -18,7 +18,11 @@ const dinos = {
         'ankylosaurus',
         'brachiosaurus',
         'brontosaurus',
-        'ceratosaurus'
+        'ceratosaurus',
+        'guanlong',
+        'stegosaurus',
+        'lambeosaurus',
+        'iguanodon'
     ]};
 
 const memoryBoard = document.getElementById('memory-board');
@@ -35,7 +39,7 @@ function loadControls() {
     const memoryContols = document.getElementById('memory-controls');
     controls.forEach(button => {
         memoryContols.innerHTML += `
-            <button id="${button}" class="controls">${button}</button>
+            <button id="${button}" class="controls button is-primary">${button}</button>
         `;
     });
 }
@@ -54,8 +58,6 @@ function setDeck() {
         break;
     }
 }
-
-
 
 function loadGame(items) {
 
@@ -80,9 +82,6 @@ function loadGame(items) {
         return card.addEventListener('click', flipCard);
     });
 }
-
-
-
 
 let hasFlippedCard = false;
 let lockBoard = false;
@@ -129,7 +128,7 @@ function unflipCards() {
 
         lockBoard = false;
         resetBoard();
-    }, 1500);
+    }, 1000);
 }
 
 function resetBoard() {
