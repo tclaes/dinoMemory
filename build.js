@@ -81,6 +81,8 @@ function loadGame(items) {
     cards.forEach(card => {
         return card.addEventListener('click', flipCard);
     });
+
+    shuffle();
 }
 
 let hasFlippedCard = false;
@@ -136,10 +138,10 @@ function resetBoard() {
     [firstCard, secondCard] = [null, null];
 }
 
-(function shuffle() {
+function shuffle() {
     cards.forEach(card => {
         let randomPos = Math.floor(Math.random() * 12);
         card.style.order = randomPos;
     });
-})();
+}
 
