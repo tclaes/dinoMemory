@@ -1,0 +1,29 @@
+{
+  "frameworks":{
+  "imgURL": "frameworks",
+  "frontfase": "js-badge",
+  "cards": [
+      "angular",
+      "aurelia",
+      "backbone",
+      "ember",
+      "react",
+      "vue"
+  ]}
+  ,
+
+"dinos": {
+  "imgURL": "dinos",
+  "frontfase": "velociraptor",
+  "cards": [
+      "allosaurus",
+      "ankylosaurus",
+      "brachiosaurus",
+      "brontosaurus",
+      "ceratosaurus",
+      "guanlong",
+      "stegosaurus",
+      "lambeosaurus",
+      "iguanodon"
+  ]}
+}

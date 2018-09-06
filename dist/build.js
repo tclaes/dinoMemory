@@ -1,30 +1,3 @@
-const frameworks = {
-    imgURL: 'frameworks',
-    frontfase: 'js-badge',
-    cards: [
-        'angular',
-        'aurelia',
-        'backbone',
-        'ember',
-        'react',
-        'vue'
-    ]};
-
-const dinos = {
-    imgURL: 'dinos',
-    frontfase: 'velociraptor',
-    cards: [
-        'allosaurus',
-        'ankylosaurus',
-        'brachiosaurus',
-        'brontosaurus',
-        'ceratosaurus',
-        'guanlong',
-        'stegosaurus',
-        'lambeosaurus',
-        'iguanodon'
-    ]};
-
 const memoryBoard = document.getElementById('memory-board');
 let cards = document.querySelectorAll('.memory-card');
 
@@ -32,8 +5,17 @@ const controls = ['dinos', 'frameworks'];
 
 (function onInit() {
     loadControls();
-    loadGame(dinos);
+    getData().then(data =>{
+        loadGame(data.dinos);
+    })
+    
 })();
+
+function getData() {
+    return fetch('/data.json')
+        .then(response => response.json()
+        )
+}
 
 function loadControls() {
     const memoryContols = document.getElementById('memory-controls');
@@ -51,10 +33,15 @@ document.querySelectorAll('.controls').forEach(button => {
 function setDeck() {
     switch(this.id) {
     case 'dinos':
-        loadGame(dinos);
+        getData().then(data => {
+            loadGame(data.dinos);
+        })
+        
         break;
     case 'frameworks':
-        loadGame(frameworks);
+    getData().then(data => {
+        loadGame(data.frameworks);
+    })
         break;
     }
 }
