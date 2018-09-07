@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1b9aaa"/>
+  <link rel="manifest" href="/manifest.json">
 
   <title>Memory Game</title>
   <base href="/">
@@ -34,11 +35,21 @@
     </section>
     <section class="memory-game" id="memory-board"></section>
   </div>
+
+  <link rel="stylesheet" href="styles.min.css">
   <noscript>
     <h1>You might want to buy a decent computer first!</h1>
   </noscript>
   <script src="build.js"></script>
-  <link rel="stylesheet" href="styles.min.css">
+  <script>
+    // Check that service workers are registered
+    if ('serviceWorker' in navigator) {
+      // Use the window load event to keep the page load performant
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+    </script>
 </body>
 
 </html>

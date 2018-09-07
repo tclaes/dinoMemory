@@ -1,0 +1,21 @@
+{
+  "short_name": "dino",
+  "name": "Dinomemory",
+  "icons": [
+    {
+      "src": "/img/velociraptor.svg",
+      "type": "img/svg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/velociraptor.svg",
+      "type": "image/svg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#1b9aaa",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#1b9aaa"
+}
