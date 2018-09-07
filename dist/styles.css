@@ -19,7 +19,7 @@ body {
   }
 }
 
-#memory-controls {
+#header {
   background: var(--board-bg-color);
   border-radius: 25px;
   display: flex;
@@ -29,8 +29,20 @@ body {
   width: calc(100vw - 25px);
 }
 
+#header #clicks {
+  color: white;
+  flex-grow: 1;
+  font-weight: 500;
+  font-size: 1.8rem;
+  margin: 10px;
+}
+
+#header #memory-controls {
+  flex-grow: 1;
+}
+
 @media screen and (min-width: 800px) {
-  #memory-controls {
+  #header {
     border-radius: 50px;
     display: flex;
     flex-direction: column;

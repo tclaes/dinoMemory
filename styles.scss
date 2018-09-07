@@ -17,7 +17,7 @@ body {
   }
 }
 
-#memory-controls {
+#header {
   background: var(--board-bg-color);
   border-radius: 25px;
   display: flex;
@@ -26,14 +26,27 @@ body {
   padding: 10px;
   width: calc(100vw - 25px);
 
+  #clicks {
+    color: white;
+    flex-grow: 1;
+    font-weight: 500;
+    font-size: 1.8rem;
+    margin: 10px;
+  }
+
+  #memory-controls {
+    flex-grow:1;
+  }
+
   @media screen and (min-width: 800px) {
-      border-radius: 50px;
-      display: flex;
-      flex-direction: column;
-      height: 90vh;
-      width: 150px;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    width: 150px;
   }
 }
+
 
 .controls {
   margin: 5px;
@@ -142,6 +155,8 @@ body {
     border-color: rgba(255,255,255,1);
   }
 }
+
+
 
 .won {
   display: flex;

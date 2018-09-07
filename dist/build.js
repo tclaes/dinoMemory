@@ -1,6 +1,7 @@
 const memoryBoard = document.getElementById('memory-board');
 let cards = document.querySelectorAll('.memory-card');
 let deck = getData().then(data => data.deck.filter(x => x.name == 'dinos'));
+let nrOfClicks = 0;
 
 (function onInit() {
     loadControls();
@@ -36,6 +37,9 @@ function setDeck() {
 function loadGame(deck) {
 
     memoryBoard.innerHTML = '';
+    document.getElementById('clicks').innerHTML = `
+    Clicks: ${nrOfClicks}
+    `;
 
     deck.then(deck => {
       deck[0].cards.forEach(card => {
@@ -71,6 +75,9 @@ function flipCard() {
     if (lockBoard) {
         return;
     }
+    document.getElementById('clicks').innerHTML = `
+    Clicks: ${++nrOfClicks}
+  `;
     if (this === firstCard) return;
     this.classList.add('flip');
 
@@ -116,10 +123,12 @@ function disableCards() {
 
 function newGame() {
     correctMatch = 0;
+    nrOfClicks = 0;
 
     document.querySelector('.won').remove();
 
     loadGame(deck);
+
 }
 
 function unflipCards() {
