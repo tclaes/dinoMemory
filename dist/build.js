@@ -12,6 +12,7 @@ let firstCard, secondCard;
 let correctMatch = 0;
 let nrOfClicks = 0;
 let gameStarted = false;
+let gameWon = false;
 let time;
 
 (function onInit() {
@@ -42,7 +43,15 @@ function loadControls() {
 
 function setDeck() {
     deck = getData().then(data => data.deck.filter(x => x.name == this.id));
+    newGame();
+}
+
+function newGame() {
+    if(gameWon) document.querySelector('.won').remove();
+    clearInterval(time);
+    gameStarted = false;
     loadGame(deck);
+
 }
 
 function loadGame(deck) {
@@ -52,6 +61,7 @@ function loadGame(deck) {
 
     memoryBoard.innerHTML = '';
     clicks.innerHTML = `Clicks: ${nrOfClicks}`;
+    timer.innerHTML = `0h - 0m - 0s`;
 
     deck.then(deck => {
       deck[0].cards.forEach(card => {
@@ -113,30 +123,30 @@ function checkForMatch() {
 
 function disableCards() {
     ++correctMatch;
-    deck.then(deck => {
-      if (correctMatch == deck[0].cards.length){
-        clearInterval(time);
-        let won = document.createElement('div');
-        won.classList.add('won');
-        won.innerHTML = `
-          <div>
-            <button id="won" class="button">New game?</button>
-          </div>
-        `;
-        document.body.append(won);
-        document.getElementById('won').addEventListener('click', newGame);
-      }
+    checkWin();
 
-    });
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
     resetBoard();
 }
 
-function newGame() {
-    document.querySelector('.won').remove();
-    loadGame(deck);
+function checkWin() {
+  deck.then(deck => {
+    if (correctMatch == deck[0].cards.length){
+      clearInterval(time);
+      gameWon = !gameWon;
+      let won = document.createElement('div');
+      won.classList.add('won');
+      won.innerHTML = `
+        <div>
+          <button id="won" class="button">New game?</button>
+        </div>
+      `;
+      document.body.append(won);
+      document.getElementById('won').addEventListener('click', newGame);
+    }
 
+  });
 }
 
 function unflipCards() {
@@ -186,6 +196,4 @@ function startTimer() {
       ${hours}h - ${minutes}m - ${seconds}s
     `;
   }, 1000);
-
-
 }
