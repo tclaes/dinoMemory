@@ -1,0 +1,30 @@
+{
+  "name": "dinomemory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scripts.js",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "bulma": "^0.7.1",
+    "lodash": "^4.17.10",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/z411419/dinoMemory.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/z411419/dinoMemory/issues"
+  },
+  "homepage": "https://github.com/z411419/dinoMemory#readme"
+}
