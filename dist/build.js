@@ -1,7 +1,18 @@
+// Elements
 const memoryBoard = document.getElementById('memory-board');
+const clicks = document.getElementById('clicks');
+const timer = document.getElementById('timer');
 let cards = document.querySelectorAll('.memory-card');
+
+
 let deck = getData().then(data => data.deck.filter(x => x.name == 'dinos'));
+let hasFlippedCard = false;
+let lockBoard = false;
+let firstCard, secondCard;
+let correctMatch = 0;
 let nrOfClicks = 0;
+let gameStarted = false;
+let time;
 
 (function onInit() {
     loadControls();
@@ -36,10 +47,11 @@ function setDeck() {
 
 function loadGame(deck) {
 
+    correctMatch = 0;
+    nrOfClicks = 0;
+
     memoryBoard.innerHTML = '';
-    document.getElementById('clicks').innerHTML = `
-    Clicks: ${nrOfClicks}
-    `;
+    clicks.innerHTML = `Clicks: ${nrOfClicks}`;
 
     deck.then(deck => {
       deck[0].cards.forEach(card => {
@@ -66,19 +78,18 @@ function loadGame(deck) {
     });
 }
 
-let hasFlippedCard = false;
-let lockBoard = false;
-let firstCard, secondCard;
-let correctMatch = 0;
-
 function flipCard() {
+  if(!gameStarted){
+    gameStarted = !gameStarted;
+    startTimer();
+  }
     if (lockBoard) {
         return;
     }
-    document.getElementById('clicks').innerHTML = `
-    Clicks: ${++nrOfClicks}
-  `;
-    if (this === firstCard) return;
+    clicks.innerHTML = `Clicks: ${++nrOfClicks}`;
+    if (this === firstCard) {
+      return;
+    }
     this.classList.add('flip');
 
     if (!hasFlippedCard) {
@@ -104,6 +115,7 @@ function disableCards() {
     ++correctMatch;
     deck.then(deck => {
       if (correctMatch == deck[0].cards.length){
+        clearInterval(time);
         let won = document.createElement('div');
         won.classList.add('won');
         won.innerHTML = `
@@ -122,11 +134,7 @@ function disableCards() {
 }
 
 function newGame() {
-    correctMatch = 0;
-    nrOfClicks = 0;
-
     document.querySelector('.won').remove();
-
     loadGame(deck);
 
 }
@@ -152,4 +160,32 @@ function shuffle() {
         let randomPos = Math.floor(Math.random() * 12);
         card.style.order = randomPos;
     });
+}
+
+function startTimer() {
+  let hours = 0;
+  let minutes = 0;
+  let seconds = 0;
+
+  time = setInterval(() => {
+    if(seconds < 60) {
+      seconds++;
+    }
+    else {
+      seconds=0;
+      if(minutes < 60){
+        minutes++;
+      }
+      else {
+        if(hours < 24) {
+          hours++;
+        }
+      }
+    }
+    timer.innerHTML = `
+      ${hours}h - ${minutes}m - ${seconds}s
+    `;
+  }, 1000);
+
+
 }
