@@ -38,6 +38,10 @@ body {
   margin: 10px auto;
 }
 
+#header #timer {
+  font-size: 1.2rem;
+}
+
 #header #memory-controls {
   flex-grow: 1;
 }

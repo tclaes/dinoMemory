@@ -50,6 +50,7 @@ function newGame() {
     if(gameWon) document.querySelector('.won').remove();
     clearInterval(time);
     gameStarted = false;
+    gameWon = false;
     loadGame(deck);
 
 }
