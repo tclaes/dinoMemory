@@ -1,80 +1,71 @@
 const memoryBoard = document.getElementById('memory-board');
 let cards = document.querySelectorAll('.memory-card');
-
-const controls = ['dinos', 'frameworks'];
+let deck = getData().then(data => data.deck.filter(x => x.name == 'dinos'));
 
 (function onInit() {
     loadControls();
-    getData().then(data =>{
-        loadGame(data.dinos);
-    })
-    
+    loadGame(deck);
 })();
 
 function getData() {
     return fetch('/data.json')
         .then(response => response.json()
-        )
+        );
 }
 
 function loadControls() {
     const memoryContols = document.getElementById('memory-controls');
-    controls.forEach(button => {
-        memoryContols.innerHTML += `
-            <button id="${button}" class="controls button is-primary">${button}</button>
+    getData().then(data => {
+        data.deck.forEach(button => {
+            memoryContols.innerHTML += `
+            <button id="${button.name}" class="controls button">${button.name}</button>
         `;
+
+            document.querySelectorAll('.controls').forEach(button => {
+                return button.addEventListener('click', setDeck);
+            });
+        });
     });
 }
 
-document.querySelectorAll('.controls').forEach(button => {
-    return button.addEventListener('click', setDeck);
-});
-
 function setDeck() {
-    switch(this.id) {
-    case 'dinos':
-        getData().then(data => {
-            loadGame(data.dinos);
-        })
-        
-        break;
-    case 'frameworks':
-    getData().then(data => {
-        loadGame(data.frameworks);
-    })
-        break;
-    }
+    deck = getData().then(data => data.deck.filter(x => x.name == this.id));
+    loadGame(deck);
 }
 
-function loadGame(items) {
+function loadGame(deck) {
 
     memoryBoard.innerHTML = '';
 
-    items.cards.forEach(card => {
+    deck.then(deck => {
+      deck[0].cards.forEach(card => {
         memoryBoard.innerHTML += `
         <div class="memory-card" data-framework="${card}">
-            <img src="img/${items.imgURL}/${card}.svg" alt="${card}" class="front-face">
-            <img src="img/${items.imgURL}/${items.frontfase}.svg" alt="Memory Card" class="back-face">
+            <img src="img/${deck[0].imgURL}/${card}.svg" alt="${card}" class="front-face">
+            <img src="img/${deck[0].imgURL}/${deck[0].frontfase}.svg" alt="Memory Card" class="back-face">
         </div>
         <div class="memory-card" data-framework="${card}">
-            <img src="img/${items.imgURL}/${card}.svg" alt="${card}" class="front-face">
-            <img src="img/${items.imgURL}/${items.frontfase}.svg" alt="Memory Card" class="back-face">
+            <img src="img/${deck[0].imgURL}/${card}.svg" alt="${card}" class="front-face">
+            <img src="img/${deck[0].imgURL}/${deck[0].frontfase}.svg" alt="Memory Card" class="back-face">
         </div>
         `;
+      });
+
+      cards = document.querySelectorAll('.memory-card');
+
+      cards.forEach(card => {
+          return card.addEventListener('click', flipCard);
+      });
+
+      shuffle();
+
     });
-
-    cards = document.querySelectorAll('.memory-card');
-
-    cards.forEach(card => {
-        return card.addEventListener('click', flipCard);
-    });
-
-    shuffle();
 }
 
 let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
+let correctMatch = 0;
 
 function flipCard() {
     if (lockBoard) {
@@ -103,10 +94,32 @@ function checkForMatch() {
 }
 
 function disableCards() {
+    ++correctMatch;
+    deck.then(deck => {
+      if (correctMatch == deck[0].cards.length){
+        let won = document.createElement('div');
+        won.classList.add('won');
+        won.innerHTML = `
+          <div>
+            <button id="won" class="button">New game?</button>
+          </div>
+        `;
+        document.body.append(won);
+        document.getElementById('won').addEventListener('click', newGame);
+      }
+
+    });
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
-
     resetBoard();
+}
+
+function newGame() {
+    correctMatch = 0;
+
+    document.querySelector('.won').remove();
+
+    loadGame(deck);
 }
 
 function unflipCards() {
@@ -131,4 +144,3 @@ function shuffle() {
         card.style.order = randomPos;
     });
 }
-
