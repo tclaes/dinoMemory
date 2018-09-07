@@ -15,18 +15,13 @@ let gameStarted = false;
 let gameWon = false;
 let time;
 
-(function onInit() {
-    loadControls();
-    loadGame(deck);
-})();
-
 function getData() {
     return fetch('/data.json')
         .then(response => response.json()
         );
 }
 
-function loadControls() {
+const loadControls = () => {
     const memoryContols = document.getElementById('memory-controls');
     getData().then(data => {
         data.deck.forEach(button => {
@@ -39,30 +34,29 @@ function loadControls() {
             });
         });
     });
-}
+};
 
-function setDeck() {
+const setDeck = () => {
     deck = getData().then(data => data.deck.filter(x => x.name == this.id));
     newGame();
-}
+};
 
-function newGame() {
+const newGame = () => {
     if(gameWon) document.querySelector('.won').remove();
     clearInterval(time);
     gameStarted = false;
     gameWon = false;
     loadGame(deck);
+};
 
-}
-
-function loadGame(deck) {
+const loadGame = (deck) => {
 
     correctMatch = 0;
     nrOfClicks = 0;
 
     memoryBoard.innerHTML = '';
     clicks.innerHTML = `Clicks: ${nrOfClicks}`;
-    timer.innerHTML = `0h - 0m - 0s`;
+    timer.innerHTML = '0h - 0m - 0s';
 
     deck.then(deck => {
       deck[0].cards.forEach(card => {
@@ -87,9 +81,9 @@ function loadGame(deck) {
       shuffle();
 
     });
-}
+};
 
-function flipCard() {
+const flipCard = () => {
   if(!gameStarted){
     gameStarted = !gameStarted;
     startTimer();
@@ -113,25 +107,25 @@ function flipCard() {
     lockBoard = true;
 
     checkForMatch();
-}
+};
 
-function checkForMatch() {
+const checkForMatch = () => {
 
     const isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
     isMatch ? disableCards() : unflipCards();
 
-}
+};
 
-function disableCards() {
+const disableCards = () => {
     ++correctMatch;
     checkWin();
 
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
     resetBoard();
-}
+};
 
-function checkWin() {
+const checkWin = () => {
   deck.then(deck => {
     if (correctMatch == deck[0].cards.length){
       clearInterval(time);
@@ -148,9 +142,9 @@ function checkWin() {
     }
 
   });
-}
+};
 
-function unflipCards() {
+const unflipCards = () => {
     lockBoard = true;
     setTimeout(() => {
         firstCard.classList.remove('flip');
@@ -159,21 +153,21 @@ function unflipCards() {
         lockBoard = false;
         resetBoard();
     }, 1000);
-}
+};
 
-function resetBoard() {
+const resetBoard = () => {
     [hasFlippedCard, lockBoard] = [false, false];
     [firstCard, secondCard] = [null, null];
-}
+};
 
-function shuffle() {
+const shuffle = () => {
     cards.forEach(card => {
         let randomPos = Math.floor(Math.random() * 12);
         card.style.order = randomPos;
     });
-}
+};
 
-function startTimer() {
+const startTimer = () => {
   let hours = 0;
   let minutes = 0;
   let seconds = 0;
@@ -197,4 +191,9 @@ function startTimer() {
       ${hours}h - ${minutes}m - ${seconds}s
     `;
   }, 1000);
-}
+};
+
+(function onInit() {
+  loadControls();
+  loadGame(deck);
+})();
