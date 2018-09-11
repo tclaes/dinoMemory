@@ -1,0 +1,25 @@
+<div id="main">
+  <section id="header">
+    <div id="score">
+      <div id="clicks" [(ngModel)]="clicks" ngDefaultControl></div>
+      <div id="timer" [(ngModel)]="timer" ngDefaultControl></div>
+    </div>
+    <div id="memory-controls" name="memoryControls" [(ngModel)]="memoryControls" ngDefaultControl></div>
+  </section>
+  <section class="memory-game" id="memory-board" [(ngModel)]="memoryBoard" ngDefaultControl></section>
+</div>
+
+<noscript>
+  <h1>You might want to buy a decent computer first!</h1>
+</noscript>
+
+<script>
+  // Check that service workers are registered
+  if ('serviceWorker' in navigator) {
+    // Use the window load event to keep the page load performant
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  }
+
+</script>
