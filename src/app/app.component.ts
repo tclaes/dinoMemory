@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { timer } from 'rxjs';
+import { DeckService } from './shared/deck.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  name = 'Angular';
+  constructor(private deck: DeckService) {}
 
   // Elements
 
   memoryBoard = '';
-  memoryControls = '';
 
-  clicks = '';
+  clicks = '10';
   timer = '';
   cards = '';
 
@@ -27,40 +26,10 @@ export class AppComponent implements OnInit {
   gameStarted = false;
   gameWon = false;
   time;
-  id: any;
-  classList: any;
 
   ngOnInit(): void {
-    this.loadControls();
     // this.loadGame(this.deck);
   }
-
-  getData() {
-    return fetch('/data.json').then(response => response.json());
-  }
-
-  loadControls() {
-    this.getData().then(data => {
-      data.deck.forEach(button => {
-        this.memoryControls += `
-            <button id="${button.name}" class="controls button">${
-          button.name
-        }</button>
-        `;
-
-        // document
-        //   .querySelectorAll('.controls')
-        //   .forEach(button => button.addEventListener('click', this.setDeck));
-      });
-    });
-  }
-
-  // setDeck() {
-  //   this.deck = this.getData().then(data =>
-  //     data.deck.filter(x => x.name === this.id)
-  //   );
-  //   this.newGame();
-  // }
 
   // newGame() {
   //   if (this.gameWon) {
@@ -72,35 +41,35 @@ export class AppComponent implements OnInit {
   //   this.loadGame(this.deck);
   // }
 
-  loadGame(deck) {
-    this.correctMatch = 0;
-    this.nrOfClicks = 0;
+  // loadGame(deck) {
+  //   this.correctMatch = 0;
+  //   this.nrOfClicks = 0;
 
-    this.memoryBoard = '';
-    this.clicks = `Clicks: ${this.nrOfClicks}`;
-    this.timer = '0h - 0m - 0s';
+  //   this.memoryBoard = '';
+  //   this.clicks = `Clicks: ${this.nrOfClicks}`;
+  //   this.timer = '0h - 0m - 0s';
 
-    deck.then(deck => {
-      deck[0].cards.forEach(card => {
-        this.memoryBoard += `
-        <div class="memory-card" data-framework="${card}">
-            <img src="img/${
-              deck[0].imgURL
-            }/${card}.svg" alt="${card}" class="front-face">
-            <img src="img/${deck[0].imgURL}/${
-          deck[0].frontfase
-        }.svg" alt="Memory Card" class="back-face">
-        </div>
-        <div class="memory-card" data-framework="${card}">
-            <img src="img/${
-              deck[0].imgURL
-            }/${card}.svg" alt="${card}" class="front-face">
-            <img src="img/${deck[0].imgURL}/${
-          deck[0].frontfase
-        }.svg" alt="Memory Card" class="back-face">
-        </div>
-        `;
-      });
+  //   deck.then(deck => {
+  //     deck[0].cards.forEach(card => {
+  //       this.memoryBoard += `
+  //       <div class="memory-card" data-framework="${card}">
+  //           <img src="img/${
+  //             deck[0].imgURL
+  //           }/${card}.svg" alt="${card}" class="front-face">
+  //           <img src="img/${deck[0].imgURL}/${
+  //         deck[0].frontfase
+  //       }.svg" alt="Memory Card" class="back-face">
+  //       </div>
+  //       <div class="memory-card" data-framework="${card}">
+  //           <img src="img/${
+  //             deck[0].imgURL
+  //           }/${card}.svg" alt="${card}" class="front-face">
+  //           <img src="img/${deck[0].imgURL}/${
+  //         deck[0].frontfase
+  //       }.svg" alt="Memory Card" class="back-face">
+  //       </div>
+  //       `;
+  //     });
 
       // this.cards = document.querySelectorAll('.memory-card');
 
@@ -109,8 +78,8 @@ export class AppComponent implements OnInit {
       // });
 
       // this.shuffle();
-    });
-  }
+  //   });
+  // }
 
   // flipCard() {
   //   if (!this.gameStarted) {
@@ -171,21 +140,21 @@ export class AppComponent implements OnInit {
   //   });
   // }
 
-  unflipCards = () => {
-    this.lockBoard = true;
-    setTimeout(() => {
-      this.firstCard.classList.remove('flip');
-      this.secondCard.classList.remove('flip');
+  // unflipCards = () => {
+  //   this.lockBoard = true;
+  //   setTimeout(() => {
+  //     this.firstCard.classList.remove('flip');
+  //     this.secondCard.classList.remove('flip');
 
-      this.lockBoard = false;
-      this.resetBoard();
-    }, 1000);
-  }
+  //     this.lockBoard = false;
+  //     this.resetBoard();
+  //   }, 1000);
+  // }
 
-  resetBoard() {
-    [this.hasFlippedCard, this.lockBoard] = [false, false];
-    [this.firstCard, this.secondCard] = [null, null];
-  }
+  // resetBoard() {
+  //   [this.hasFlippedCard, this.lockBoard] = [false, false];
+  //   [this.firstCard, this.secondCard] = [null, null];
+  // }
 
   // shuffle() {
   //   this.cards.forEach(card => {
@@ -194,27 +163,27 @@ export class AppComponent implements OnInit {
   //   });
   // }
 
-  startTimer() {
-    let hours = 0;
-    let minutes = 0;
-    let seconds = 0;
+  // startTimer() {
+  //   let hours = 0;
+  //   let minutes = 0;
+  //   let seconds = 0;
 
-    this.time = setInterval(() => {
-      if (seconds < 60) {
-        seconds++;
-      } else {
-        seconds = 0;
-        if (minutes < 60) {
-          minutes++;
-        } else {
-          if (hours < 24) {
-            hours++;
-          }
-        }
-      }
-      this.timer = `
-      ${hours}h - ${minutes}m - ${seconds}s
-    `;
-    }, 1000);
-  }
+  //   this.time = setInterval(() => {
+  //     if (seconds < 60) {
+  //       seconds++;
+  //     } else {
+  //       seconds = 0;
+  //       if (minutes < 60) {
+  //         minutes++;
+  //       } else {
+  //         if (hours < 24) {
+  //           hours++;
+  //         }
+  //       }
+  //     }
+  //     this.timer = `
+  //     ${hours}h - ${minutes}m - ${seconds}s
+  //   `;
+  //   }, 1000);
+  // }
 }

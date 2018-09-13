@@ -1,0 +1,10 @@
+<section class="memory-game">
+  <div class="memory-card" *ngFor='let card of gameSrv.cards$' (click)="gameSrv.flipCard($event)" [attr.identifier] = "card">
+    <img src="assets/img/{{gameSrv.imgUrl}}/{{card}}.svg" alt="{{card}}" [className]="'front-face'">
+    <img src="assets/img/{{gameSrv.imgUrl}}/{{gameSrv.frontFace}}.svg" alt="Memory Card" class="back-face">
+  </div>
+  <div class="memory-card" *ngFor='let card of gameSrv.cards$' (click)="gameSrv.flipCard($event)" [attr.identifier] = "card" >
+    <img src="assets/img/{{gameSrv.imgUrl}}/{{card}}.svg" alt="{{card}}" [className]="'front-face'">
+    <img src="assets/img/{{gameSrv.imgUrl}}/{{gameSrv.frontFace}}.svg" alt="Memory Card" class="back-face">
+  </div>
+</section>

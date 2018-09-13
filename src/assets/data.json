@@ -2,7 +2,7 @@
   [{
     "name": "frameworks",
     "imgURL": "frameworks",
-    "frontfase": "js-badge",
+    "frontFace": "js-badge",
     "cards": [
         "angular",
         "aurelia",
@@ -15,7 +15,7 @@
   {
     "name": "dinos",
     "imgURL": "dinos",
-    "frontfase": "velociraptor",
+    "frontFace": "velociraptor",
     "cards": [
         "allosaurus",
         "ankylosaurus",
@@ -31,7 +31,7 @@
   {
     "name": "test",
     "imgURL": "dinos",
-    "frontfase": "velociraptor",
+    "frontFace": "velociraptor",
     "cards": [
         "ichthyosaurus",
         "ouranosaurus"

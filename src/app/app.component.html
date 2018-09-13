@@ -1,12 +1,6 @@
 <div id="main">
-  <section id="header">
-    <div id="score">
-      <div id="clicks" [(ngModel)]="clicks" ngDefaultControl></div>
-      <div id="timer" [(ngModel)]="timer" ngDefaultControl></div>
-    </div>
-    <div id="memory-controls" name="memoryControls" [(ngModel)]="memoryControls" ngDefaultControl></div>
-  </section>
-  <section class="memory-game" id="memory-board" [(ngModel)]="memoryBoard" ngDefaultControl></section>
+    <app-nav></app-nav>
+    <app-game></app-game>
 </div>
 
 <noscript>

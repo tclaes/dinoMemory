@@ -1,0 +1,7 @@
+<section id="header">
+  <div id="score" *ngFor='let button of decks$ | async'>
+      <button id="{{button.name}}" class="controls button" (click) = "game.newGame($event)">{{button.name}}</button>
+  </div>
+  <div id="timer"></div>
+  <div id="memory-controls"></div>
+</section>
