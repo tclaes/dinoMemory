@@ -41,14 +41,6 @@ body {
   width: calc(100vw - 25px);
 }
 
-#header #score {
-  color: white;
-  flex-grow: 1;
-  font-weight: 500;
-  font-size: 1.6rem;
-  margin: 10px auto;
-}
-
 #header #timer {
   font-size: 1.2rem;
 }
@@ -72,7 +64,6 @@ body {
   }
 }
 
-
 .button {
   background: var(--main-bg-color);
   border: 0.16em solid rgba(255, 255, 255, 0);
@@ -82,6 +73,7 @@ body {
   display: inline-block;
   font-weight: 500;
   font-size: 1.2rem;
+  margin: 5px;
   padding: .3rem 1rem;
   text-align: center;
   text-decoration: none;
@@ -99,11 +91,17 @@ body {
 @media screen and (min-width: 800px) {
   .button {
     font-size: 1rem;
+    min-width: 120px;
+    font-weight: 700;
   }
 }
 
 .button:hover {
   border-color: white;
+}
+
+.disabled {
+  display: false;
 }
 
 .won {

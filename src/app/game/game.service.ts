@@ -1,5 +1,6 @@
-import { Injectable, Renderer, ElementRef, AfterViewInit, ViewChildren } from '@angular/core';
+import { Injectable, Renderer, ElementRef, AfterViewInit, Output, ViewChild } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
+import { ClicksComponent } from '../nav/clicks/clicks.component';
 
 @Injectable({providedIn: 'root'})
 export class GameService implements AfterViewInit {
@@ -20,9 +21,9 @@ export class GameService implements AfterViewInit {
   nrOfClicks = 0;
 
   gameWon = false;
+  modalWon;
   gameStarted = false;
   time;
-  order;
 
   newGame(e) {
     this.deckSrv.setDeck(e);
@@ -36,18 +37,16 @@ export class GameService implements AfterViewInit {
   loadGame(deck) {
     this.deck$ = this.deckSrv
       .getData()
-      .then(data => data['deck'].filter(x => x.name === deck))
-      .then(card => {
+      .then(data => data['deck'].filter(x => x.name === deck));
+    this.deck$.then(card => {
         this.cards$ = card[0].cards;
         this.imgUrl = card[0].imgURL;
         this.frontFace = card[0].frontFace;
     });
 
-
-    this.correctMatch = 0;
     this.nrOfClicks = 0;
+    this.correctMatch = 0;
 
-    // this.clicks = `Clicks: ${this.nrOfClicks}`;
     // this.timer = '0h - 0m - 0s';
 
   }
@@ -61,11 +60,10 @@ export class GameService implements AfterViewInit {
     if (this.lockBoard) {
       return;
     }
-    // this.clicks = `Clicks: ${++this.nrOfClicks}`;
+    ++this.nrOfClicks;
     if (clickedCard === this.firstCard) {
       return;
     }
-    console.log(clickedCard);
     this.renderer.setElementClass(clickedCard, 'flip', true);
 
     if (!this.hasFlippedCard) {
@@ -87,7 +85,7 @@ export class GameService implements AfterViewInit {
 
   disableCards() {
     ++this.correctMatch;
-    // this.checkWin();
+    this.checkWin();
 
     // this.firstCard.removeEventListener('click', this.flipCard);
     // this.secondCard.removeEventListener('click', this.flipCard);
@@ -95,22 +93,15 @@ export class GameService implements AfterViewInit {
   }
 
   checkWin() {
-    console.log('Correcte match');
-    // this.deck.then(deck => {
-    //   if (this.correctMatch === deck[0].cards.length) {
-    //     clearInterval(this.time);
-    //     this.gameWon = !this.gameWon;
-    //     const won = document.createElement('div');
-    //     won.classList.add('won');
-    //     won.innerHTML = `
-    //     <div>
-    //       <button id="won" class="button">New game?</button>
-    //     </div>
-    //   `;
-    //     document.body.append(won);
-    //     document.getElementById('won').addEventListener('click', this.newGame);
-    //   }
-    // });
+
+    this.deck$.then(deck => {
+      if (this.correctMatch === deck[0].cards.length) {
+        clearInterval(this.time);
+        this.gameWon = !this.gameWon;
+        this.renderer.setElementClass(this.modalWon, 'display', true);
+        this.renderer.setElementClass(this.modalWon, 'won', true);
+      }
+    });
   }
 
   unflipCards() {
@@ -130,8 +121,6 @@ export class GameService implements AfterViewInit {
   }
 
   shuffle(card) {
-
-      console.log('Kaart: ', card);
       const randomPos = Math.floor(Math.random() * 12);
       this.renderer.setElementStyle(card.nativeElement, 'order', `${randomPos}`);
   }
@@ -161,6 +150,7 @@ export class GameService implements AfterViewInit {
   // }
 
   ngAfterViewInit(): void {
+    console.log(this.won.nativeElement);
   }
 
 }

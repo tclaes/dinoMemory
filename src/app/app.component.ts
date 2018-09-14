@@ -1,34 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { DeckService } from './shared/deck.service';
+import { GameService } from './game/game.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
-  constructor(private deck: DeckService) {}
+export class AppComponent implements OnInit, AfterViewInit {
 
-  // Elements
+  constructor(private deck: DeckService, private gameSrv: GameService) {}
 
-  memoryBoard = '';
-
-  clicks = '10';
-  timer = '';
-  cards = '';
-
-  // deck = this.getData().then(data => data.deck.filter(x => x.name === 'dinos'));
-  hasFlippedCard = false;
-  lockBoard = false;
-  firstCard;
-  secondCard;
-  correctMatch = 0;
-  nrOfClicks = 0;
-  gameStarted = false;
-  gameWon = false;
-  time;
+  @ViewChild('won') win: ElementRef;
 
   ngOnInit(): void {
     // this.loadGame(this.deck);
+  }
+
+  ngAfterViewInit(): void {
+    this.gameSrv.modalWon = this.win.nativeElement;
+    console.log(this.win.nativeElement);
   }
 
   // newGame() {

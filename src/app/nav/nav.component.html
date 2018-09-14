@@ -1,4 +1,5 @@
 <section id="header">
+  <app-clicks [nrOfClicks] = "game.nrOfClicks" class="score"></app-clicks>
   <div id="score" *ngFor='let button of decks$ | async'>
       <button id="{{button.name}}" class="controls button" (click) = "game.newGame($event)">{{button.name}}</button>
   </div>
