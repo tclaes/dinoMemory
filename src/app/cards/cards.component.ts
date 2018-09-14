@@ -16,7 +16,6 @@ export class CardsComponent implements OnInit {
   constructor( public gameSrv: GameService) { }
 
   ngOnInit() {
-      console.log(this.card);
   }
 
 }

@@ -22,6 +22,7 @@ export class GameService implements AfterViewInit {
   gameWon = false;
   gameStarted = false;
   time;
+  order;
 
   newGame(e) {
     this.deckSrv.setDeck(e);
@@ -49,7 +50,6 @@ export class GameService implements AfterViewInit {
     // this.clicks = `Clicks: ${this.nrOfClicks}`;
     // this.timer = '0h - 0m - 0s';
 
-    // this.shuffle();
   }
 
   flipCard(e) {
@@ -65,6 +65,7 @@ export class GameService implements AfterViewInit {
     if (clickedCard === this.firstCard) {
       return;
     }
+    console.log(clickedCard);
     this.renderer.setElementClass(clickedCard, 'flip', true);
 
     if (!this.hasFlippedCard) {
@@ -128,13 +129,12 @@ export class GameService implements AfterViewInit {
     [this.firstCard, this.secondCard] = [null, null];
   }
 
-  // shuffle() {
-  //   this.cards.forEach(card => {
-  //     console.log('Kaart: ', card);
-  //     const randomPos = Math.floor(Math.random() * 12);
-  //     card.style.order = randomPos;
-  //   });
-  // }
+  shuffle(card) {
+
+      console.log('Kaart: ', card);
+      const randomPos = Math.floor(Math.random() * 12);
+      this.renderer.setElementStyle(card.nativeElement, 'order', `${randomPos}`);
+  }
 
   // startTimer() {
   //   let hours = 0;
