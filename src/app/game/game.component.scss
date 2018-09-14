@@ -1,4 +1,3 @@
-
 #memory-board {
   background: var(--board-bg-color);
   border-radius: 25px;
@@ -35,6 +34,9 @@
   }
 }
 
+
+
+
 .memory-card {
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
   height: calc(15% - 5px);
@@ -63,18 +65,3 @@
   transform: rotateY(180deg);
 }
 
-.front-face,
-.back-face {
-  backface-visibility: hidden;
-  background: #1c7ccc;
-  border-radius: 5px;
-  height: 100%;
-  padding: 20px;
-  position: absolute;
-  width: 100%;
-}
-
-.front-face {
-  background: var(--bg-color);
-  transform: rotateY(180deg);
-}

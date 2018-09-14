@@ -1,14 +1,10 @@
-import { Injectable, Renderer, ElementRef, AfterViewInit, ViewChild, ViewChildren } from '@angular/core';
+import { Injectable, Renderer, ElementRef, AfterViewInit, ViewChildren } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class GameService implements AfterViewInit {
 
   constructor(private deckSrv: DeckService) { }
-
-  @ViewChildren('card') card: ElementRef;
 
   renderer: Renderer;
   deck$;
@@ -44,7 +40,7 @@ export class GameService implements AfterViewInit {
         this.cards$ = card[0].cards;
         this.imgUrl = card[0].imgURL;
         this.frontFace = card[0].frontFace;
-      });
+    });
 
 
     this.correctMatch = 0;

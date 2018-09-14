@@ -1,5 +1,6 @@
-import { Component, OnInit, Renderer } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChildren } from '@angular/core';
 import { GameService } from './game.service';
+import { Directive } from '@angular/core';
 
 export interface Deck {
   name: string;

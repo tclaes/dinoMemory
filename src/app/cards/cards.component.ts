@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { GameService } from '../game/game.service';
 
 @Component({
-  selector: 'app-cards',
-  templateUrl: './cards.component.html',
-  styleUrls: ['./cards.component.css']
+  selector: 'app-card',
+  template: `
+    <img src="assets/img/{{gameSrv.imgUrl}}/{{card}}.svg" alt="{{card}}" [className]="'front-face'">
+    <img src="assets/img/{{gameSrv.imgUrl}}/{{gameSrv.frontFace}}.svg" alt="Memory Card" class="back-face">
+  `,
+  styleUrls: ['./cards.component.scss']
 })
 export class CardsComponent implements OnInit {
 
-  constructor() { }
+  @Input() card;
+
+  constructor( public gameSrv: GameService) { }
 
   ngOnInit() {
+      console.log(this.card);
   }
 
 }

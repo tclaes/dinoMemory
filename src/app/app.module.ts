@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './nav/nav.component';
 import { CardsComponent } from './cards/cards.component';
 import { GameComponent } from './game/game.component';
+import { GameDirective } from './game/game.directive';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { GameComponent } from './game/game.component';
     FormsModule,
     HttpClientModule
   ],
-  declarations: [AppComponent, NavComponent, CardsComponent, GameComponent],
+  declarations: [AppComponent, NavComponent, CardsComponent, GameComponent, GameDirective],
   bootstrap: [AppComponent]
 })
 
