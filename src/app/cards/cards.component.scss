@@ -1,0 +1,15 @@
+.front-face,
+.back-face {
+  backface-visibility: hidden;
+  background: #1c7ccc;
+  border-radius: 5px;
+  height: 100%;
+  padding: 20px;
+  position: absolute;
+  width: 100%;
+}
+
+.front-face {
+  background: var(--bg-color);
+  transform: rotateY(180deg);
+}
