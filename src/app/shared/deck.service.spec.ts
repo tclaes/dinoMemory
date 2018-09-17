@@ -1,12 +1,19 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DeckService } from './deck.service';
 
 describe('DeckService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [ HttpClientTestingModule ],
+    providers: [ DeckService ]
+  }));
 
-  it('should be created', () => {
-    const service: DeckService = TestBed.get(DeckService);
-    expect(service).toBeTruthy();
-  });
+
+  it('should fetch a list of people', inject(
+    [ DeckService],
+    (deckService: DeckService) => {
+    expect(deckService).toBeDefined();
+  }));
+
 });

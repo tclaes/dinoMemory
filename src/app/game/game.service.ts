@@ -1,9 +1,8 @@
-import { Injectable, Renderer, ElementRef, AfterViewInit, Output, ViewChild } from '@angular/core';
+import { Injectable, Renderer } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
-import { ClicksComponent } from '../nav/clicks/clicks.component';
 
 @Injectable({providedIn: 'root'})
-export class GameService implements AfterViewInit {
+export class GameService {
 
   constructor(private deckSrv: DeckService) { }
 
@@ -23,25 +22,28 @@ export class GameService implements AfterViewInit {
   gameWon = false;
   modalWon;
   gameStarted = false;
-  time;
+
+  fetchData() {
+    this.deck$ = this.deckSrv.getData();
+  }
 
   newGame(e) {
     this.deckSrv.setDeck(e);
 
-    clearInterval(this.time);
+    // clearInterval(this.time);
     this.gameStarted = false;
     this.gameWon = false;
     this.loadGame(e.target.id);
   }
 
   loadGame(deck) {
-    this.deck$ = this.deckSrv
-      .getData()
-      .then(data => data['deck'].filter(x => x.name === deck));
-    this.deck$.then(card => {
-        this.cards$ = card[0].cards;
-        this.imgUrl = card[0].imgURL;
-        this.frontFace = card[0].frontFace;
+    this.fetchData();
+    this.deck$
+      .then(data => data['deck'].filter(x => x.name === deck))
+      .then(deck => {
+        this.cards$ = deck[0].cards;
+        this.imgUrl = deck[0].imgURL;
+        this.frontFace = deck[0].frontFace;
     });
 
     this.nrOfClicks = 0;
@@ -96,7 +98,7 @@ export class GameService implements AfterViewInit {
 
     this.deck$.then(deck => {
       if (this.correctMatch === deck[0].cards.length) {
-        clearInterval(this.time);
+        // clearInterval(this.time);
         this.gameWon = !this.gameWon;
         this.renderer.setElementClass(this.modalWon, 'display', true);
         this.renderer.setElementClass(this.modalWon, 'won', true);
@@ -148,9 +150,5 @@ export class GameService implements AfterViewInit {
   //   `;
   //   }, 1000);
   // }
-
-  ngAfterViewInit(): void {
-    console.log(this.won.nativeElement);
-  }
 
 }

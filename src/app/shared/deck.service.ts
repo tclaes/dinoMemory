@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { GameComponent } from '../game/game.component';
+
+export interface Deck {
+  name: string;
+  imgUrl: string;
+  frontFace: string;
+  cards: string[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +18,9 @@ export class DeckService {
   decksUrl = '../../assets/data.json';
 
   getData() {
-    return this.http.get(this.decksUrl).toPromise();
+    return this.http
+      .get<Deck>(this.decksUrl)
+      .toPromise();
   }
 
   setDeck(e) {
