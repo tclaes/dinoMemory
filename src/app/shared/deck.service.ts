@@ -19,13 +19,13 @@ export class DeckService {
 
   getData() {
     return this.http
-      .get<Deck>(this.decksUrl)
+      .get(this.decksUrl)
       .toPromise();
   }
 
   setDeck(e) {
    return this.getData().then(data =>
-      data['deck'].filter(x => x.name === e.target.id)
+      data['deck'].filter(x => x.name === e)
     );
   }
 

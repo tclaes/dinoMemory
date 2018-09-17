@@ -2,3 +2,7 @@
   <app-card *ngFor='let card of gameSrv.cards$' [card]="card" class="memory-card" (click)="gameSrv.flipCard($event)" [attr.identifier] = "card"></app-card>
   <app-card *ngFor='let card of gameSrv.cards$' [card]="card" class="memory-card" (click)="gameSrv.flipCard($event)" [attr.identifier] = "card"></app-card>
 </section>
+
+<div *ngIf="gameSrv.gameWon" appGameWon>
+    <button id="won" class="button" (click)="gameSrv.newGame($event.target)">New game?</button>
+</div>

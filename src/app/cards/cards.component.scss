@@ -7,6 +7,10 @@
   padding: 20px;
   position: absolute;
   width: 100%;
+
+  @media screen and (max-width: 800px){
+    padding: 5px;
+  }
 }
 
 .front-face {

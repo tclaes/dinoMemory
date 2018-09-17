@@ -1,22 +1,16 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { DeckService } from './shared/deck.service';
 import { GameService } from './game/game.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit, AfterViewInit {
 
-  constructor(private gameSrv: GameService) {}
+export class AppComponent implements OnInit {
 
-  @ViewChild('won') win: ElementRef;
+  constructor(public gameSrv: GameService) {}
 
   ngOnInit(): void {
-    // this.loadGame(this.deck);
   }
 
-  ngAfterViewInit(): void {
-    this.gameSrv.modalWon = this.win.nativeElement;
-  }
 }

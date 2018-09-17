@@ -1,13 +1,15 @@
-import { Injectable, Renderer } from '@angular/core';
+import { Injectable, Renderer, Input, OnInit } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
+import { GameWonDirective } from '../shared/game-won.directive';
 
 @Injectable({providedIn: 'root'})
-export class GameService {
+export class GameService implements OnInit {
 
   constructor(private deckSrv: DeckService) { }
 
   renderer: Renderer;
   deck$;
+  standardDeck;
   cards$;
   imgUrl;
   frontFace;
@@ -22,34 +24,29 @@ export class GameService {
   gameWon = false;
   modalWon;
   gameStarted = false;
-
-  fetchData() {
-    this.deck$ = this.deckSrv.getData();
-  }
+  time;
 
   newGame(e) {
-    this.deckSrv.setDeck(e);
 
-    // clearInterval(this.time);
     this.gameStarted = false;
     this.gameWon = false;
-    this.loadGame(e.target.id);
-  }
-
-  loadGame(deck) {
-    this.fetchData();
-    this.deck$
-      .then(data => data['deck'].filter(x => x.name === deck))
-      .then(deck => {
-        this.cards$ = deck[0].cards;
-        this.imgUrl = deck[0].imgURL;
-        this.frontFace = deck[0].frontFace;
-    });
-
     this.nrOfClicks = 0;
     this.correctMatch = 0;
 
-    // this.timer = '0h - 0m - 0s';
+    if (e.target !== undefined && e.target !== 'won') {
+      this.standardDeck = {id: e.target.id };
+    }
+
+    console.log('New game standard deck:', this.standardDeck.id);
+    this.deck$ = this.deckSrv.setDeck(this.standardDeck.id);
+
+    this.deck$.then(card => {
+      this.cards$ = card[0].cards;
+      this.imgUrl = card[0].imgURL;
+      this.frontFace = card[0].frontFace;
+    });
+
+    clearInterval(this.time);
 
   }
 
@@ -95,13 +92,11 @@ export class GameService {
   }
 
   checkWin() {
-
     this.deck$.then(deck => {
+      console.log(deck);
       if (this.correctMatch === deck[0].cards.length) {
-        // clearInterval(this.time);
+        clearInterval(this.time);
         this.gameWon = !this.gameWon;
-        this.renderer.setElementClass(this.modalWon, 'display', true);
-        this.renderer.setElementClass(this.modalWon, 'won', true);
       }
     });
   }
@@ -127,6 +122,9 @@ export class GameService {
       this.renderer.setElementStyle(card.nativeElement, 'order', `${randomPos}`);
   }
 
+  ngOnInit(): void {
+  }
+
   // startTimer() {
   //   let hours = 0;
   //   let minutes = 0;
@@ -150,5 +148,4 @@ export class GameService {
   //   `;
   //   }, 1000);
   // }
-
 }
