@@ -29,7 +29,6 @@ export class GameComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.gameSrv.standardDeck = this.standardDeck;
-    this.gameSrv.newGame(this.standardDeck);
   }
 
   ngAfterViewInit(): void {

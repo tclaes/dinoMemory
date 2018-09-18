@@ -92,7 +92,6 @@ export class GameService implements OnInit {
 
   checkWin() {
     this.deck$.then(deck => {
-      console.log(deck);
       if (this.correctMatch === deck[0].cards.length) {
         clearInterval(this.time);
         this.gameWon = !this.gameWon;

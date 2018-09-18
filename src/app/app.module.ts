@@ -10,6 +10,8 @@ import { ClicksComponent } from './nav/clicks/clicks.component';
 import { StandardDeckDirective } from './shared/standard-deck.directive';
 import { GameWonDirective } from './shared/game-won.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -17,7 +19,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   declarations: [AppComponent, NavComponent, CardsComponent, GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective],
   providers: [ StandardDeckDirective ],
