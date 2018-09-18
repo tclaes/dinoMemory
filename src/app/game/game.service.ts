@@ -1,4 +1,4 @@
-import { Injectable, Renderer, Input, OnInit } from '@angular/core';
+import { Injectable, Renderer, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
 import { GameWonDirective } from '../shared/game-won.directive';
 
@@ -37,7 +37,6 @@ export class GameService implements OnInit {
       this.standardDeck = {id: e.target.id };
     }
 
-    console.log('New game standard deck:', this.standardDeck.id);
     this.deck$ = this.deckSrv.setDeck(this.standardDeck.id);
 
     this.deck$.then(card => {
@@ -119,6 +118,7 @@ export class GameService implements OnInit {
 
   shuffle(card) {
       const randomPos = Math.floor(Math.random() * 12);
+      this.renderer.setElementClass(card.nativeElement, 'flip', false);
       this.renderer.setElementStyle(card.nativeElement, 'order', `${randomPos}`);
   }
 

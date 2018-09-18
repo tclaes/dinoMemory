@@ -4,5 +4,5 @@
 </section>
 
 <div *ngIf="gameSrv.gameWon" appGameWon>
-    <button id="won" class="button" (click)="gameSrv.newGame($event.target)">New game?</button>
+    <button id="won" class="button" (click)="newGame($event.target)">New game?</button>
 </div>

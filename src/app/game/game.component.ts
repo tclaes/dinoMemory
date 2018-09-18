@@ -20,14 +20,19 @@ export class GameComponent implements OnInit, AfterViewInit {
     id: 'test'
   };
 
+  newGame(e) {
+    this.gameSrv.newGame(e);
+    this.cards.changes.subscribe(c => {
+      c.toArray().forEach(item => this.gameSrv.shuffle(item));
+    });
+  }
+
   ngOnInit() {
     this.gameSrv.standardDeck = this.standardDeck;
     this.gameSrv.newGame(this.standardDeck);
   }
 
   ngAfterViewInit(): void {
-    this.cards.changes.subscribe(c => {
-      c.toArray().forEach(item => this.gameSrv.shuffle(item));
-    });
+    this.newGame(this.standardDeck);
   }
 }

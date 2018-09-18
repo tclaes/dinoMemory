@@ -9,13 +9,15 @@ import { GameComponent } from './game/game.component';
 import { ClicksComponent } from './nav/clicks/clicks.component';
 import { StandardDeckDirective } from './shared/standard-deck.directive';
 import { GameWonDirective } from './shared/game-won.directive';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule
   ],
   declarations: [AppComponent, NavComponent, CardsComponent, GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective],
   providers: [ StandardDeckDirective ],
