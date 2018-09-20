@@ -24,6 +24,7 @@ export class GameService implements OnInit {
   modalWon;
   gameStarted = false;
   time;
+  timer = '0h - 0m - 0s';
 
   newGame(e) {
 
@@ -56,7 +57,7 @@ export class GameService implements OnInit {
     }
     if (!this.gameStarted) {
       this.gameStarted = !this.gameStarted;
-      // this.startTimer();
+      this.startTimer();
     }
     if (this.lockBoard) {
       return;
@@ -129,27 +130,27 @@ export class GameService implements OnInit {
   ngOnInit(): void {
   }
 
-  // startTimer() {
-  //   let hours = 0;
-  //   let minutes = 0;
-  //   let seconds = 0;
+  startTimer() {
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
 
-  //   this.time = setInterval(() => {
-  //     if (seconds < 60) {
-  //       seconds++;
-  //     } else {
-  //       seconds = 0;
-  //       if (minutes < 60) {
-  //         minutes++;
-  //       } else {
-  //         if (hours < 24) {
-  //           hours++;
-  //         }
-  //       }
-  //     }
-  //     this.timer = `
-  //     ${hours}h - ${minutes}m - ${seconds}s
-  //   `;
-  //   }, 1000);
-  // }
+    this.time = setInterval(() => {
+      if (seconds < 59) {
+        seconds++;
+      } else {
+        seconds = 0;
+        if (minutes < 59) {
+          minutes++;
+        } else {
+          if (hours < 24) {
+            hours++;
+          }
+        }
+      }
+      this.timer = `
+      ${hours}h - ${minutes}m - ${seconds}s
+    `;
+    }, 1000);
+  }
 }

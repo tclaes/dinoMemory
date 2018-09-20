@@ -1,7 +1,5 @@
 <section id="header">
-  
-
-  <div id="timer"></div>
+   
   <a href="#main-menu"
     class="menu-toggle"
     role="button"
@@ -42,4 +40,5 @@
   </nav>
 
   <app-clicks [nrOfClicks] = "game.nrOfClicks" class="score"></app-clicks>
+  <app-timer [timer] = game.timer class="score"></app-timer>
 </section>

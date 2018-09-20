@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { DisableClickDirective } from './shared/disable-click.directive';
+import { TimerComponent } from './nav/timer/timer.component';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { DisableClickDirective } from './shared/disable-click.directive';
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   declarations: [AppComponent, NavComponent, CardsComponent,
-    GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective, DisableClickDirective],
+    GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective, DisableClickDirective, TimerComponent],
   providers: [ StandardDeckDirective ],
   bootstrap: [AppComponent]
 })
