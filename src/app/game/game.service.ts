@@ -1,6 +1,5 @@
-import { Injectable, Renderer, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Injectable, Renderer, OnInit } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
-import { GameWonDirective } from '../shared/game-won.directive';
 
 @Injectable({providedIn: 'root'})
 export class GameService implements OnInit {
@@ -50,7 +49,11 @@ export class GameService implements OnInit {
   }
 
   flipCard(e) {
+
     const clickedCard = e.currentTarget;
+    if (clickedCard.classList.contains('flip')) {
+      return;
+    }
     if (!this.gameStarted) {
       this.gameStarted = !this.gameStarted;
       // this.startTimer();
@@ -58,10 +61,12 @@ export class GameService implements OnInit {
     if (this.lockBoard) {
       return;
     }
-    ++this.nrOfClicks;
     if (clickedCard === this.firstCard) {
       return;
     }
+
+    ++this.nrOfClicks;
+
     this.renderer.setElementClass(clickedCard, 'flip', true);
 
     if (!this.hasFlippedCard) {

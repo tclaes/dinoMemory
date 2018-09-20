@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer, ViewChildren, Input, AfterViewInit, QueryList, ElementRef } from '@angular/core';
 import { GameService } from './game.service';
 import { CardsComponent } from '../cards/cards.component';
-import { StandardDeckDirective, Deck } from '../shared/standard-deck.directive';
+import { Deck } from '../shared/standard-deck.directive';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
