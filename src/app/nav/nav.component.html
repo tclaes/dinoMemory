@@ -1,0 +1,45 @@
+<section id="header">
+  
+
+  <div id="timer"></div>
+  <a href="#main-menu"
+    class="menu-toggle"
+    role="button"
+    id="main-menu-toggle"
+    aria-expanded="false"
+    aria-controls="main-menu"
+    aria-label="Open main menu">
+    <span class="sr-only">Open main menu</span>
+    <fa-icon [icon]="faBars" aria-hidden="true"></fa-icon>
+  </a>
+  <nav id="main-menu"
+      class="main-menu"
+      role="navigation"
+      aria-expanded="false"
+      aria-label="Main menu">
+    <a href="#main-menu-toggle"
+        class="menu-close"
+        role="button"
+        id="main-menu-close"
+        aria-expanded="false"
+        aria-controls="main-menu"
+        aria-label="Open main menu">
+        <span class="sr-only">Close main menu</span>
+        <fa-icon [icon]="faClose"></fa-icon>
+    </a>
+    <ul>
+    <li *ngFor='let button of decks$ | async'>
+      <a
+        id="{{button.name}}" 
+        class="controls button nav-item" 
+        (click) = "game.newGame($event)" 
+        appStandardDeck
+        [standardDeck] = "game.standardDeck">{{button.name}}
+      </a>
+    </li>
+    </ul>
+    <a href="#main-menu-toggle" class="backdrop" tabindex="-1" aria-hidden="true" hidden></a>
+  </nav>
+
+  <app-clicks [nrOfClicks] = "game.nrOfClicks" class="score"></app-clicks>
+</section>

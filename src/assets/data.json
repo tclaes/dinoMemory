@@ -1,0 +1,44 @@
+{"deck":
+  [{
+    "name": "frameworks",
+    "imgURL": "frameworks",
+    "frontFace": "js-badge",
+    "cards": [
+        "angular",
+        "aurelia",
+        "backbone",
+        "ember",
+        "react",
+        "vue"
+    ]
+  },
+  {
+    "name": "dinos",
+    "imgURL": "dinos",
+    "frontFace": "velociraptor",
+    "cards": [
+        "allosaurus",
+        "ankylosaurus",
+        "brachiosaurus",
+        "brontosaurus",
+        "ceratosaurus",
+        "guanlong",
+        "stegosaurus",
+        "lambeosaurus",
+        "iguanodon"
+    ]
+  },
+  {
+    "name": "test",
+    "imgURL": "dinos",
+    "frontFace": "velociraptor",
+    "cards": [
+        "ichthyosaurus",
+        "ouranosaurus"
+    ]
+  }
+]
+}
+
+
+

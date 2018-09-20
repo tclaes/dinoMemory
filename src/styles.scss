@@ -1,0 +1,124 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  --main-bg-color: #1b9aaa;
+  --card-bg-color: #06d6a0;
+  --board-bg-color: #ffc43d;
+  --bg-color: #ef476f;
+  --bg-color-2: #f8ffe5;
+}
+
+body {
+  background: var(--main-bg-color);
+  display: flex;
+  font-family: 'Roboto',sans-serif;
+  height: 100vh;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#main {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 800px) {
+  #main {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+#header {
+  background: var(--board-bg-color);
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  margin: 10px auto;
+  padding: 10px;
+  width: calc(100vw - 25px);
+}
+
+#header #timer {
+  font-size: 1.2rem;
+}
+
+#header #memory-controls {
+  flex-grow: 1;
+}
+
+#header #memory-controls .controls {
+  min-width: 130px;
+  margin: 5px 0;
+}
+
+@media screen and (min-width: 800px) {
+  #header {
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    width: 150px;
+  }
+}
+
+.button {
+  background: var(--main-bg-color);
+  border: 0.16em solid rgba(255, 255, 255, 0);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: inline-block;
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin: 5px;
+  padding: .3rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
+  transition: all 0.2s;
+}
+
+@media all and (max-width: 30em) {
+  .button {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .button {
+    font-size: 1rem;
+    min-width: 120px;
+    font-weight: 700;
+  }
+}
+
+.button:hover {
+  border-color: white;
+}
+
+.disabled {
+  display: none;
+}
+
+.won {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.won div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
