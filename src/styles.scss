@@ -24,44 +24,11 @@ body {
   margin: 0 auto;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 980px) {
   #main {
     align-items: center;
     display: flex;
     flex-direction: row;
-  }
-}
-
-#header {
-  background: var(--board-bg-color);
-  border-radius: 25px;
-  display: flex;
-  justify-content: center;
-  margin: 10px auto;
-  padding: 10px;
-  width: calc(100vw - 25px);
-}
-
-#header #timer {
-  font-size: 1.2rem;
-}
-
-#header #memory-controls {
-  flex-grow: 1;
-}
-
-#header #memory-controls .controls {
-  min-width: 130px;
-  margin: 5px 0;
-}
-
-@media screen and (min-width: 800px) {
-  #header {
-    border-radius: 50px;
-    display: flex;
-    flex-direction: column;
-    height: 90vh;
-    width: 150px;
   }
 }
 

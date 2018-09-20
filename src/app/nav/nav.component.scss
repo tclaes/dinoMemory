@@ -1,9 +1,33 @@
+#header {
+  
+  background: var(--board-bg-color);
+  border-radius: 15px;
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+  margin: 5px auto;
+  padding: 5px;
+  width: calc(100vw - 25px);
+}
+
 #header .score {
   color: white;
-  flex-grow: 1;
   font-weight: 500;
   font-size: 1.6rem;
-  margin: 10px auto;
+}
+
+@media screen and (min-width: 980px) {
+  #header {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    width: 150px;
+  }
+
+  nav#main-menu.main-menu {
+    flex-grow: 2;
+  }
 }
 
 .sr-only {

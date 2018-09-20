@@ -1,29 +1,32 @@
 #memory-board {
   background: var(--board-bg-color);
-  border-radius: 25px;
+  border-radius: 15px;
   height: calc(100vh - 100px);
   margin: 0 15px;
   padding: 25px;
   width: calc(100vw - 25px);
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 980px) {
   #memory-board {
-    border-radius: 50px;
+    border-radius: 20px;
     height: 90vh;
-    margin: 50px 50px;
-    width: 980px;
+    margin: 50px 20px;
+    width: 800px;
+    display: flex;
+    justify-content: center;
   }
 }
 
 .memory-game {
   display: flex;
+    justify-content: center;
   flex-wrap: wrap;
   margin: auto;
   perspective: 1000px;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 980px) {
   .memory-game {
     display: flex;
     flex-wrap: wrap;
@@ -33,9 +36,6 @@
     width: 640px;
   }
 }
-
-
-
 
 .memory-card {
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
