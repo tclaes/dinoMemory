@@ -17,7 +17,7 @@ export class ScoreService {
   scores: AngularFirestoreCollection<Score>;
 
   constructor(private afs: AngularFirestore) {
-    this.scores = this.afs.collection('scores');
+    this.scores = this.afs.collection('scores', ref => ref.orderBy('time'));
     this.collection$ = this.scores.valueChanges();
   }
 
