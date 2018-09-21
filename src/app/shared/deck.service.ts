@@ -23,10 +23,9 @@ export class DeckService {
       .toPromise();
   }
 
-  setDeck(e) {
-   return this.getData().then(data =>
-      data['deck'].filter(x => x.name === e)
-    );
+  async setDeck(e) {
+   const data = await this.getData();
+    return data['deck'].filter(x => x.name === e);
   }
 
 }

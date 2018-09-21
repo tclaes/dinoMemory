@@ -16,7 +16,6 @@ export class TimerComponent implements OnInit {
   @Input() timer;
 
   constructor(private gameSrv: GameService) {
-    this.timer = this.gameSrv.timer;
    }
 
   ngOnInit() {

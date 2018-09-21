@@ -14,8 +14,7 @@ export class ClicksComponent implements OnInit {
 
   @Input() nrOfClicks: number;
 
-  constructor(private gameSrv: GameService) {
-    this.nrOfClicks = this.gameSrv.nrOfClicks;
+  constructor() {
   }
 
   ngOnInit() {

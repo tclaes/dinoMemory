@@ -11,5 +11,4 @@ export class GameWonDirective {
     this.renderer.removeClass(this.el.nativeElement, 'display');
     this.renderer.addClass(this.el.nativeElement, 'won');
   }
-
 }

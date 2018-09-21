@@ -1,10 +1,11 @@
 import { Injectable, Renderer, OnInit } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
+import { ScoreService } from './scoreboard/score.service';
 
 @Injectable({providedIn: 'root'})
 export class GameService implements OnInit {
 
-  constructor(private deckSrv: DeckService) { }
+  constructor(private deckSrv: DeckService, private scoreSrv: ScoreService) { }
 
   renderer: Renderer;
   deck$;
@@ -101,6 +102,7 @@ export class GameService implements OnInit {
       if (this.correctMatch === deck[0].cards.length) {
         clearInterval(this.time);
         this.gameWon = !this.gameWon;
+        this.scoreSrv.updateScores('Tom', this.nrOfClicks, this.timer);
       }
     });
   }
