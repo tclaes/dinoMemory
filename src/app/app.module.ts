@@ -31,7 +31,7 @@ import { ScoreComponent } from './game/scoreboard/score.component';
     FontAwesomeModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule.enablePersistence()
   ],
   declarations: [AppComponent, NavComponent, CardsComponent,
     GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective, DisableClickDirective, TimerComponent, ScoreComponent],
