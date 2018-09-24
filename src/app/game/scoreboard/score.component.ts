@@ -45,11 +45,11 @@ export class ScoreComponent implements OnInit {
   collection$: Observable<Score[]>;
 
   constructor(public game: GameComponent, public gameSrv: GameService, private scoreSrv: ScoreService) {
-      this.collection$ = this.scoreSrv.loadScores();
+      this.collection$ = this.scoreSrv.loadScores(gameSrv.standardDeck);
    }
 
    updateScores() {
-     this.scoreSrv.updateScores('Tom', this.nrOfClicks, this.time);
+     this.scoreSrv.updateScores('Tom', this.nrOfClicks, this.time, this.gameSrv.standardDeck);
    }
 
   ngOnInit() {

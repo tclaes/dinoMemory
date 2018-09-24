@@ -102,7 +102,7 @@ export class GameService implements OnInit {
       if (this.correctMatch === deck[0].cards.length) {
         clearInterval(this.time);
         this.gameWon = !this.gameWon;
-        this.scoreSrv.updateScores('Tom', this.nrOfClicks, this.timer);
+        this.scoreSrv.updateScores('Tom', this.nrOfClicks, this.timer, this.standardDeck);
       }
     });
   }
