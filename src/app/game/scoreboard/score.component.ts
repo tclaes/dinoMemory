@@ -12,8 +12,25 @@ import { Observable } from 'rxjs';
       <p>{{gameSrv.nrOfClicks}} clicks</p>
       <p>{{gameSrv.timer}}</p>
       <button id="won" class="button" (click)="game.newGame($event.target)">New game?</button>
-      <div *ngFor='let score of collection$ | async' class="scoreboard">
-        <p>{{score.user}} - {{score.clicks}} - {{score.time}}</p>
+      <div  class="scoreboard">
+
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Clicks</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor='let score of collection$ | async'>
+            <td>{{score.user}}</td>
+            <td>{{score.clicks}}</td>
+            <td>{{score.time}}</td>
+          </tr>
+        </tbody>
+      </table>
+
       </div>
     </div>
 
