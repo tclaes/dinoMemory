@@ -9,6 +9,6 @@ export class GameWonDirective {
 
   constructor( private renderer: Renderer2, private el: ElementRef) {
     this.renderer.removeClass(this.el.nativeElement, 'display');
-    this.renderer.addClass(this.el.nativeElement, 'won');
+    this.renderer.addClass(this.el.nativeElement, 'modal');
   }
 }

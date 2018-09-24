@@ -20,6 +20,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { DisableClickDirective } from './shared/disable-click.directive';
 import { TimerComponent } from './nav/timer/timer.component';
 import { ScoreComponent } from './game/scoreboard/score.component';
+import { PlayerComponent } from './game/player/player.component';
 
 
 
@@ -34,7 +35,7 @@ import { ScoreComponent } from './game/scoreboard/score.component';
     AngularFirestoreModule.enablePersistence()
   ],
   declarations: [AppComponent, NavComponent, CardsComponent,
-    GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective, DisableClickDirective, TimerComponent, ScoreComponent],
+    GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective, DisableClickDirective, TimerComponent, ScoreComponent, PlayerComponent],
   providers: [ StandardDeckDirective ],
   bootstrap: [AppComponent]
 })

@@ -71,7 +71,7 @@ body {
   display: none;
 }
 
-.won {
+.modal {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,7 +83,7 @@ body {
   background: rgba(0, 0, 0, 0.3);
 }
 
-.won .score {
+.modal .score {
   display: flex;
   align-items: center;
   justify-content: center;
