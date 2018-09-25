@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalstorageService } from 'src/app/shared/localstorage.service';
+import { LocalstorageService, Player } from './../../shared/localstorage.service';
 
 @Component({
   selector: 'app-player',
@@ -8,12 +8,20 @@ import { LocalstorageService } from 'src/app/shared/localstorage.service';
 })
 export class PlayerComponent {
 
-  playerIsSet;
+  playerIsSet = false;
+  player: Player;
 
-  constructor(public localStorage: LocalstorageService) { }
+  constructor(private local: LocalstorageService) {
+    if (this.local.getUser() !== null) {
+      this.playerIsSet = true;
+      this.player = this.local.getUser();
+    }
+   }
 
   setPlayer(player) {
-    this.localStorage.setUser(player);
+    this.player = player;
+    this.playerIsSet = true;
+    this.local.setUser(player);
   }
 
 }

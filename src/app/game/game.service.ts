@@ -1,11 +1,12 @@
 import { Injectable, Renderer, OnInit } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
+import { LocalstorageService } from '../shared/localstorage.service';
 
 @Injectable({providedIn: 'root'})
-export class GameService implements OnInit {
+export class GameService {
 
-  constructor(private deckSrv: DeckService, private scoreSrv: ScoreService) { }
+  constructor(private deckSrv: DeckService, private scoreSrv: ScoreService, private local: LocalstorageService) { }
 
   renderer: Renderer;
   deck$;
@@ -102,7 +103,7 @@ export class GameService implements OnInit {
       if (this.correctMatch === deck[0].cards.length) {
         clearInterval(this.time);
         this.gameWon = !this.gameWon;
-        this.scoreSrv.updateScores('Tom', this.nrOfClicks, this.timer, this.standardDeck);
+        this.scoreSrv.updateScores(this.local.getUser(), this.nrOfClicks, this.timer, this.standardDeck);
       }
     });
   }
@@ -127,9 +128,6 @@ export class GameService implements OnInit {
       const randomPos = Math.floor(Math.random() * 12);
       this.renderer.setElementClass(card.nativeElement, 'flip', false);
       this.renderer.setElementStyle(card.nativeElement, 'order', `${randomPos}`);
-  }
-
-  ngOnInit(): void {
   }
 
   startTimer() {
