@@ -18,15 +18,17 @@
     "@fortawesome/angular-fontawesome": "^0.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
     "@fortawesome/free-solid-svg-icons": "^5.3.1",
+    "angular-webstorage-service": "^1.0.2",
     "angularfire2": "^5.0.1",
     "core-js": "^2.5.7",
+    "firebase": "^5.5.1",
     "rxjs": "^6.3.2",
     "systemjs": "^0.21.4",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",
-    "@angular/cli": "6.2.1",
+    "@angular/cli": "6.2.3",
     "@angular/compiler-cli": "^6.1.7",
     "@angular/language-service": "^6.1.7",
     "@types/jasmine": "~2.8.8",

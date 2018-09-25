@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
+import { LocalstorageService } from 'src/app/shared/localstorage.service';
 
 @Component({
-  selector: 'player',
+  selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent {
 
-  constructor() { }
+  playerIsSet;
 
-  ngOnInit() {
+  constructor(public localStorage: LocalstorageService) { }
+
+  setPlayer(player) {
+    this.localStorage.setUser(player);
   }
 
 }

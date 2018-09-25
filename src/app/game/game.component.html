@@ -1,3 +1,5 @@
+<app-player></app-player>
+
 <section class="memory-game" id="memory-board">
   <app-card *ngFor='let card of gameSrv.cards$' [card]="card" class="memory-card" (click)="gameSrv.flipCard($event)" [attr.identifier] = "card"></app-card>
   <app-card *ngFor='let card of gameSrv.cards$' [card]="card" class="memory-card" (click)="gameSrv.flipCard($event)" [attr.identifier] = "card"></app-card>

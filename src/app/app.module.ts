@@ -21,7 +21,7 @@ import { DisableClickDirective } from './shared/disable-click.directive';
 import { TimerComponent } from './nav/timer/timer.component';
 import { ScoreComponent } from './game/scoreboard/score.component';
 import { PlayerComponent } from './game/player/player.component';
-
+import { StorageServiceModule } from 'angular-webstorage-service';
 
 
 @NgModule({
@@ -32,10 +32,12 @@ import { PlayerComponent } from './game/player/player.component';
     FontAwesomeModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule.enablePersistence()
+    AngularFirestoreModule.enablePersistence(),
+    StorageServiceModule
   ],
   declarations: [AppComponent, NavComponent, CardsComponent,
-    GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective, DisableClickDirective, TimerComponent, ScoreComponent, PlayerComponent],
+    GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective,
+    DisableClickDirective, TimerComponent, ScoreComponent, PlayerComponent],
   providers: [ StandardDeckDirective ],
   bootstrap: [AppComponent]
 })
