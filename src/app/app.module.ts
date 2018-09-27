@@ -22,6 +22,7 @@ import { TimerComponent } from './nav/timer/timer.component';
 import { ScoreComponent } from './game/scoreboard/score.component';
 import { PlayerComponent } from './game/player/player.component';
 import { StorageServiceModule } from 'angular-webstorage-service';
+import { HoldableDirective } from './shared/holdable.directive';
 
 
 @NgModule({
@@ -37,7 +38,7 @@ import { StorageServiceModule } from 'angular-webstorage-service';
   ],
   declarations: [AppComponent, NavComponent, CardsComponent,
     GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective,
-    DisableClickDirective, TimerComponent, ScoreComponent, PlayerComponent],
+    DisableClickDirective, TimerComponent, ScoreComponent, PlayerComponent, HoldableDirective],
   providers: [ StandardDeckDirective ],
   bootstrap: [AppComponent]
 })
