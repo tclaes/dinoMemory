@@ -1,0 +1,24 @@
+.score {
+    font-size: 1.8rem;
+    text-align: center;
+
+    table {
+        border-collapse: collapse;
+        text-align: left;
+        width: 100%;
+    }
+
+    thead {
+        background: var(--main-bg-color);
+        border-radius: 5px;
+    }
+
+    td, th {
+        padding: 2px;
+    }
+}
+
+.scoreboard {
+    font-size: 1.2rem;
+    width: 80%;
+}

@@ -11,31 +11,31 @@ import { Observable } from 'rxjs';
       <h3>Game Won !!!</h3>
       <p>{{gameSrv.nrOfClicks}} clicks</p>
       <p>{{gameSrv.timer}}</p>
-      <button id="won" class="button" (click)="game.newGame($event.target)">New game?</button>
+
       <div  class="scoreboard">
-
-      <table>
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Clicks</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor='let score of collection$ | async'>
-            <td>{{score.user}}</td>
-            <td>{{score.clicks}}</td>
-            <td>{{score.time}}</td>
-          </tr>
-        </tbody>
-      </table>
-
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Clicks</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let score of collection$ | async'>
+              <td>{{score.user}}</td>
+              <td>{{score.clicks}}</td>
+              <td>{{score.time}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <button id="won" class="button" (click)="game.newGame($event.target)">New game?</button>
     </div>
 
+
   `,
-  styleUrls: ['./score.component.css']
+  styleUrls: ['./score.component.scss']
 })
 export class ScoreComponent implements OnInit {
 
