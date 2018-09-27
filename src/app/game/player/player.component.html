@@ -1,0 +1,11 @@
+<div class="modal" *ngIf="!playerIsSet">
+  <div class="player">
+    <h1>Speler</h1>
+    <div>
+      <label for="player">Vul uw naam in:</label>
+      <input type="text" #player required>
+    </div>
+
+    <button (click)="setPlayer(player.value)" class="button"> Ga verder </button>
+  </div>
+</div>
