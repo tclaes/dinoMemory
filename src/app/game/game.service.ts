@@ -93,8 +93,6 @@ export class GameService {
     ++this.correctMatch;
     this.checkWin();
 
-    // this.firstCard.removeEventListener('click', this.flipCard);
-    // this.secondCard.removeEventListener('click', this.flipCard);
     this.resetBoard();
   }
 
