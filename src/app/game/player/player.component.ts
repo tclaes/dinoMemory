@@ -24,7 +24,6 @@ export class PlayerComponent implements OnInit {
    }
 
   setPlayer() {
-    console.log(this.player.name);
     this.playerIsSet = true;
     this.local.setUser(this.player.name);
   }
@@ -34,7 +33,6 @@ export class PlayerComponent implements OnInit {
       name: ''
     });
     this.myForm.valueChanges.subscribe(name => {
-      console.log(name);
       this.player = name;
     });
   }
