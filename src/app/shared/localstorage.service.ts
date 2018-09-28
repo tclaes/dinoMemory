@@ -4,8 +4,8 @@ import { LOCAL_STORAGE, StorageService } from 'angular-webstorage-service';
 const STORAGE_KEY = 'local_user';
 
 export interface Player {
-  id?: number;
   name: string;
+  id?: number;
 }
 
 @Injectable({
