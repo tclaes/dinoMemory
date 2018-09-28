@@ -13,10 +13,7 @@
 
 body {
   background: var(--main-bg-color);
-  display: flex;
   font-family: 'Roboto',sans-serif;
-  height: 100vh;
-  justify-content: center;
   overflow: hidden;
 }
 
@@ -28,50 +25,50 @@ h1 {
 #main {
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  align-items: center;
+  background: var(--main-bg-color);
+  height: 100%;
 }
 
 @media screen and (min-width: 980px) {
   #main {
     align-items: center;
     display: flex;
+    justify-content: center;
     flex-direction: row;
   }
 }
 
-.button {
-  background: var(--main-bg-color);
-  border: 0.16em solid rgba(255, 255, 255, 0);
-  border-radius: .5rem;
-  box-sizing: border-box;
-  color: #FFFFFF;
-  display: inline-block;
+#header {
+  background: var(--board-bg-color);
+  border-radius: 15px;
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+  margin: 5px auto;
+  padding: 5px;
+  width: calc(100vw - 25px);
+}
+
+#header .score {
+  color: white;
   font-weight: 500;
-  font-size: 1.2rem;
-  margin: 5px;
-  padding: .3rem 1rem;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
-  transition: all 0.2s;
+  font-size: 1.6rem;
 }
 
-@media all and (max-width: 30em) {
-  .button {
-    display: block;
+@media screen and (min-width: 980px) {
+  #header {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    width: 150px;
+    margin: 0;
   }
-}
 
-@media screen and (min-width: 800px) {
-  .button {
-    font-size: 1rem;
-    min-width: 120px;
-    font-weight: 700;
+  nav#main-menu.main-menu {
+    flex-grow: 2;
   }
-}
-
-.button:hover {
-  border-color: white;
 }
 
 .disabled {
