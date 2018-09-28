@@ -2,7 +2,12 @@ import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
+
 import { NavComponent } from './nav/nav.component';
 import { CardsComponent } from './cards/cards.component';
 import { GameComponent } from './game/game.component';
@@ -29,12 +34,15 @@ import { HoldableDirective } from './shared/holdable.directive';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     FontAwesomeModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
-    StorageServiceModule
+    StorageServiceModule,
+    BrowserAnimationsModule,
+    MatButtonModule, MatCheckboxModule, MatInputModule
   ],
   declarations: [AppComponent, NavComponent, CardsComponent,
     GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective,

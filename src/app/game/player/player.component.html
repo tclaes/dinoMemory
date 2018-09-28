@@ -1,11 +1,13 @@
 <div class="modal" *ngIf="!playerIsSet">
   <div class="player">
     <h1>Speler</h1>
-    <div>
-      <label for="player">Vul uw naam in:</label>
-      <input type="text" #player required>
-    </div>
+  
+    <form [formGroup] = 'myForm'>
+      <mat-form-field>
+        <input matInput type="text" #player required placeholder="Guest" formControlName="name" />
+      </mat-form-field>
+    </form>
 
-    <button (click)="setPlayer(player.value)" class="button"> Ga verder </button>
+    <button (click)="setPlayer()" class="button"> Play! </button>
   </div>
 </div>
