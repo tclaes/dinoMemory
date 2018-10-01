@@ -30,7 +30,7 @@ import { Observable } from 'rxjs';
           </tbody>
         </table>
       </div>
-      <button id="won" class="button" (click)="game.newGame($event.target)">New game?</button>
+      <button id="won" class="button" (click)="game.newGame($event.target)" mat-stroked-button>New game?</button>
     </div>
 
 
