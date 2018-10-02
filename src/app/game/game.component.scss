@@ -3,18 +3,19 @@
   border-radius: 15px;
   height: calc(100vh - 120px);
   margin: 0 15px;
-  padding: 25px;
   width: calc(100vw - 25px);
+  align-items: center;
 }
 
 @media screen and (min-width: 980px) {
   #memory-board {
     border-radius: 20px;
-    height: 90vh;
-    margin: 50px 20px;
+    height: 85vh;
+    margin: 10px 20px;
     width: 800px;
     display: flex;
     justify-content: center;
+    
   }
 }
 
@@ -39,20 +40,20 @@
 
 .memory-card {
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  flex: 0 0 150px;
   height: calc(15% - 5px);
-  margin: 3px auto;
+  margin: 3px;
   position: relative;
   transform: scale(1);
   transform-style: preserve-3d;
   transition: transform 0.5s;
-  width: calc(30% - 5px);
 }
 
 @media screen and (min-width: 800px) {
   .memory-card {
     height: calc(25% - 5px);
     margin: 2px;
-    width: calc(16% - 5px);
+    max-width: 130px;
   }
 }
 

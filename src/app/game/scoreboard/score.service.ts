@@ -24,7 +24,6 @@ export class ScoreService {
   loadScores(deck) {
     this.scores = this.afs.collection('scores', ref =>
       ref.where('deck', '==', deck.id).orderBy('clicks').orderBy('time').startAt(0).endAt(100).limit(10));
-    console.log(this.scores);
     this.collection$ = this.scores.valueChanges();
     return this.collection$;
   }

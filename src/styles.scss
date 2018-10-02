@@ -27,7 +27,6 @@ h1 {
   flex-direction: column;
   align-items: center;
   background: var(--main-bg-color);
-  height: 100%;
 }
 
 @media screen and (min-width: 980px) {
@@ -36,6 +35,7 @@ h1 {
     display: flex;
     justify-content: center;
     flex-direction: row;
+    height: calc(100vh - 64px);
   }
 }
 
@@ -58,12 +58,13 @@ h1 {
 
 @media screen and (min-width: 980px) {
   #header {
+    align-self: flex-start;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    height: 90vh;
+    margin: 25px 0 0 0;
+    padding: 10px;
     width: 150px;
-    margin: 0;
   }
 
   nav#main-menu.main-menu {
@@ -98,16 +99,20 @@ h1 {
     flex-direction: column;
     min-width: 300px;
     min-height: 300px;
-    padding: 10px;
+    padding: 20px 0;
 
     @media screen and (min-width: 600px) {
       min-width: 600px;
   }
   }
 
-
+  tr.mat-row {
+    height: 30px;
+  }
 
 }
+
+
 
 .modal .score {
   display: flex;

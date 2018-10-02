@@ -6,10 +6,11 @@ import { GameService } from '../../game/game.service';
   selector: 'app-timer',
   template: `
     <div id="timer">
+    <p>Time:</p>
       {{timer}}
     </div>
   `,
-  styleUrls: ['./timer.component.css']
+  styleUrls: ['./timer.component.scss']
 })
 export class TimerComponent implements OnInit {
 

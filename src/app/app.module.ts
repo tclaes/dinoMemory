@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
   MatCheckboxModule, MatIconModule, MatMenuModule, MatToolbarModule, 
-  MatSidenavModule, MatListModule } from '@angular/material';
+  MatSidenavModule, MatListModule, MatTableModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 
 import { CardsComponent } from './cards/cards.component';
@@ -52,7 +52,9 @@ import { LayoutModule } from '@angular/cdk/layout';
     StorageServiceModule,
     BrowserAnimationsModule,
     MatButtonModule, MatCheckboxModule, MatInputModule,
-    MatIconModule, MatMenuModule, LayoutModule, MatToolbarModule, MatSidenavModule, MatListModule
+    MatIconModule, MatMenuModule, LayoutModule,
+    MatToolbarModule, MatSidenavModule, MatListModule,
+    MatTableModule
   ],
   declarations: [AppComponent, NavComponent, CardsComponent,
     GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective,
