@@ -11,14 +11,12 @@
     thead {
         background: var(--main-bg-color);
         border-radius: 5px;
-    }
-
-    td, th {
-        padding: 2px;
+        font-size: 1.5rem;
     }
 }
 
 .scoreboard {
     font-size: 1.2rem;
     width: 80%;
+    margin: 15px;
 }

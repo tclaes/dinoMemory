@@ -36,7 +36,7 @@ export class GameService {
     this.correctMatch = 0;
 
     if (e.target !== undefined && e.target !== 'won') {
-      this.standardDeck = {id: e.target.id };
+      this.standardDeck = {id: e.currentTarget.id };
     }
 
     this.deck$ = this.deckSrv.setDeck(this.standardDeck.id);

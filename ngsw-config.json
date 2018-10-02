@@ -4,13 +4,19 @@
     {
       "name": "app",
       "installMode": "prefetch",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
           "/index.html",
           "/*.css",
-          "/*.js",
-          "/*.json"
+          "/*.js", 
+          "/assets/img/dinos"
+        ], 
+        "urls": [
+          "https://fonts.googleapis.com/css?family=Roboto:300,400,500",
+          "https://fonts.googleapis.com/icon?family=Material+Icons",
+          "https://fonts.gstatic.com/**"
         ]
       }
     }, {
@@ -21,6 +27,21 @@
         "files": [
           "/assets/**"
         ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "decks",
+      "installMode": "prefetch",
+      "urls": [
+        "/*.json"
+      ],
+      "cacheConfig": {
+        "maxSize": 5,
+        "maxAge": "1d", 
+        "timeout": "10s", 
+        "strategy": "performance"
       }
     }
   ]

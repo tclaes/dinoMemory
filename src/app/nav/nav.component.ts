@@ -23,5 +23,4 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.loadControls();
   }
-
 }
