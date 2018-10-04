@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
       Clicks: {{nrOfClicks}}
     </div>
   `,
-  styleUrls: ['./clicks.component.css']
+  styleUrls: ['./clicks.component.scss']
 })
 export class ClicksComponent implements OnInit {
 

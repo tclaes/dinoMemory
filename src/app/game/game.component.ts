@@ -17,7 +17,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   @ViewChildren(CardsComponent, {read: ElementRef}) cards: QueryList<CardsComponent>;
 
   standardDeck: Deck = {
-    id: 'test'
+    id: 'dinos'
   };
 
   newGame(e) {

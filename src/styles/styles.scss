@@ -29,12 +29,6 @@ body {
   padding: 5px 20px;
 }
 
-#header .score {
-  color: white;
-  font-weight: 500;
-  font-size: 1.6rem;
-}
-
 @media screen and (min-width: 980px) and (orientation: portrait) {
   #header {
     align-self: flex-start;
@@ -44,10 +38,6 @@ body {
     margin: 25px 0 0 0;
     padding: 10px;
     width: 150px;
-  }
-
-  nav#main-menu.main-menu {
-    flex-grow: 2;
   }
 }
 
