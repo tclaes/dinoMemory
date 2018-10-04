@@ -5,7 +5,7 @@ import { ScoreService, Score } from './score.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-score',
+  selector: 'app-scoreboard',
   template: `
     <div class="score">
       <h3>Game Won !!!</h3>
@@ -35,9 +35,9 @@ import { Observable } from 'rxjs';
 
 
   `,
-  styleUrls: ['./score.component.scss']
+  styleUrls: ['./scoreboard.component.scss']
 })
-export class ScoreComponent implements OnInit {
+export class ScoreboardComponent implements OnInit {
   @Input()
   nrOfClicks;
   @Input()

@@ -8,17 +8,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
   MatCheckboxModule, MatIconModule, MatMenuModule, MatToolbarModule, 
-  MatSidenavModule, MatListModule, MatTableModule } from '@angular/material';
+  MatSidenavModule, MatListModule, MatTableModule, MatCardModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 
 import { CardsComponent } from './cards/cards.component';
-import { ClicksComponent } from './nav/clicks/clicks.component';
+import { ClicksComponent } from './game/clicks/clicks.component';
 import { GameComponent } from './game/game.component';
-import { NavComponent } from './nav/nav.component';
+import { ScoreComponent } from './game/score/score.component';
 import { NavigationComponent } from './nav/navigation/navigation.component';
 import { PlayerComponent } from './game/player/player.component';
-import { ScoreComponent } from './game/scoreboard/score.component';
-import { TimerComponent } from './nav/timer/timer.component';
+import { ScoreboardComponent } from './game/scoreboard/scoreboard.component';
+import { TimerComponent } from './game/timer/timer.component';
 
 import { StandardDeckDirective } from './shared/standard-deck.directive';
 import { GameWonDirective } from './shared/game-won.directive';
@@ -54,9 +54,9 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatButtonModule, MatCheckboxModule, MatInputModule,
     MatIconModule, MatMenuModule, LayoutModule,
     MatToolbarModule, MatSidenavModule, MatListModule,
-    MatTableModule
-  ],
-  declarations: [AppComponent, NavComponent, CardsComponent,
+    MatTableModule, MatCardModule
+    ],
+  declarations: [AppComponent, ScoreboardComponent, CardsComponent,
     GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective,
     DisableClickDirective, TimerComponent, ScoreComponent, PlayerComponent, HoldableDirective, NavigationComponent],
   providers: [ StandardDeckDirective ],

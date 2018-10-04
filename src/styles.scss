@@ -17,16 +17,12 @@ body {
   overflow: hidden;
 }
 
-h1 {
-  color: white;
-  margin-bottom: 15px;
-}
-
 #main {
   display: flex;
   flex-direction: column;
   align-items: center;
   background: var(--main-bg-color);
+  height: calc(100vh - 64px);
 }
 
 @media screen and (min-width: 980px) {
@@ -41,7 +37,8 @@ h1 {
 
 #header {
   background: var(--board-bg-color);
-  border-radius: 15px;
+  box-shadow: #06d6a0 1px 1px;
+  border-radius: 5px;
   display: flex;
     align-items: center;
     justify-content: space-between;
