@@ -17,23 +17,6 @@ body {
   overflow: hidden;
 }
 
-#main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--main-bg-color);
-  height: calc(100vh - 64px);
-}
-
-@media screen and (min-width: 980px) {
-  #main {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    height: calc(100vh - 64px);
-  }
-}
 
 #header {
   background: var(--board-bg-color);
@@ -42,9 +25,8 @@ body {
   display: flex;
     align-items: center;
     justify-content: space-between;
-  margin: 5px auto;
-  padding: 5px;
-  width: calc(100vw - 25px);
+  margin: 5px 15px;
+  padding: 5px 20px;
 }
 
 #header .score {
@@ -53,7 +35,7 @@ body {
   font-size: 1.6rem;
 }
 
-@media screen and (min-width: 980px) {
+@media screen and (min-width: 980px) and (orientation: portrait) {
   #header {
     align-self: flex-start;
     border-radius: 15px;
