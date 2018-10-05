@@ -14,9 +14,7 @@
 body {
   background: var(--main-bg-color);
   font-family: 'Roboto',sans-serif;
-  overflow: hidden;
 }
-
 
 #header {
   background: var(--board-bg-color);
@@ -27,18 +25,6 @@ body {
     justify-content: space-between;
   margin: 5px 15px;
   padding: 5px 20px;
-}
-
-@media screen and (min-width: 980px) and (orientation: portrait) {
-  #header {
-    align-self: flex-start;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    margin: 25px 0 0 0;
-    padding: 10px;
-    width: 150px;
-  }
 }
 
 .disabled {
@@ -81,7 +67,9 @@ body {
 
 }
 
-
+.mat-drawer {
+  background-color: var(--main-bg-color);
+}
 
 .modal .score {
   display: flex;

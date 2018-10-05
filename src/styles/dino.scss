@@ -13,6 +13,7 @@ $background: map_merge($background, (background: $custom-background-color));
 $custom-theme: map_merge($custom-theme, (background: $background));
 
 @include angular-material-theme($custom-theme);
+// @include mat-drawer-theme($custom-theme);
 
 $table-primary: mat-palette($mat-blue, 600);
 $table-accent: mat-palette($mat-grey, 200);
@@ -20,4 +21,6 @@ $table-accent: mat-palette($mat-grey, 200);
 $table-theme: mat-light-theme($table-primary, $table-accent);
 
 @include mat-table-theme($table-theme);
+
+
 

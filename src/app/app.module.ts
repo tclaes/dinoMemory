@@ -11,7 +11,7 @@ import {
   MatSidenavModule, MatListModule, MatTableModule, MatCardModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 
-import { CardsComponent } from './cards/cards.component';
+import { CardsComponent } from './game/cards/cards.component';
 import { ClicksComponent } from './game/clicks/clicks.component';
 import { GameComponent } from './game/game.component';
 import { ScoreComponent } from './game/score/score.component';
@@ -36,6 +36,7 @@ import { DisableClickDirective } from './shared/disable-click.directive';
 import { StorageServiceModule } from 'angular-webstorage-service';
 import { HoldableDirective } from './shared/holdable.directive';
 import { LayoutModule } from '@angular/cdk/layout';
+import { GameModule } from './game/game.module';
 
 
 
@@ -54,11 +55,12 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatButtonModule, MatCheckboxModule, MatInputModule,
     MatIconModule, MatMenuModule, LayoutModule,
     MatToolbarModule, MatSidenavModule, MatListModule,
-    MatTableModule, MatCardModule
+    MatTableModule, MatCardModule,
+    GameModule
     ],
-  declarations: [AppComponent, ScoreboardComponent, CardsComponent,
-    GameComponent, ClicksComponent, StandardDeckDirective, GameWonDirective,
-    DisableClickDirective, TimerComponent, ScoreComponent, PlayerComponent, HoldableDirective, NavigationComponent],
+  declarations: [AppComponent,
+    GameComponent, StandardDeckDirective, GameWonDirective,
+    DisableClickDirective, HoldableDirective, NavigationComponent, PlayerComponent, ScoreboardComponent],
   providers: [ StandardDeckDirective ],
   bootstrap: [AppComponent]
 })
