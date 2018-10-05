@@ -9,13 +9,10 @@ import { GameService } from '../game.service';
   `,
   styleUrls: ['./cards.component.scss']
 })
-export class CardsComponent implements OnInit {
+export class CardsComponent {
 
   @Input() card;
 
   constructor( public gameSrv: GameService) { }
-
-  ngOnInit() {
-  }
-
+  
 }

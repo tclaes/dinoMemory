@@ -7,7 +7,7 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar color="primary">Dino Memory</mat-toolbar>
+    <mat-toolbar color="primary">Memory</mat-toolbar>
     <mat-nav-list  *ngFor='let button of decks$ | async'>
       <a mat-list-item id="{{button.name}}" 
       class="controls button nav-item" 
@@ -27,14 +27,16 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span style="color: #f44336; font-weight: 900; font-size: 1.8rem;">Dino Memory</span>
-      <mat-nav-list *ngFor='let button of decks$ | async' [ngClass]="{hidden: (isHandset$ | async)}">
-          <a mat-list-item  id="{{button.name}}" 
+      <span style="color: #f44336; font-weight: 900; font-size: 1.8rem;">Memory</span>
+      <mat-nav-list [ngClass]="{hidden: (isHandset$ | async)}">
+          <a *ngFor='let button of decks$ | async'
+          mat-list-item  id="{{button.name}}" 
           class="" 
           (click) = "game.newGame($event)" 
           appStandardDeck
           holdable
           [standardDeck] = "game.standardDeck">{{button.name}}</a>
+          <!-- <a mat-list-item >Scoreboard - Coming soon</a> -->
         </mat-nav-list>
     </mat-toolbar>
     <!-- Add Content Here -->

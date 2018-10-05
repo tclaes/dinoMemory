@@ -11,13 +11,12 @@
   top: 0;
 }
 
+.mat-nav-list .mat-list-item {
+  display: inline-block;
+}
+
 .hidden {
   display: none;
 }
 
 
-/* @media (min-width: 750px) {
-  .sidenav {
-    display: none;
-  }
-} */
