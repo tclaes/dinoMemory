@@ -6,23 +6,28 @@ import { PlayerComponent } from './player/player.component';
 import { ScoreComponent } from './score/score.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { TimerComponent } from './timer/timer.component';
-import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule
   ],
   declarations: [
     CardsComponent,
     ClicksComponent,
     ScoreComponent,
-    TimerComponent
+    ScoreboardComponent,
+    TimerComponent,
+    PlayerComponent
   ],
   exports: [
     CardsComponent,
     ClicksComponent,
     ScoreComponent,
-    TimerComponent
-  ]
+    ScoreboardComponent,
+    TimerComponent,
+    PlayerComponent,
+   ]
 })
 export class GameModule { }
