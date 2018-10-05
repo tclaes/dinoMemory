@@ -1,5 +1,5 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
+<mat-sidenav-container class="sidenav-container" >
+  <mat-sidenav style="background-color: #1b9aaa"
     #drawer
     class="sidenav"
     fixedInViewport="false"
@@ -7,8 +7,8 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar color="primary">Menu</mat-toolbar>
-    <mat-nav-list *ngFor='let button of decks$ | async'>
+    <mat-toolbar color="primary">Dino Memory</mat-toolbar>
+    <mat-nav-list  *ngFor='let button of decks$ | async'>
       <a mat-list-item id="{{button.name}}" 
       class="controls button nav-item" 
       (click) = "game.newGame($event)" 
@@ -27,7 +27,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>DinoMemory</span>
+      <span style="color: #f44336; font-weight: 900; font-size: 1.8rem;">Dino Memory</span>
       <mat-nav-list *ngFor='let button of decks$ | async' [ngClass]="{hidden: (isHandset$ | async)}">
           <a mat-list-item  id="{{button.name}}" 
           class="" 

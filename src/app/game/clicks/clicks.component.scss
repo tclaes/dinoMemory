@@ -1,0 +1,7 @@
+@import 'mixins';
+
+#clicks {
+    @media (min-width: 980px) {
+        @include whiteBold;
+      }
+}

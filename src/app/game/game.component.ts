@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer, ViewChildren, Input, AfterViewInit, QueryList, ElementRef } from '@angular/core';
 import { GameService } from './game.service';
-import { CardsComponent } from '../cards/cards.component';
+import { CardsComponent } from './cards/cards.component';
 import { Deck } from '../shared/standard-deck.directive';
 @Component({
   selector: 'app-game',
@@ -17,7 +17,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   @ViewChildren(CardsComponent, {read: ElementRef}) cards: QueryList<CardsComponent>;
 
   standardDeck: Deck = {
-    id: 'test'
+    id: 'dinos'
   };
 
   newGame(e) {

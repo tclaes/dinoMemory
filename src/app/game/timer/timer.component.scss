@@ -1,3 +1,5 @@
+@import 'mixins';
+
 #timer {
     font-size: 1rem;
     text-align: center;
@@ -6,8 +8,7 @@
       display: inline;
 
       @media (min-width: 980px) {
-        display: block;
-        font-size: 1.4rem;
+        @include whiteBold;
       }
     }
   }

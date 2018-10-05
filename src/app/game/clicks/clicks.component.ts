@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GameService } from '../../game/game.service';
 
 @Component({
   selector: 'app-clicks',
@@ -8,7 +7,7 @@ import { GameService } from '../../game/game.service';
       Clicks: {{nrOfClicks}}
     </div>
   `,
-  styleUrls: ['./clicks.component.css']
+  styleUrls: ['./clicks.component.scss']
 })
 export class ClicksComponent implements OnInit {
 

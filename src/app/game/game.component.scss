@@ -1,21 +1,12 @@
 #memory-board {
   background: var(--board-bg-color);
-  border-radius: 15px;
+  border-radius: 5px;
   height: calc(100vh - 120px);
   margin: 0 15px;
-  width: calc(100vw - 25px);
   align-items: center;
-}
 
-@media screen and (min-width: 980px) {
-  #memory-board {
-    border-radius: 20px;
-    height: 85vh;
-    margin: 10px 20px;
-    width: 800px;
-    display: flex;
-    justify-content: center;
-    
+  @media screen and (min-width: 980px) {
+    height: calc(100vh - 140px);
   }
 }
 
@@ -23,37 +14,49 @@
   display: flex;
     justify-content: center;
   flex-wrap: wrap;
-  margin: auto;
+  // margin: auto;
   perspective: 1000px;
-}
 
-@media screen and (min-width: 980px) {
-  .memory-game {
-    display: flex;
-    flex-wrap: wrap;
-    height: 640px;
-    margin: auto;
-    perspective: 1000px;
-    width: 640px;
-  }
+  @media screen and (min-width: 980px) {
+      // margin: auto;
+      perspective: 1000px;
+    }
 }
 
 .memory-card {
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-  flex: 0 0 150px;
+  flex: 0 0 80px;
   height: calc(15% - 5px);
   margin: 3px;
   position: relative;
   transform: scale(1);
   transform-style: preserve-3d;
   transition: transform 0.5s;
-}
 
-@media screen and (min-width: 800px) {
-  .memory-card {
+  @media screen and (min-width: 600px){
+    flex: 0 0 90px;
+    max-height: 90px;
+  }
+
+  @media screen and (min-width: 750px) and (orientation: portrait) {
+      flex: 0 0 150px;
+      height: calc(25% - 5px);
+      margin: 2px;
+      max-width: 130px;
+      max-height: 150px;
+  }
+
+  @media screen and (min-width: 1025px) and (min-height: 450px) and (orientation: landscape) {
+    flex: 0 0 200px;
     height: calc(25% - 5px);
     margin: 2px;
-    max-width: 130px;
+    // max-width: 130px;
+    max-height: 150px;
+}
+
+  @media screen and (orientation: landscape){
+    height: calc(30% - 5px);
+    max-height: 150px;
   }
 }
 
