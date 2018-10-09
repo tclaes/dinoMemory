@@ -2,13 +2,19 @@ import { Injectable, Renderer, OnInit } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
+import { TimerService } from './timer/timer.service';
+import { subscribeOn } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
 
-  constructor(private deckSrv: DeckService, private scoreSrv: ScoreService, private local: LocalstorageService) { }
+  constructor(private deckSrv: DeckService,
+    private scoreSrv: ScoreService, private local: LocalstorageService,
+    private timerSrv: TimerService) { }
 
   renderer: Renderer;
+  private _timer: Subscription;
   deck$;
   standardDeck;
   cards$;
@@ -23,7 +29,6 @@ export class GameService {
   nrOfClicks = 0;
 
   gameWon = false;
-  modalWon;
   gameStarted = false;
   time;
   timer = '0h - 0m - 0s';
@@ -47,7 +52,7 @@ export class GameService {
       this.frontFace = card[0].frontFace;
     });
 
-    clearInterval(this.time);
+    this.timer = '0h - 0m - 0s';
 
   }
 
@@ -59,7 +64,7 @@ export class GameService {
     }
     if (!this.gameStarted) {
       this.gameStarted = !this.gameStarted;
-      this.startTimer();
+      this._timer = this.timerSrv.getTimer().subscribe(time => this.timer = time);
     }
     if (this.lockBoard) {
       return;
@@ -92,16 +97,15 @@ export class GameService {
   disableCards() {
     ++this.correctMatch;
     this.checkWin();
-
     this.resetBoard();
   }
 
   checkWin() {
     this.deck$.then(deck => {
       if (this.correctMatch === deck[0].cards.length) {
-        clearInterval(this.time);
         this.gameWon = !this.gameWon;
         this.scoreSrv.updateScores(this.local.getUser(), this.nrOfClicks, this.timer, this.standardDeck);
+        this._timer.unsubscribe();
       }
     });
   }
@@ -126,29 +130,5 @@ export class GameService {
       const randomPos = Math.floor(Math.random() * 12);
       this.renderer.setElementClass(card.nativeElement, 'flip', false);
       this.renderer.setElementStyle(card.nativeElement, 'order', `${randomPos}`);
-  }
-
-  startTimer() {
-    let hours = 0;
-    let minutes = 0;
-    let seconds = 0;
-
-    this.time = setInterval(() => {
-      if (seconds < 59) {
-        seconds++;
-      } else {
-        seconds = 0;
-        if (minutes < 59) {
-          minutes++;
-        } else {
-          if (hours < 24) {
-            hours++;
-          }
-        }
-      }
-      this.timer = `
-      ${hours}h - ${minutes}m - ${seconds}s
-    `;
-    }, 1000);
   }
 }
