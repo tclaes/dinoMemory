@@ -9,13 +9,10 @@ import { Component, OnInit, Input } from '@angular/core';
   `,
   styleUrls: ['./clicks.component.scss']
 })
-export class ClicksComponent implements OnInit {
+export class ClicksComponent {
 
   @Input() nrOfClicks: number;
 
   constructor() {
-  }
-
-  ngOnInit() {
   }
 }

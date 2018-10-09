@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LocalstorageService, Player } from './../../shared/localstorage.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
