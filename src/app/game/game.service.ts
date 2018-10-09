@@ -4,14 +4,15 @@ import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
 import { TimerService } from './timer/timer.service';
 import { subscribeOn } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { SharedService } from '../shared/shared.service';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
 
   constructor(private deckSrv: DeckService,
     private scoreSrv: ScoreService, private local: LocalstorageService,
-    private timerSrv: TimerService) { }
+    private timerSrv: TimerService, private sharedSrv: SharedService) { }
 
   renderer: Renderer;
   private _timer: Subscription;
@@ -22,22 +23,20 @@ export class GameService {
   frontFace;
 
   hasFlippedCard = false;
-  lockBoard;
+  private lockBoard;
   firstCard;
   secondCard;
   correctMatch = 0;
-  nrOfClicks = 0;
 
   gameWon = false;
   gameStarted = false;
-  time;
   timer = '0h - 0m - 0s';
 
   newGame(e) {
 
     this.gameStarted = false;
     this.gameWon = false;
-    this.nrOfClicks = 0;
+    this.sharedSrv.cardClicked(0);
     this.correctMatch = 0;
 
     if (e.target !== undefined && e.target !== 'won') {
@@ -73,8 +72,6 @@ export class GameService {
       return;
     }
 
-    ++this.nrOfClicks;
-
     this.renderer.setElementClass(clickedCard, 'flip', true);
 
     if (!this.hasFlippedCard) {
@@ -104,7 +101,9 @@ export class GameService {
     this.deck$.then(deck => {
       if (this.correctMatch === deck[0].cards.length) {
         this.gameWon = !this.gameWon;
-        this.scoreSrv.updateScores(this.local.getUser(), this.nrOfClicks, this.timer, this.standardDeck);
+        let clicks;
+        this.sharedSrv.currentTimesClicked.subscribe(click => clicks = click);
+        this.scoreSrv.updateScores(this.local.getUser(), clicks , this.timer, this.standardDeck);
         this._timer.unsubscribe();
       }
     });
@@ -115,7 +114,6 @@ export class GameService {
     setTimeout(() => {
       this.renderer.setElementClass(this.firstCard, 'flip', false);
       this.renderer.setElementClass(this.secondCard, 'flip', false);
-
       this.lockBoard = false;
       this.resetBoard();
     }, 1000);

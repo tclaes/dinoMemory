@@ -9,10 +9,10 @@ import { Observable } from 'rxjs';
   template: `
     <div class="score">
       <h3>Game Won !!!</h3>
-      <p>{{gameSrv.nrOfClicks}} clicks</p>
-      <p>{{gameSrv.timer}}</p>
+      <p>{{ nrOfClicks }} clicks</p>
+      <p>{{ time }}</p>
 
-      <div  class="scoreboard">
+      <div class="scoreboard">
         <table mat-table [dataSource]="collection$" class="mat-elevation-z8">
           <ng-container matColumnDef="user">
             <th mat-header-cell *matHeaderCellDef> User </th>
@@ -38,10 +38,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./scoreboard.component.scss']
 })
 export class ScoreboardComponent implements OnInit {
-  @Input()
-  nrOfClicks;
-  @Input()
-  time;
+  @Input() nrOfClicks;
+  @Input() time;
 
   collection$: Observable<Score[]>;
   displayedColumns: string[] = ['user', 'clicks', 'time'];

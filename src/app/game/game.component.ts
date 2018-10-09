@@ -1,7 +1,8 @@
-import { Component, OnInit, Renderer, ViewChildren, Input, AfterViewInit, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChildren, Input, AfterViewInit, QueryList, ElementRef, ViewChild } from '@angular/core';
 import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { Deck } from '../shared/standard-deck.directive';
+import { SharedService } from '../shared/shared.service';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -10,7 +11,10 @@ import { Deck } from '../shared/standard-deck.directive';
 
 export class GameComponent implements OnInit, AfterViewInit {
 
-  constructor(public gameSrv: GameService, public renderer: Renderer) {
+  @Input() nrOfClicks;
+  private clicked;
+
+  constructor(public gameSrv: GameService, public renderer: Renderer, private sharedSrv: SharedService) {
     gameSrv.renderer = renderer;
   }
 
@@ -27,11 +31,17 @@ export class GameComponent implements OnInit, AfterViewInit {
     });
   }
 
+  flipCard(e) {
+    this.gameSrv.flipCard(e);
+    this.sharedSrv.cardClicked(++this.clicked);
+  }
+
   ngOnInit() {
     this.gameSrv.standardDeck = this.standardDeck;
   }
 
   ngAfterViewInit(): void {
     this.newGame(this.standardDeck);
+    this.sharedSrv.currentTimesClicked.subscribe(timesClicked => this.clicked = timesClicked);
   }
 }
