@@ -40,12 +40,12 @@ export class GameComponent implements OnInit, AfterViewInit {
   }
 
   flipCard(e) {
-    this.gameSrv.flipCard(e);
     this.sharedSrv.cardClicked(++this.clicked);
+    this.gameSrv.flipCard(e);
   }
 
   ngOnInit() {
-    this.gameSrv.standardDeck = this.standardDeck;
+    this.gameSrv.deck = this.standardDeck;
   }
 
   ngAfterViewInit(): void {

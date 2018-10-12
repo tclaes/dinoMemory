@@ -10,7 +10,7 @@ export class SharedService {
 
   constructor() { }
 
-  private timesClicked = new BehaviorSubject<number>(0);
+  private timesClicked = new BehaviorSubject<number>(1);
   currentTimesClicked = this.timesClicked.asObservable();
 
   private deck = new BehaviorSubject<Deck>({

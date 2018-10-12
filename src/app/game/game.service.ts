@@ -3,7 +3,7 @@ import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
 import { TimerService } from './timer/timer.service';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { Deck } from '../shared/deck.service';
 
@@ -16,14 +16,9 @@ export class GameService {
 
   renderer: Renderer;
   private _timer: Subscription;
-  deck$;
   deck: Deck = {
     name: ''
   };
-  standardDeck;
-  cards$;
-  imgUrl;
-  frontFace;
 
   hasFlippedCard = false;
   private lockBoard;
@@ -57,14 +52,7 @@ export class GameService {
       this.sharedSrv.setDeck(this.deck);
     });
 
-    this.deck$ = this.deckSrv.setDeck(this.standardDeck.id);
-    // this.deck$.then(card => {
-    //   this.cards$ = card[0].cards;
-    //   this.imgUrl = card[0].imgURL;
-    //   this.frontFace = card[0].frontFace;
-    // });
-
-    this.timer = '0h - 0m - 0s';
+    this.timerSrv.resetTimer();
 
   }
 
@@ -79,7 +67,6 @@ export class GameService {
       this.gameStarted = !this.gameStarted;
       this._timer = this.timerSrv.getTimer().subscribe();
       this.timerSrv.currentTime.subscribe(time => this.timer = time);
-
     }
     if (this.lockBoard) {
       return;

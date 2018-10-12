@@ -43,6 +43,10 @@ export class TimerService {
      return this.timer;
    }
 
+   resetTimer() {
+     this.timerSubject.next(`0h - 0m - 0s`);
+   }
+
 
 
 }

@@ -32,7 +32,7 @@ import { TimerService } from '../timer/timer.service';
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
       </div>
-      <button id="won" class="button" (click)="newGame($event.target)" mat-stroked-button>New game?</button>
+      <button id="won" class="button" (click)="newGame()" mat-stroked-button>New game?</button>
     </div>
 
 
@@ -58,12 +58,11 @@ export class ScoreboardComponent implements OnInit {
     this.sharedSrv.standardDeck.subscribe(deck => this.standardDeck = deck);
   }
 
-  newGame(e) {
-    this.gameSrv.newGame(e);
+  newGame() {
+    this.gameSrv.newGame(this.standardDeck.name);
   }
 
   ngOnInit() {
-    console.log(this.standardDeck.name);
     this.collection$ = this.scoreSrv.loadScores(this.standardDeck.name);
   }
 }
