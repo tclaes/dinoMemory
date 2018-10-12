@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SharedService } from './../../shared/shared.service';
 
 @Component({
   selector: 'app-clicks',
@@ -11,8 +12,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ClicksComponent {
 
-  @Input() nrOfClicks: number;
+  nrOfClicks;
 
-  constructor() {
+  constructor(private sharedSrv: SharedService) {
+    sharedSrv.currentTimesClicked.subscribe(clicks => this.nrOfClicks = clicks);
   }
 }

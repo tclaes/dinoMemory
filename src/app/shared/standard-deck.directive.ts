@@ -1,9 +1,7 @@
 import { Directive, Input } from '@angular/core';
 import { GameService } from '../game/game.service';
+import { Deck } from './deck.service';
 
-export interface Deck {
-  id: string;
-}
 
 @Directive({
   exportAs: 'standardDeck',

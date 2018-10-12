@@ -1,7 +1,8 @@
-import { Component, OnInit, Renderer, ViewChildren, Input, AfterViewInit, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChildren, AfterViewInit, QueryList, ElementRef, ViewChild } from '@angular/core';
 import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
-import { Deck } from '../shared/standard-deck.directive';
+import { SharedService } from '../shared/shared.service';
+import { Deck, DeckService } from '../shared/deck.service';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -10,15 +11,26 @@ import { Deck } from '../shared/standard-deck.directive';
 
 export class GameComponent implements OnInit, AfterViewInit {
 
-  constructor(public gameSrv: GameService, public renderer: Renderer) {
-    gameSrv.renderer = renderer;
-  }
+  clicked;
+  standardDeck: Deck = {
+    name: 'dinos'
+  };
 
   @ViewChildren(CardsComponent, {read: ElementRef}) cards: QueryList<CardsComponent>;
 
-  standardDeck: Deck = {
-    id: 'dinos'
-  };
+  constructor(public gameSrv: GameService, public renderer: Renderer,
+    private sharedSrv: SharedService,
+    private deckSrv: DeckService) {
+    gameSrv.renderer = renderer;
+    sharedSrv.standardDeck.subscribe(deck => this.standardDeck = deck);
+    deckSrv.setDeckObservable(this.standardDeck.name)
+    .subscribe(card => {
+      this.standardDeck.cards = card['cards'];
+      this.standardDeck.imgUrl = card['imgURL'];
+      this.standardDeck.frontFace = card['frontFace'];
+      sharedSrv.setDeck(this.standardDeck);
+    });
+  }
 
   newGame(e) {
     this.gameSrv.newGame(e);
@@ -27,11 +39,17 @@ export class GameComponent implements OnInit, AfterViewInit {
     });
   }
 
+  flipCard(e) {
+    this.gameSrv.flipCard(e);
+    this.sharedSrv.cardClicked(++this.clicked);
+  }
+
   ngOnInit() {
     this.gameSrv.standardDeck = this.standardDeck;
   }
 
   ngAfterViewInit(): void {
-    this.newGame(this.standardDeck);
+    this.newGame(this.standardDeck.name);
+    this.sharedSrv.currentTimesClicked.subscribe(timesClicked => this.clicked = timesClicked);
   }
 }

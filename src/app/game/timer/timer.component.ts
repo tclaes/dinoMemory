@@ -1,25 +1,23 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { timeout } from 'q';
-import { GameService } from '../../game/game.service';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { TimerService } from './timer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-timer',
   template: `
     <div id="timer">
     <p>Time:</p>
-      {{timer}}
+      {{ stopwatch }}
     </div>
   `,
   styleUrls: ['./timer.component.scss']
 })
-export class TimerComponent implements OnInit {
+export class TimerComponent {
 
-  @Input() timer;
+  stopwatch;
 
-  constructor(private gameSrv: GameService) {
+  constructor(private timerSrv: TimerService) {
+    timerSrv.currentTime.subscribe(time => this.stopwatch = time);
    }
-
-  ngOnInit() {
-  }
 
 }

@@ -3,54 +3,66 @@ import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
 import { TimerService } from './timer/timer.service';
-import { subscribeOn } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { SharedService } from '../shared/shared.service';
+import { Deck } from '../shared/deck.service';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
 
   constructor(private deckSrv: DeckService,
     private scoreSrv: ScoreService, private local: LocalstorageService,
-    private timerSrv: TimerService) { }
+    private timerSrv: TimerService, private sharedSrv: SharedService) { }
 
   renderer: Renderer;
   private _timer: Subscription;
   deck$;
+  deck: Deck = {
+    name: ''
+  };
   standardDeck;
   cards$;
   imgUrl;
   frontFace;
 
   hasFlippedCard = false;
-  lockBoard;
+  private lockBoard;
   firstCard;
   secondCard;
   correctMatch = 0;
-  nrOfClicks = 0;
 
   gameWon = false;
   gameStarted = false;
-  time;
   timer = '0h - 0m - 0s';
 
   newGame(e) {
 
     this.gameStarted = false;
     this.gameWon = false;
-    this.nrOfClicks = 0;
+    this.sharedSrv.cardClicked(0);
     this.correctMatch = 0;
 
+    this.deck.name = e;
+
     if (e.target !== undefined && e.target !== 'won') {
-      this.standardDeck = {id: e.currentTarget.id };
+      console.log(e.currentTarget.id);
+      this.deck.name = e.currentTarget.id;
     }
 
-    this.deck$ = this.deckSrv.setDeck(this.standardDeck.id);
-
-    this.deck$.then(card => {
-      this.cards$ = card[0].cards;
-      this.imgUrl = card[0].imgURL;
-      this.frontFace = card[0].frontFace;
+    this.deckSrv.setDeckObservable(this.deck.name)
+    .subscribe(card => {
+      this.deck.cards = card['cards'];
+      this.deck.imgUrl = card['imgURL'];
+      this.deck.frontFace = card['frontFace'];
+      this.sharedSrv.setDeck(this.deck);
     });
+
+    this.deck$ = this.deckSrv.setDeck(this.standardDeck.id);
+    // this.deck$.then(card => {
+    //   this.cards$ = card[0].cards;
+    //   this.imgUrl = card[0].imgURL;
+    //   this.frontFace = card[0].frontFace;
+    // });
 
     this.timer = '0h - 0m - 0s';
 
@@ -63,8 +75,11 @@ export class GameService {
       return;
     }
     if (!this.gameStarted) {
+      this.timerSrv.startTimer();
       this.gameStarted = !this.gameStarted;
-      this._timer = this.timerSrv.getTimer().subscribe(time => this.timer = time);
+      this._timer = this.timerSrv.getTimer().subscribe();
+      this.timerSrv.currentTime.subscribe(time => this.timer = time);
+
     }
     if (this.lockBoard) {
       return;
@@ -72,8 +87,6 @@ export class GameService {
     if (clickedCard === this.firstCard) {
       return;
     }
-
-    ++this.nrOfClicks;
 
     this.renderer.setElementClass(clickedCard, 'flip', true);
 
@@ -101,13 +114,13 @@ export class GameService {
   }
 
   checkWin() {
-    this.deck$.then(deck => {
-      if (this.correctMatch === deck[0].cards.length) {
+      if (this.correctMatch === this.deck.cards.length) {
         this.gameWon = !this.gameWon;
-        this.scoreSrv.updateScores(this.local.getUser(), this.nrOfClicks, this.timer, this.standardDeck);
+        let clicks;
+        this.sharedSrv.currentTimesClicked.subscribe(click => clicks = click);
         this._timer.unsubscribe();
+        this.scoreSrv.updateScores(this.local.getUser(), clicks , this.timer, this.deck.name);
       }
-    });
   }
 
   unflipCards() {
@@ -115,7 +128,6 @@ export class GameService {
     setTimeout(() => {
       this.renderer.setElementClass(this.firstCard, 'flip', false);
       this.renderer.setElementClass(this.secondCard, 'flip', false);
-
       this.lockBoard = false;
       this.resetBoard();
     }, 1000);
