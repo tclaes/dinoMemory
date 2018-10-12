@@ -42,6 +42,7 @@ import { TimerService } from '../timer/timer.service';
 export class ScoreboardComponent implements OnInit {
   nrOfClicks;
   stopwatch;
+  standardDeck;
 
   collection$: Observable<Score[]>;
   displayedColumns: string[] = ['user', 'clicks', 'time'];
@@ -54,14 +55,15 @@ export class ScoreboardComponent implements OnInit {
   ) {
     this.sharedSrv.currentTimesClicked.subscribe(clicks => this.nrOfClicks = clicks);
     this.timerSrv.currentTime.subscribe(time => this.stopwatch = time);
+    this.sharedSrv.standardDeck.subscribe(deck => this.standardDeck = deck);
   }
-
 
   newGame(e) {
     this.gameSrv.newGame(e);
   }
 
   ngOnInit() {
-    this.collection$ = this.scoreSrv.loadScores(this.gameSrv.standardDeck);
+    console.log(this.standardDeck.name);
+    this.collection$ = this.scoreSrv.loadScores(this.standardDeck.name);
   }
 }

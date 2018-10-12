@@ -1,19 +1,29 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { TimerService } from '../game/timer/timer.service';
+import { Deck } from './deck.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
 
+  constructor() { }
+
   private timesClicked = new BehaviorSubject<number>(0);
   currentTimesClicked = this.timesClicked.asObservable();
 
-  constructor(private timerSrv: TimerService) { }
+  private deck = new BehaviorSubject<Deck>({
+    name: 'dinos'
+  });
+  standardDeck = this.deck.asObservable();
 
   cardClicked(clicks) {
-    console.log(`Clicks in gameservice ${clicks}`);
     this.timesClicked.next(clicks);
+  }
+
+  setDeck(deck: Deck) {
+    console.log(`Standarddeck set to ${deck.imgUrl}`);
+    this.deck.next(deck);
   }
 }

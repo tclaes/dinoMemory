@@ -1,17 +1,17 @@
 <app-player></app-player>
 <app-scoreboard *ngIf="gameSrv.gameWon" appGameWon></app-scoreboard>
 <section class="memory-game" id="memory-board">
-  <app-card *ngFor='let card of gameSrv.cards$' 
+  <app-card *ngFor='let card of gameSrv.deck.cards' 
   [card]="card" 
-  [imgUrl]="gameSrv.imgUrl"
-  [frontFace]="gameSrv.frontFace" 
+  [imgUrl]="gameSrv.deck.imgUrl"
+  [frontFace]="gameSrv.deck.frontFace" 
   class="memory-card" (click)="flipCard($event)"
   [attr.identifier] = "card"></app-card>
 
-  <app-card *ngFor='let card of gameSrv.cards$'
+  <app-card *ngFor='let card of gameSrv.deck.cards'
   [card]="card" 
-  [imgUrl]="gameSrv.imgUrl"
-  [frontFace]="gameSrv.frontFace" 
+  [imgUrl]="gameSrv.deck.imgUrl"
+  [frontFace]="gameSrv.deck.frontFace"
   class="memory-card" 
   (click)="flipCard($event)" 
   [attr.identifier] = "card"></app-card>
