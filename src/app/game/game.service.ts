@@ -3,8 +3,7 @@ import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
 import { TimerService } from './timer/timer.service';
-import { subscribeOn } from 'rxjs/operators';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 
 @Injectable({providedIn: 'root'})
@@ -62,8 +61,14 @@ export class GameService {
       return;
     }
     if (!this.gameStarted) {
+      this.timerSrv.startTimer();
       this.gameStarted = !this.gameStarted;
-      this._timer = this.timerSrv.getTimer().subscribe(time => this.timer = time);
+      this._timer = this.timerSrv.getTimer().subscribe();
+
+      this.timerSrv.currentTime.subscribe(time => {
+        this.timer = time;
+      });
+
     }
     if (this.lockBoard) {
       return;
@@ -103,8 +108,8 @@ export class GameService {
         this.gameWon = !this.gameWon;
         let clicks;
         this.sharedSrv.currentTimesClicked.subscribe(click => clicks = click);
-        this.scoreSrv.updateScores(this.local.getUser(), clicks , this.timer, this.standardDeck);
         this._timer.unsubscribe();
+        this.scoreSrv.updateScores(this.local.getUser(), clicks , this.timer, this.standardDeck);
       }
     });
   }

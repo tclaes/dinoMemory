@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, ViewChildren, Input, AfterViewInit, QueryList, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChildren, AfterViewInit, QueryList, ElementRef, ViewChild } from '@angular/core';
 import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { Deck } from '../shared/standard-deck.directive';
@@ -11,8 +11,7 @@ import { SharedService } from '../shared/shared.service';
 
 export class GameComponent implements OnInit, AfterViewInit {
 
-  @Input() nrOfClicks;
-  private clicked;
+  clicked;
 
   constructor(public gameSrv: GameService, public renderer: Renderer, private sharedSrv: SharedService) {
     gameSrv.renderer = renderer;

@@ -1,22 +1,26 @@
 import { Injectable } from '@angular/core';
-import { interval } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { interval, BehaviorSubject } from 'rxjs';
+import { map, takeUntil, take, takeWhile } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
 
-  private timer;
+  private timerSubject = new BehaviorSubject<string>('0h - 0m - 0s');
+  currentTime = this.timerSubject.asObservable();
+  timer;
+  $stop = false;
 
   constructor() {
+   }
 
+   startTimer() {
     let hours = 0;
     let minutes = 0;
     let seconds = 0;
     this.timer = interval(1000).pipe(
-      map(tick => {
-
+      map(() => {
         if (seconds < 59) {
           seconds++;
         } else {
@@ -30,7 +34,7 @@ export class TimerService {
           }
         }
         // console.log(`${hours}h - ${minutes}m - ${seconds}s`);
-      return `${hours}h - ${minutes}m - ${seconds}s`;
+        this.timerSubject.next(`${hours}h - ${minutes}m - ${seconds}s`);
       })
     );
    }

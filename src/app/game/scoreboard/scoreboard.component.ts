@@ -3,6 +3,8 @@ import { GameComponent } from '../game.component';
 import { GameService } from '../game.service';
 import { ScoreService, Score } from './score.service';
 import { Observable } from 'rxjs';
+import { SharedService } from './../../shared/shared.service';
+import { TimerService } from '../timer/timer.service';
 
 @Component({
   selector: 'app-scoreboard',
@@ -10,7 +12,7 @@ import { Observable } from 'rxjs';
     <div class="score">
       <h3>Game Won !!!</h3>
       <p>{{ nrOfClicks }} clicks</p>
-      <p>{{ time }}</p>
+      <p>{{ stopwatch }}</p>
 
       <div class="scoreboard">
         <table mat-table [dataSource]="collection$" class="mat-elevation-z8">
@@ -30,7 +32,7 @@ import { Observable } from 'rxjs';
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
       </div>
-      <button id="won" class="button" (click)="game.newGame($event.target)" mat-stroked-button>New game?</button>
+      <button id="won" class="button" (click)="newGame($event.target)" mat-stroked-button>New game?</button>
     </div>
 
 
@@ -38,17 +40,26 @@ import { Observable } from 'rxjs';
   styleUrls: ['./scoreboard.component.scss']
 })
 export class ScoreboardComponent implements OnInit {
-  @Input() nrOfClicks;
-  @Input() time;
+  nrOfClicks;
+  stopwatch;
 
   collection$: Observable<Score[]>;
   displayedColumns: string[] = ['user', 'clicks', 'time'];
 
   constructor(
-    public game: GameComponent,
     public gameSrv: GameService,
-    private scoreSrv: ScoreService
-  ) {}
+    private scoreSrv: ScoreService,
+    private sharedSrv: SharedService,
+    private timerSrv: TimerService
+  ) {
+    this.sharedSrv.currentTimesClicked.subscribe(clicks => this.nrOfClicks = clicks);
+    this.timerSrv.currentTime.subscribe(time => this.stopwatch = time);
+  }
+
+
+  newGame(e) {
+    this.gameSrv.newGame(e);
+  }
 
   ngOnInit() {
     this.collection$ = this.scoreSrv.loadScores(this.gameSrv.standardDeck);
