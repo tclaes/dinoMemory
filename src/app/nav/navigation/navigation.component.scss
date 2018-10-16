@@ -19,4 +19,17 @@
   display: none;
 }
 
+.menu {
+  flex: 1 1 auto;
+}
+
+.header_logo {
+  color: #f44336; 
+  font-weight: 900; font-size: 1.8rem; 
+  @media screen and (max-width: 960px){
+    flex:1 1 auto;
+  }
+  
+}
+
 
