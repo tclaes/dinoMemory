@@ -31,7 +31,7 @@ import { StandardDeckDirective } from './shared/standard-deck.directive';
     HttpClientModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     StorageServiceModule,
-    SharedModule
+    SharedModule,
     ],
   declarations: [
     AppComponent,

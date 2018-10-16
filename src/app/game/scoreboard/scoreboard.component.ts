@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GameComponent } from '../game.component';
 import { GameService } from '../game.service';
 import { ScoreService, Score } from './score.service';
 import { Observable } from 'rxjs';

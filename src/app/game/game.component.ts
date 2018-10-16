@@ -3,6 +3,7 @@ import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { SharedService } from '../shared/shared.service';
 import { Deck, DeckService } from '../shared/deck.service';
+import { Player } from './player/player.component';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -15,6 +16,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   standardDeck: Deck = {
     name: 'dinos'
   };
+  player: Player;
 
   @ViewChildren(CardsComponent, {read: ElementRef}) cards: QueryList<CardsComponent>;
 
@@ -23,6 +25,7 @@ export class GameComponent implements OnInit, AfterViewInit {
     private deckSrv: DeckService) {
     gameSrv.renderer = renderer;
     sharedSrv.standardDeck.subscribe(deck => this.standardDeck = deck);
+    sharedSrv.currentPlayer.subscribe(player => this.player = player);
     deckSrv.setDeckObservable(this.standardDeck.name)
     .subscribe(card => {
       this.standardDeck.cards = card['cards'];

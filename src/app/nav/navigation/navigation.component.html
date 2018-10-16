@@ -14,7 +14,7 @@
       (click) = "game.newGame($event)" 
       appStandardDeck
       holdable
-      [standardDeck] = "game.standardDeck">{{button.name}}</a>
+      [standardDeck] = "game.deck">{{button.name}}</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -35,8 +35,9 @@
           (click) = "game.newGame($event)" 
           appStandardDeck
           holdable
-          [standardDeck] = "game.standardDeck">{{button.name}}</a>
+          [standardDeck] = "game.deck">{{button.name}}</a>
           <!-- <a mat-list-item >Scoreboard - Coming soon</a> -->
+          <a mat-list-item (click) = "logOut(player)">Logout</a>
         </mat-nav-list>
     </mat-toolbar>
     <!-- Add Content Here -->

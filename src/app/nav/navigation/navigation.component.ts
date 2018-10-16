@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DeckService } from './../../shared/deck.service';
 import { GameService } from './../../game/game.service';
+import { SharedService } from './../../shared/shared.service';
+import { Player } from './../../game/player/player.component';
 
 @Component({
   selector: 'app-navigation',
@@ -13,14 +15,25 @@ import { GameService } from './../../game/game.service';
 export class NavigationComponent {
 
   decks$;
+  player: Player;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, public deck: DeckService, public game: GameService) {
+  constructor(private breakpointObserver: BreakpointObserver,
+    public deck: DeckService,
+    public game: GameService,
+    public sharedService: SharedService) {
     this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
+    this.sharedService.currentPlayer.subscribe(player => this.player = player);
   }
 
+  logOut() {
+    console.log('Login out');
+    this.player.set = false;
+    this.sharedService.logOut();
   }
+
+}
