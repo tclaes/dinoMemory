@@ -1,24 +1,29 @@
-import { Injectable, Renderer, OnInit } from '@angular/core';
+import { Injectable, Renderer, Renderer2 } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
 import { TimerService } from './timer/timer.service';
-import { Subscription, timer } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { Deck } from '../shared/deck.service';
+import { share } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
 
+  timer;
+  private _timer: Subscription;
+  deck: Deck;
+
   constructor(private deckSrv: DeckService,
     private scoreSrv: ScoreService, private local: LocalstorageService,
-    private timerSrv: TimerService, private sharedSrv: SharedService) { }
+    private timerSrv: TimerService, private sharedSrv: SharedService) {
+      timerSrv.currentTime.subscribe(timer => this.timer = timer);
+      sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
+    }
 
   renderer: Renderer;
-  private _timer: Subscription;
-  deck: Deck = {
-    name: ''
-  };
+  renderer2: Renderer2;
 
   hasFlippedCard = false;
   private lockBoard;
@@ -28,32 +33,26 @@ export class GameService {
 
   gameWon = false;
   gameStarted = false;
-  timer = '0h - 0m - 0s';
 
-  newGame(e) {
-
+  newGame() {
     this.gameStarted = false;
     this.gameWon = false;
     this.sharedSrv.cardClicked(0);
     this.correctMatch = 0;
+    this.timerSrv.resetTimer();
+  }
 
-    this.deck.name = e;
-
-    if (e.target !== undefined && e.target !== 'won') {
-      console.log(e.currentTarget.id);
-      this.deck.name = e.currentTarget.id;
-    }
-
-    this.deckSrv.setDeckObservable(this.deck.name)
+  changeDeck(deck) {
+    console.log(`Change deck variable: ${deck}`);
+    this.deckSrv.setDeckObservable(deck)
     .subscribe(card => {
+      this.deck.name = card['name'];
       this.deck.cards = card['cards'];
       this.deck.imgUrl = card['imgURL'];
       this.deck.frontFace = card['frontFace'];
+      console.log(`set Deck: ${card['imgURL']} this.deck: ${this.deck.name}`);
       this.sharedSrv.setDeck(this.deck);
     });
-
-    this.timerSrv.resetTimer();
-
   }
 
   flipCard(e) {

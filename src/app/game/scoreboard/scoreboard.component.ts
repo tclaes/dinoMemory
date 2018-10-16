@@ -58,7 +58,7 @@ export class ScoreboardComponent implements OnInit {
   }
 
   newGame() {
-    this.gameSrv.newGame(this.standardDeck.name);
+    this.gameSrv.newGame();
   }
 
   ngOnInit() {

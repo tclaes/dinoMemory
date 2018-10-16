@@ -11,10 +11,8 @@
     <mat-nav-list  *ngFor='let button of decks$ | async'>
       <a mat-list-item id="{{button.name}}" 
       class="controls button nav-item" 
-      (click) = "game.newGame($event)" 
-      appStandardDeck
-      holdable
-      [standardDeck] = "game.deck">{{button.name}}</a>
+      (click) = "newGame($event)" 
+      holdable >{{button.name}}</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -31,10 +29,8 @@
       <mat-nav-list [ngClass]="{hidden: (isHandset$ | async)}" class="menu" >
           <a *ngFor='let button of decks$ | async'
           mat-list-item  id="{{button.name}}" 
-          (click) = "game.newGame($event)" 
-          appStandardDeck
-          holdable
-          [standardDeck] = "game.deck">{{button.name}}</a>
+          (click) = "newGame($event)" 
+          >{{button.name}}</a>
           <!-- <a mat-list-item >Scoreboard - Coming soon</a> -->
         </mat-nav-list>
         <mat-nav-list>

@@ -9,6 +9,8 @@ import { LocalstorageService } from './localstorage.service';
 })
 export class SharedService {
 
+  _deck: Deck;
+
   constructor(private local: LocalstorageService) { }
 
   private timesClicked = new BehaviorSubject<number>(1);
@@ -27,7 +29,7 @@ export class SharedService {
   }
 
   setDeck(deck: Deck) {
-    console.log(`Standarddeck set to ${deck.imgUrl}`);
+    console.log(`Standarddeck set to ${deck.name}`);
     this.deck.next(deck);
   }
 

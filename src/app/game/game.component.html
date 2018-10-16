@@ -3,15 +3,15 @@
 <section class="memory-game" id="memory-board">
   <app-card *ngFor='let card of gameSrv.deck.cards' 
   [card]="card" 
-  [imgUrl]="gameSrv.deck.imgUrl"
-  [frontFace]="gameSrv.deck.frontFace" 
+  [imgUrl]="deck.imgUrl"
+  [frontFace]="deck.frontFace" 
   class="memory-card" (click)="flipCard($event)"
   [attr.identifier] = "card"></app-card>
 
   <app-card *ngFor='let card of gameSrv.deck.cards'
   [card]="card" 
-  [imgUrl]="gameSrv.deck.imgUrl"
-  [frontFace]="gameSrv.deck.frontFace"
+  [imgUrl]="deck.imgUrl"
+  [frontFace]="deck.frontFace"
   class="memory-card" 
   (click)="flipCard($event)" 
   [attr.identifier] = "card"></app-card>
