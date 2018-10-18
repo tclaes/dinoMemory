@@ -1,0 +1,17 @@
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--board-bg-color);
+    padding: 50px
+
+
+}
+
+mat-form-field {
+    min-width: 300px;
+
+    @media screen and (min-width: 760px) {
+        min-width: 600px;
+    }
+}

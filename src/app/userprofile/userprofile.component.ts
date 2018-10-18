@@ -12,4 +12,8 @@ export class UserprofileComponent implements OnInit {
   ngOnInit() {
   }
 
+  register() {
+    console.log('User registered');
+  }
+
 }

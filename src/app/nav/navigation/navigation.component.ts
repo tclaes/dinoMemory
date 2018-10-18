@@ -14,6 +14,7 @@ import { Player } from './../../userprofile/player/player.component';
 })
 export class NavigationComponent {
 
+  decks$;
   _deck: Deck;
   player: Player;
 
@@ -26,6 +27,7 @@ export class NavigationComponent {
     public deck: DeckService,
     public game: GameService,
     public sharedService: SharedService) {
+    this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
     this.sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
     this.sharedService.currentPlayer.subscribe(player => this.player = player);
   }
