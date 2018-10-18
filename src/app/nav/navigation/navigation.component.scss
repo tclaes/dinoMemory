@@ -29,7 +29,11 @@
   @media screen and (max-width: 960px){
     flex:1 1 auto;
   }
-  
+}
+
+mat-nav-list.profile_menu.mat-nav-list {
+  display: flex;
+  align-items: flex-end;
 }
 
 

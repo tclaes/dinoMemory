@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { DeckService, Deck } from './../../shared/deck.service';
 import { GameService } from './../../game/game.service';
 import { SharedService } from './../../shared/shared.service';
-import { Player } from './../../game/player/player.component';
+import { Player } from './../../userprofile/player/player.component';
 
 @Component({
   selector: 'app-navigation',
@@ -14,7 +14,6 @@ import { Player } from './../../game/player/player.component';
 })
 export class NavigationComponent {
 
-  decks$;
   _deck: Deck;
   player: Player;
 
@@ -27,7 +26,6 @@ export class NavigationComponent {
     public deck: DeckService,
     public game: GameService,
     public sharedService: SharedService) {
-    this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
     this.sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
     this.sharedService.currentPlayer.subscribe(player => this.player = player);
   }

@@ -3,7 +3,7 @@ import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { SharedService } from '../shared/shared.service';
 import { Deck, DeckService } from '../shared/deck.service';
-import { Player } from './player/player.component';
+import { Player } from './../userprofile/player/player.component';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',

@@ -1,11 +1,12 @@
-import { ModuleWithProviders } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { RouterModule, Routes, Router } from '@angular/router';
 import { GameComponent } from './game/game.component';
+import { UserprofileComponent } from './userprofile/userprofile.component';
 
 const routes: Routes = [
   {path: 'game', component: GameComponent},
-  {path: '', redirectTo: '/'}
+  {path: 'userprofile', component: UserprofileComponent},
+  {path: '', redirectTo: '/game', pathMatch: 'full'}
 ];
 
-
-export const routingModule: ModuleWithProviders = RouterModule.forRoot(routes);
+export const RoutingModule = RouterModule.forRoot(routes);

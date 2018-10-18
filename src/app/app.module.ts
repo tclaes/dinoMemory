@@ -19,7 +19,8 @@ import { NavigationComponent } from './nav/navigation/navigation.component';
 import { DisableClickDirective } from './shared/disable-click.directive';
 import { GameWonDirective } from './shared/game-won.directive';
 import { HoldableDirective } from './shared/holdable.directive';
-import { StandardDeckDirective } from './shared/standard-deck.directive';
+import { UserprofileComponent } from './userprofile/userprofile.component';
+import { RoutingModule } from './routing.module';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { StandardDeckDirective } from './shared/standard-deck.directive';
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     StorageServiceModule,
     SharedModule,
+    RoutingModule,
     ],
   declarations: [
     AppComponent,
@@ -40,9 +42,7 @@ import { StandardDeckDirective } from './shared/standard-deck.directive';
     GameWonDirective,
     HoldableDirective,
     NavigationComponent,
-    StandardDeckDirective,
   ],
-  providers: [ StandardDeckDirective ],
   bootstrap: [AppComponent]
 })
 
