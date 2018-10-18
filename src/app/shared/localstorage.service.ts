@@ -2,12 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'angular-webstorage-service';
 
 const STORAGE_KEY = 'local_user';
-
-export interface Player {
-  name: string;
-  id?: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,5 +16,8 @@ export class LocalstorageService {
   getUser() {
     return this.storage.get(STORAGE_KEY);
   }
+
+  deleteUser() {
+    this.storage.remove(STORAGE_KEY);  }
 
 }

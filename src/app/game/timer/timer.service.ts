@@ -10,10 +10,8 @@ export class TimerService {
   private timerSubject = new BehaviorSubject<string>('0h - 0m - 0s');
   currentTime = this.timerSubject.asObservable();
   timer;
-  $stop = false;
 
-  constructor() {
-   }
+  constructor() {}
 
    startTimer() {
     let hours = 0;
@@ -33,7 +31,6 @@ export class TimerService {
             }
           }
         }
-        // console.log(`${hours}h - ${minutes}m - ${seconds}s`);
         this.timerSubject.next(`${hours}h - ${minutes}m - ${seconds}s`);
       })
     );

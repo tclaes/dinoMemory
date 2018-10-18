@@ -1,6 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { LocalstorageService, Player } from './../../shared/localstorage.service';
+import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
+import { LocalstorageService } from './../../shared/localstorage.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { SharedService } from './../../shared/shared.service';
+
+export interface Player {
+  name: string;
+  set: boolean;
+  id?: number;
+}
 
 @Component({
   selector: 'app-player',
@@ -11,29 +18,33 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class PlayerComponent implements OnInit {
 
   myForm: FormGroup;
-
-  playerIsSet = false;
   player: Player;
 
-  constructor(private local: LocalstorageService, private fb: FormBuilder) {
+  constructor(private local: LocalstorageService, private fb: FormBuilder, private sharedService: SharedService) {
     if (this.local.getUser() !== null) {
-      this.playerIsSet = true;
-      this.player = this.local.getUser();
+      this.sharedService.setPlayer({name: this.local.getUser(), set: true});
     }
+    this.sharedService.currentPlayer.subscribe(player => this.player = player);
    }
 
   setPlayer() {
-    this.playerIsSet = true;
-    this.local.setUser(this.player.name);
+    this.myForm = this.fb.group({name: ''});
+    this.player.set = true;
+    this.sharedService.setPlayer(this.player);
+    console.log(this.player);
   }
 
   ngOnInit(): void {
     this.myForm = this.fb.group({
       name: ''
     });
-    this.myForm.valueChanges.subscribe(name => {
-      this.player = name;
-    });
+    this.formChanges();
   }
 
+  formChanges() {
+    this.myForm.valueChanges.subscribe(name => {
+      console.log(this.player.name);
+      this.player = ({name: name, set: false});
+    });
+  }
 }

@@ -17,6 +17,7 @@
     "@angular/pwa": "^0.8.4",
     "@angular/router": "^6.1.9",
     "@angular/service-worker": "^6.1.9",
+    "@auth0/angular-jwt": "^2.0.0",
     "@fortawesome/angular-fontawesome": "^0.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
     "@fortawesome/free-solid-svg-icons": "^5.3.1",
