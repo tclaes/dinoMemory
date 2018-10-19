@@ -1,0 +1,9 @@
+<form class="column" [formGroup]="userprofileForm" (ngSubmit)="register()">
+  <mat-form-field>
+    <input matInput placeholder="Email" type="text" formControlName="email">
+  </mat-form-field>
+  <mat-form-field>
+      <input matInput placeholder="Password" type="password" formControlName="password">
+  </mat-form-field>
+  <button mat-flat-button color="primary" type="submit" [disabled]="!userprofileForm.valid">Register</button>
+</form> 

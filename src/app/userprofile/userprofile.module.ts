@@ -4,6 +4,7 @@ import { PlayerComponent } from './player/player.component';
 import { SharedModule } from '../shared/shared.module';
 import { UserprofileComponent } from './userprofile.component';
 import { FormsModule } from '@angular/forms';
+import { RegisterComponent } from '../userprofile/register/register.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { FormsModule } from '@angular/forms';
   ],
   declarations: [
     PlayerComponent,
-    UserprofileComponent
+    UserprofileComponent,
+    RegisterComponent
   ],
   exports: [
     PlayerComponent, UserprofileComponent, CommonModule, FormsModule

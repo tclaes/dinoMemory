@@ -33,7 +33,8 @@ export class NavigationComponent {
   }
 
   newGame(e) {
-    this.game.changeDeck(e.currentTarget.id);
+    console.log(e.currentTarget.innerText);
+    this.game.changeDeck(e.currentTarget.innerText);
     this.game.newGame();
   }
 
