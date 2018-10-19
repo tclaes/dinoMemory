@@ -10,6 +10,7 @@ import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebaseConfig;
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StorageServiceModule } from 'angular-webstorage-service';
 
@@ -19,13 +20,13 @@ import { NavigationComponent } from './nav/navigation/navigation.component';
 import { DisableClickDirective } from './shared/disable-click.directive';
 import { GameWonDirective } from './shared/game-won.directive';
 import { HoldableDirective } from './shared/holdable.directive';
-import { UserprofileComponent } from './userprofile/userprofile.component';
 import { RoutingModule } from './routing.module';
 
 @NgModule({
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
+    AngularFireAuthModule,
     BrowserAnimationsModule,
     BrowserModule,
     GameModule,
