@@ -6,6 +6,7 @@ import { DeckService, Deck } from './../../shared/deck.service';
 import { GameService } from './../../game/game.service';
 import { SharedService } from './../../shared/shared.service';
 import { Player } from './../../userprofile/player/player.component';
+import { AuthService } from './../../auth.service';
 
 @Component({
   selector: 'app-navigation',
@@ -17,6 +18,7 @@ export class NavigationComponent {
   decks$;
   _deck: Deck;
   player: Player;
+  authenticated: Boolean;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -26,10 +28,12 @@ export class NavigationComponent {
   constructor(private breakpointObserver: BreakpointObserver,
     public deck: DeckService,
     public game: GameService,
-    public sharedService: SharedService) {
+    public sharedService: SharedService,
+    public authService: AuthService) {
     this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
-    this.sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
-    this.sharedService.currentPlayer.subscribe(player => this.player = player);
+    sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
+    sharedService.currentPlayer.subscribe(player => this.player = player);
+    this.authenticated = authService.authenticated;
   }
 
   newGame(e) {
@@ -41,6 +45,10 @@ export class NavigationComponent {
   logOut() {
     this.player.set = false;
     this.sharedService.logOut();
+  }
+
+  login() {
+    console.log(`Need to login...`);
   }
 
 }

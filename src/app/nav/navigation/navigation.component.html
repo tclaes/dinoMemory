@@ -37,7 +37,14 @@
           <a mat-list-item routerLink="userprofile" name="user_profile"><mat-icon class="md-48" >account_box</mat-icon>
             <span class="visuallyhidden">Profile</span>
           </a>
-          <a mat-list-item (click) = "logOut()">Logout</a>
+          <ng-container *ngIf="authenticated; else loggedOut">
+            <a mat-list-item (click) = "logOut()">Logout</a>
+          </ng-container>
+
+         <ng-template #loggedOut>
+          <a mat-list-item (click) = "login()">Login</a>
+         </ng-template>
+          
         </mat-nav-list>
     </mat-toolbar>
     <!-- Add Content Here -->

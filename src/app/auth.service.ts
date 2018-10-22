@@ -4,23 +4,41 @@ import { User } from './userprofile/register/register.component';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user: Observable<firebase.User>;
+  authState: Observable<firebase.User>;
 
-  constructor(private firebaseAuth: AngularFireAuth) { 
-    this.user = firebaseAuth.authState;
+  constructor(private afAuth: AngularFireAuth) {
+    this.authState = afAuth.authState;
+  }
+
+  doGoogleLogin() {
+    return new Promise<any>((resolve, reject) => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('profile');
+      provider.addScope('email');
+      this.afAuth.auth
+        .signInWithPopup(provider)
+        .then(res => {
+          resolve(res);
+        });
+    });
   }
 
   tryRegister(user: User) {
-    this.firebaseAuth
+    this.afAuth
       .auth
       .createUserWithEmailAndPassword(user.email, user.password)
       .then(value => console.log('Success!', value))
       .catch(err => console.log('Something went wrong', err.message)
       );
+  }
+
+  get authenticated(): boolean {
+    return this.authState !== null;
   }
 
 }

@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { UserprofileComponent } from './userprofile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from '../userprofile/register/register.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { RegisterComponent } from '../userprofile/register/register.component';
   declarations: [
     PlayerComponent,
     UserprofileComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent
   ],
   exports: [
     PlayerComponent, UserprofileComponent, CommonModule, FormsModule, RegisterComponent, ReactiveFormsModule
