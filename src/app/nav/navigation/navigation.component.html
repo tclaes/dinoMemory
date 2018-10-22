@@ -10,9 +10,9 @@
     <mat-toolbar color="primary">Memory</mat-toolbar>
     <mat-nav-list  *ngFor='let button of decks$ | async'>
       <a mat-list-item 
-      class="controls button nav-item" 
-      (click) = "newGame($event)" 
-      holdable >{{button.name}}</a>
+        class="controls button nav-item" 
+        (click) = "newGame($event)" 
+      >{{button.name}}</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -25,16 +25,15 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span style="" class="header_logo">Memory</span>
+      <span routerLink="/" class="header_logo">Memory</span>
       <mat-nav-list [ngClass]="{hidden: (isHandset$ | async)}" class="menu" >
           <a *ngFor='let button of decks$ | async'
           mat-list-item
           (click) = "newGame($event)" 
           >{{button.name}}</a>
-          <!-- <a mat-list-item >Scoreboard - Coming soon</a> -->
         </mat-nav-list>
         <mat-nav-list class="profile_menu">
-          <a mat-list-item routerLink="userprofile" name="user_profile"><mat-icon class="md-48" >account_box</mat-icon>
+          <a mat-list-item routerLink="register" name="user_profile"><mat-icon class="md-48" >account_box</mat-icon>
             <span class="visuallyhidden">Profile</span>
           </a>
           <ng-container *ngIf="authenticated; else loggedOut">

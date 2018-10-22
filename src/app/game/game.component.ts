@@ -10,7 +10,7 @@ import { Player } from './../userprofile/player/player.component';
   styleUrls: ['./game.component.scss']
 })
 
-export class GameComponent implements OnInit, AfterViewInit {
+export class GameComponent implements AfterViewInit {
 
   clicked;
   deck: Deck;
@@ -24,13 +24,6 @@ export class GameComponent implements OnInit, AfterViewInit {
     private deckSrv: DeckService) {
     gameSrv.renderer = renderer;
     sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
-    deckSrv.setDeckObservable(this.deck.name)
-    .subscribe(card => {
-      this.deck.cards = card['cards'];
-      this.deck.imgUrl = card['imgURL'];
-      this.deck.frontFace = card['frontFace'];
-      sharedSrv.setDeck(this.deck);
-    });
     sharedSrv.currentPlayer.subscribe(player => this.player = player);
   }
 
@@ -46,12 +39,10 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.gameSrv.flipCard(e);
   }
 
-  ngOnInit() {
-    this.gameSrv.deck = this.deck;
-  }
-
   ngAfterViewInit(): void {
     this.newGame();
+    console.log(`Afterview init deck: ${this.deck.name}`);
+    // this.gameSrv.changeDeck(this.deck.name);
     this.sharedSrv.currentTimesClicked.subscribe(timesClicked => this.clicked = timesClicked);
   }
 }

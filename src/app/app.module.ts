@@ -21,6 +21,7 @@ import { DisableClickDirective } from './shared/disable-click.directive';
 import { GameWonDirective } from './shared/game-won.directive';
 import { HoldableDirective } from './shared/holdable.directive';
 import { RoutingModule } from './routing.module';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { RoutingModule } from './routing.module';
     HoldableDirective,
     NavigationComponent,
   ],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 

@@ -8,9 +8,9 @@ import { LoginComponent } from './userprofile/login/login.component';
 const routes: Routes = [
   {path: 'game', component: GameComponent},
   {path: 'userprofile', component: UserprofileComponent, canActivate: [AuthGuard]},
-  {path: 'register', component: RegisterComponent, canActivate: [AuthGuard]},
-  {path: 'login', component: LoginComponent, canActivate: [AuthGuard]},
-  {path: '', redirectTo: '/login', pathMatch: 'full'}
+  {path: 'register', component: RegisterComponent},
+  {path: 'login', component: LoginComponent},
+  {path: '', redirectTo: '/game', pathMatch: 'full'}
 ];
 
 export const RoutingModule = RouterModule.forRoot(routes);

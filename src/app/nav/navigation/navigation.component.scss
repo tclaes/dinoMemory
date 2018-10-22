@@ -29,6 +29,11 @@
   @media screen and (max-width: 960px){
     flex:1 1 auto;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
+
 }
 
 mat-nav-list.profile_menu.mat-nav-list {
