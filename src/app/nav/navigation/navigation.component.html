@@ -1,50 +1,37 @@
-<mat-sidenav-container class="sidenav-container" >
-  <mat-sidenav style="background-color: #1b9aaa"
-    #drawer
-    class="sidenav"
-    fixedInViewport="false"
-    [ngClass]="{hidden: !(isHandset$ | async)}"
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav style="background-color: #1b9aaa" #drawer class="sidenav" fixedInViewport="false" [ngClass]="{hidden: !(isHandset$ | async)}"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary">Memory</mat-toolbar>
-    <mat-nav-list  *ngFor='let button of decks$ | async'>
-      <a mat-list-item 
-        class="controls button nav-item" 
-        (click) = "newGame($event)" 
-      >{{button.name}}</a>
+    <mat-nav-list *ngFor='let button of decks$ | async'>
+      <a mat-list-item class="controls button nav-item" (click)="newGame($event)">{{button.name}}</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span routerLink="/" class="header_logo">Memory</span>
-      <mat-nav-list [ngClass]="{hidden: (isHandset$ | async)}" class="menu" >
-          <a *ngFor='let button of decks$ | async'
-          mat-list-item
-          (click) = "newGame($event)" 
-          >{{button.name}}</a>
+      <div class="menu_links">
+        <mat-nav-list [ngClass]="{hidden: (isHandset$ | async)}" class="menu" *ngFor='let button of decks$ | async'>
+          <a mat-list-item (click)="newGame($event)">{{button.name}}</a>
         </mat-nav-list>
-        <mat-nav-list class="profile_menu">
-          <a mat-list-item routerLink="register" name="user_profile"><mat-icon class="md-48" >account_box</mat-icon>
-            <span class="visuallyhidden">Profile</span>
-          </a>
-          <ng-container *ngIf="authenticated; else loggedOut">
-            <a mat-list-item (click) = "logOut()">Logout</a>
-          </ng-container>
+      </div>
+      <mat-nav-list class="profile_menu">
+        <a mat-list-item routerLink="register" name="user_profile">
+          <mat-icon class="md-48" aria-label="Profile icon">account_box</mat-icon>
+          <span class="visuallyhidden">Profile</span>
+        </a>
+        <ng-container *ngIf="authenticated; else loggedOut">
+          <a mat-list-item (click)="logOut()">Logout</a>
+        </ng-container>
 
-         <ng-template #loggedOut>
-          <a mat-list-item (click) = "login()">Login</a>
-         </ng-template>
-          
-        </mat-nav-list>
+        <ng-template #loggedOut>
+          <a mat-list-item (click)="login()">Login</a>
+        </ng-template>
+
+      </mat-nav-list>
     </mat-toolbar>
     <!-- Add Content Here -->
     <ng-content></ng-content>

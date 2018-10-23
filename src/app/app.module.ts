@@ -8,9 +8,9 @@ import { SharedModule } from './shared/shared.module';
 
 import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebaseConfig;
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StorageServiceModule } from 'angular-webstorage-service';
 

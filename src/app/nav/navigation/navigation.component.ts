@@ -35,7 +35,7 @@ export class NavigationComponent {
     this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
     sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
     sharedService.currentPlayer.subscribe(player => this.player = player);
-    this.authenticated = authService.authenticated;
+    this.authenticated = false;
   }
 
   newGame(e) {
@@ -50,7 +50,7 @@ export class NavigationComponent {
   }
 
   login() {
-    console.log(`Need to login...`);
+    this.router.navigate(['/login']);
   }
 
 }

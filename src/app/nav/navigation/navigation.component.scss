@@ -36,6 +36,17 @@
 
 }
 
+.menu_links {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+
+  .mat-nav-list {
+    flex: 0 0 auto;
+  }
+}
+
+
 mat-nav-list.profile_menu.mat-nav-list {
   display: flex;
   align-items: flex-end;
