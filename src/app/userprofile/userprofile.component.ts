@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { Player } from './player/player.component';
 
 @Component({
   selector: 'app-userprofile',
@@ -8,7 +10,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class UserprofileComponent implements OnInit {
 
-  constructor() { }
+  player: Player;
+
+  constructor(private authService: AuthService) {
+    this.player = authService.player;
+  }
 
   ngOnInit() {
   }

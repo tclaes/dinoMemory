@@ -41,8 +41,6 @@ export class GameComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.newGame();
-    console.log(`Afterview init deck: ${this.deck.name}`);
-    // this.gameSrv.changeDeck(this.deck.name);
     this.sharedSrv.currentTimesClicked.subscribe(timesClicked => this.clicked = timesClicked);
   }
 }

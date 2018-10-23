@@ -23,6 +23,14 @@ export class AuthGuard implements CanActivate {
       //       this.router.navigate(['/']);
       //     }
       //   }));
+      this.auth.authState.subscribe(res => {
+          console.log(`Authstate: ${res !== null}`);
+          if (res === null) {
+            this.router.navigate(['/login']);
+            return false;
+          }
+      });
+
       return true;
   }
 }

@@ -29,7 +29,6 @@ export class SharedService {
   }
 
   setDeck(deck: Deck) {
-    console.log(`Standarddeck set to ${deck.name}`);
     this.deck.next(deck);
   }
 

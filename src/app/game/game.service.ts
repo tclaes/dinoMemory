@@ -43,14 +43,12 @@ export class GameService {
   }
 
   changeDeck(deck) {
-    console.log(`Change deck variable: ${deck}`);
     this.deckSrv.setDeckObservable(deck)
     .subscribe(card => {
       this.deck.name = card['name'];
       this.deck.cards = card['cards'];
       this.deck.imgUrl = card['imgURL'];
       this.deck.frontFace = card['frontFace'];
-      console.log(`set Deck: ${card['imgURL']} this.deck: ${this.deck.name}`);
       this.sharedSrv.setDeck(this.deck);
     });
   }

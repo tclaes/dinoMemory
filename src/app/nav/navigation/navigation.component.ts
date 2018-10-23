@@ -19,7 +19,7 @@ export class NavigationComponent {
   decks$;
   _deck: Deck;
   player: Player;
-  authenticated: Boolean;
+  authenticated: Boolean = true;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -35,7 +35,6 @@ export class NavigationComponent {
     this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
     sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
     sharedService.currentPlayer.subscribe(player => this.player = player);
-    this.authenticated = false;
   }
 
   newGame(e) {
@@ -45,12 +44,13 @@ export class NavigationComponent {
   }
 
   logOut() {
+    this.authService.logOut();
     this.player.set = false;
     this.sharedService.logOut();
   }
 
   login() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/userprofile']);
   }
 
 }

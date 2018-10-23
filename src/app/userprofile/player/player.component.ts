@@ -6,7 +6,7 @@ import { SharedService } from './../../shared/shared.service';
 export interface Player {
   name: string;
   set: boolean;
-  id?: number;
+  id?: string;
 }
 
 @Component({

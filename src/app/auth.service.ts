@@ -4,15 +4,22 @@ import { User } from './userprofile/register/register.component';
 import { Observable, of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { switchMap } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
+import { SharedModule } from './shared/shared.module';
+import { SharedService } from './shared/shared.service';
+import { Player } from './userprofile/player/player.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   authState: Observable<firebase.User>;
+  player: Player;
 
-  constructor(private afAuth: AngularFireAuth) {
+  constructor(private afAuth: AngularFireAuth, private router: Router,
+      private sharedService: SharedService
+    ) {
+    sharedService.currentPlayer.subscribe(player => this.player = player);
     this.authState = afAuth.authState;
   }
 
@@ -24,6 +31,10 @@ export class AuthService {
       this.afAuth.auth
         .signInWithPopup(provider)
         .then(res => {
+          this.player.name = res.user.displayName;
+          this.player.id = res.user.uid;
+          this.sharedService.setPlayer(this.player);
+          this.router.navigate(['/']);
           resolve(res);
         });
     });
@@ -38,8 +49,14 @@ export class AuthService {
       );
   }
 
-  get authenticated(): boolean {
-    return this.authState !== null;
+  get Player() {
+    return this.Player;
+  }
+
+  logOut() {
+    this.afAuth.auth.signOut().then(() => {
+      this.router.navigate(['/']);
+    });
   }
 
 }
