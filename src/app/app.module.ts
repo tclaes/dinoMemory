@@ -8,8 +8,9 @@ import { SharedModule } from './shared/shared.module';
 
 import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebaseConfig;
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StorageServiceModule } from 'angular-webstorage-service';
 
@@ -19,12 +20,14 @@ import { NavigationComponent } from './nav/navigation/navigation.component';
 import { DisableClickDirective } from './shared/disable-click.directive';
 import { GameWonDirective } from './shared/game-won.directive';
 import { HoldableDirective } from './shared/holdable.directive';
-import { StandardDeckDirective } from './shared/standard-deck.directive';
+import { RoutingModule } from './routing.module';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
+    AngularFireAuthModule,
     BrowserAnimationsModule,
     BrowserModule,
     GameModule,
@@ -32,6 +35,7 @@ import { StandardDeckDirective } from './shared/standard-deck.directive';
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     StorageServiceModule,
     SharedModule,
+    RoutingModule,
     ],
   declarations: [
     AppComponent,
@@ -40,9 +44,8 @@ import { StandardDeckDirective } from './shared/standard-deck.directive';
     GameWonDirective,
     HoldableDirective,
     NavigationComponent,
-    StandardDeckDirective,
   ],
-  providers: [ StandardDeckDirective ],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 

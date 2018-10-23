@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Deck } from './deck.service';
-import { Player } from '../game/player/player.component';
+import { Player } from '../userprofile/player/player.component';
 import { LocalstorageService } from './localstorage.service';
 
 @Injectable({

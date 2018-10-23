@@ -16,7 +16,7 @@ export class HoldableDirective {
     this.cancel = this.state.pipe(
       filter(v => v === 'cancel'),
       tap(v => {
-        console.log('%c stopped hold', 'color: #ec6969; font-weight: bold');
+        // console.log('%c stopped hold', 'color: #ec6969; font-weight: bold');
         this.holdTime.emit(0);
       })
     );
@@ -30,7 +30,7 @@ export class HoldableDirective {
 
   @HostListener('mousedown', ['$event'])
   onHold() {
-    console.log('%c started hold', 'color: #5fba7d; font-weight: bold');
+    // console.log('%c started hold', 'color: #5fba7d; font-weight: bold');
     this.state.next('start');
     const n = 100;
     interval(n).pipe(
