@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { DeckService, Deck } from './../../shared/deck.service';
 import { GameService } from './../../game/game.service';
 import { SharedService } from './../../shared/shared.service';
-import { Player } from './../../userprofile/player/player.component';
 import { AuthService } from './../../auth.service';
 import { Router } from '@angular/router';
 
@@ -18,8 +17,7 @@ export class NavigationComponent {
 
   decks$;
   _deck: Deck;
-  player: Player;
-  authenticated: Boolean = true;
+  user: firebase.User;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -34,7 +32,7 @@ export class NavigationComponent {
     private router: Router) {
     this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
     sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
-    sharedService.currentPlayer.subscribe(player => this.player = player);
+    authService.User.subscribe(user => this.user = user);
   }
 
   newGame(e) {
@@ -45,12 +43,7 @@ export class NavigationComponent {
 
   logOut() {
     this.authService.logOut();
-    this.player = this.authService.player;
-    this.sharedService.logOut();
-  }
-
-  login() {
-    this.router.navigate(['/userprofile']);
+    this.router.navigate(['/login']);
   }
 
 }

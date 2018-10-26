@@ -14,15 +14,6 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-      // return this.auth.authState.pipe(
-      //   take(1),
-      //   map(user => !!user),
-      //   tap(loggedIn => {
-      //     if (!loggedIn) {
-      //       console.log('Access denied');
-      //       this.router.navigate(['/']);
-      //     }
-      //   }));
       this.auth.authState.subscribe(res => {
           console.log(`Authstate: ${res !== null}`);
           if (res === null) {

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Deck } from './deck.service';
-import { Player } from '../userprofile/player/player.component';
 import { LocalstorageService } from './localstorage.service';
 
 @Injectable({
@@ -21,8 +20,6 @@ export class SharedService {
   });
   standardDeck = this.deck.asObservable();
 
-  private player = new BehaviorSubject<Player>({name: '', set: false});
-  currentPlayer = this.player.asObservable();
 
   cardClicked(clicks) {
     this.timesClicked.next(clicks);
@@ -30,15 +27,5 @@ export class SharedService {
 
   setDeck(deck: Deck) {
     this.deck.next(deck);
-  }
-
-  setPlayer(player: Player) {
-    this.player.next(player);
-    this.local.setUser(player.name);
-  }
-
-  logOut() {
-    this.local.deleteUser();
-    this.player.next({name: '', set: false});
   }
 }

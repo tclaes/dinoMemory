@@ -6,7 +6,7 @@ import { TimerService } from './timer/timer.service';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { Deck } from '../shared/deck.service';
-import { share } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
@@ -14,12 +14,15 @@ export class GameService {
   timer;
   private _timer: Subscription;
   deck: Deck;
+  user: firebase.User;
 
   constructor(private deckSrv: DeckService,
     private scoreSrv: ScoreService, private local: LocalstorageService,
-    private timerSrv: TimerService, private sharedSrv: SharedService) {
+    private timerSrv: TimerService, private sharedSrv: SharedService,
+    private authService: AuthService) {
       timerSrv.currentTime.subscribe(timer => this.timer = timer);
       sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
+      authService.User.subscribe(user => this.user = user);
     }
 
   renderer: Renderer;
@@ -103,7 +106,7 @@ export class GameService {
         let clicks;
         this.sharedSrv.currentTimesClicked.subscribe(click => clicks = click);
         this._timer.unsubscribe();
-        this.scoreSrv.updateScores(this.local.getUser(), clicks , this.timer, this.deck.name);
+        this.scoreSrv.updateScores(this.user.displayName, clicks , this.timer, this.deck.name);
       }
   }
 

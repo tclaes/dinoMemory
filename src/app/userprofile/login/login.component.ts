@@ -26,10 +26,16 @@ export class LoginComponent {
       password: this.signInForm.controls.password.value
     };
     this.auth.doEmailLogin(player);
+    this.gotoUser();
   }
 
- loginWithGoogle() {
-  this.auth.doGoogleLogin();
- }
+  loginWithGoogle(e) {
+    this.auth.doGoogleLogin();
+    this.gotoUser();
+  }
+
+  gotoUser() {
+    this.router.navigate(['/userprofile']);
+  }
 
 }

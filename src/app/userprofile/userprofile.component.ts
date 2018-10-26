@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { Player } from './player/player.component';
 
 @Component({
   selector: 'app-userprofile',
@@ -9,9 +8,10 @@ import { Player } from './player/player.component';
 })
 export class UserprofileComponent {
 
-  player: firebase.User;
+  user: firebase.User;
 
   constructor(private authService: AuthService) {
-    this.player = authService.Player;
+    authService.User.subscribe(user => this.user = user);
   }
+
 }

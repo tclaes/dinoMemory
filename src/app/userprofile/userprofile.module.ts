@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PlayerComponent } from './player/player.component';
 import { SharedModule } from '../shared/shared.module';
 import { UserprofileComponent } from './userprofile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,13 +15,12 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   declarations: [
-    PlayerComponent,
     UserprofileComponent,
     RegisterComponent,
     LoginComponent
   ],
   exports: [
-    PlayerComponent, UserprofileComponent, CommonModule, FormsModule, RegisterComponent, ReactiveFormsModule
+    UserprofileComponent, CommonModule, FormsModule, RegisterComponent, ReactiveFormsModule
   ]
 })
 export class UserprofileModule { }

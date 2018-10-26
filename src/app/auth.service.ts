@@ -1,27 +1,28 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { User } from './userprofile/register/register.component';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { SharedModule } from './shared/shared.module';
-import { SharedService } from './shared/shared.service';
-import { Player } from './userprofile/player/player.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   authState: Observable<firebase.User>;
-  player: Player;
-  user: firebase.User;
+  user: firebase.User = null;
 
-  constructor(private afAuth: AngularFireAuth, private router: Router,
-      private sharedService: SharedService
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router
     ) {
-    sharedService.currentPlayer.subscribe(player => this.player = player);
     this.authState = afAuth.authState;
+    afAuth.authState
+    .subscribe(user => this.user = user);
+  }
+
+  get User() {
+    return this.authState;
   }
 
   doGoogleLogin() {
@@ -33,9 +34,6 @@ export class AuthService {
         .signInWithPopup(provider)
         .then(res => {
           this.user = res.user;
-          this.player.name = res.user.displayName;
-          this.player.id = res.user.uid;
-          this.sharedService.setPlayer(this.player);
           this.router.navigate(['/']);
           resolve(res);
         });
@@ -74,16 +72,11 @@ export class AuthService {
       .updateCurrentUser(this.user);
   }
 
-
-
-  get Player() {
-    return this.user;
-  }
-
   logOut() {
-    this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(['/']);
-    });
+    this.afAuth.auth.signOut()
+      .then(() => {
+        this.router.navigate(['/']);
+      });
   }
 
 }
