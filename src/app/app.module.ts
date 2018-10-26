@@ -17,7 +17,6 @@ import { StorageServiceModule } from 'angular-webstorage-service';
 import { GameComponent } from './game/game.component';
 import { NavigationComponent } from './nav/navigation/navigation.component';
 
-import { DisableClickDirective } from './shared/disable-click.directive';
 import { GameWonDirective } from './shared/game-won.directive';
 import { HoldableDirective } from './shared/holdable.directive';
 import { RoutingModule } from './routing.module';
@@ -39,7 +38,6 @@ import { AuthGuard } from './auth.guard';
     ],
   declarations: [
     AppComponent,
-    DisableClickDirective,
     GameComponent,
     GameWonDirective,
     HoldableDirective,

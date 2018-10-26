@@ -25,19 +25,19 @@ export class NavigationComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
-    public deck: DeckService,
-    public game: GameService,
+    public deckService: DeckService,
+    public gameService: GameService,
     public sharedService: SharedService,
     public authService: AuthService,
     private router: Router) {
-    this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
+    this.decks$ = this.deckService.getData().then(data => data['deck'].map(x => x));
     sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
     authService.User.subscribe(user => this.user = user);
   }
 
   newGame(e) {
-    this.game.changeDeck(e.currentTarget.innerText);
-    this.game.newGame();
+    this.gameService.changeDeck(e.currentTarget.innerText);
+    this.gameService.newGame();
     this.router.navigate(['/game']);
   }
 

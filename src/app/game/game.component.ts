@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, ViewChildren, AfterViewInit, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChildren, AfterViewInit, QueryList, ElementRef, Renderer2 } from '@angular/core';
 import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { SharedService } from '../shared/shared.service';
@@ -18,9 +18,11 @@ export class GameComponent implements AfterViewInit {
   @ViewChildren(CardsComponent, {read: ElementRef}) cards: QueryList<CardsComponent>;
 
   constructor(public gameSrv: GameService, public renderer: Renderer,
+    public renderer2: Renderer2,
     private sharedSrv: SharedService,
     private deckSrv: DeckService) {
     gameSrv.renderer = renderer;
+    gameSrv.renderer2 = renderer2;
     sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
   }
 

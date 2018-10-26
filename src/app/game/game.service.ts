@@ -25,7 +25,6 @@ export class GameService {
       authService.User.subscribe(user => this.user = user);
     }
 
-  renderer: Renderer;
   renderer2: Renderer2;
 
   hasFlippedCard = false;
@@ -75,7 +74,8 @@ export class GameService {
       return;
     }
 
-    this.renderer.setElementClass(clickedCard, 'flip', true);
+
+    this.renderer2.addClass(clickedCard, 'flip');
 
     if (!this.hasFlippedCard) {
       this.hasFlippedCard = true;
@@ -113,8 +113,8 @@ export class GameService {
   unflipCards() {
     this.lockBoard = true;
     setTimeout(() => {
-      this.renderer.setElementClass(this.firstCard, 'flip', false);
-      this.renderer.setElementClass(this.secondCard, 'flip', false);
+      this.renderer2.removeClass(this.firstCard, 'flip');
+      this.renderer2.removeClass(this.secondCard, 'flip');
       this.lockBoard = false;
       this.resetBoard();
     }, 1000);
@@ -127,7 +127,7 @@ export class GameService {
 
   shuffle(card) {
       const randomPos = Math.floor(Math.random() * 12);
-      this.renderer.setElementClass(card.nativeElement, 'flip', false);
-      this.renderer.setElementStyle(card.nativeElement, 'order', `${randomPos}`);
+      this.renderer2.removeClass(card.nativeElement, 'flip');
+      this.renderer2.setStyle(card.nativeElement, 'order', `${randomPos}`);
   }
 }
