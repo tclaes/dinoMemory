@@ -3,8 +3,10 @@ import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 import { AuthService } from './../../auth.service';
 
 export interface User {
+  name: string;
   email: string;
   password: string;
+  id?: string;
 }
 
 @Component({
@@ -15,6 +17,7 @@ export interface User {
 export class RegisterComponent {
 
   registerForm = new FormGroup({
+    name: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)])
   });
@@ -24,11 +27,11 @@ export class RegisterComponent {
   get f() { return this.registerForm.controls; }
 
   register() {
-    const user = {
+    const user: User = {
+      name: this.registerForm.value.name,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password
     };
-    console.log(`RegisterComponent: ${user.email}`);
 
     this.authService.tryRegister(user);
   }

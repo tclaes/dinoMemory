@@ -15,6 +15,7 @@ import { Player } from './userprofile/player/player.component';
 export class AuthService {
   authState: Observable<firebase.User>;
   player: Player;
+  user: firebase.User;
 
   constructor(private afAuth: AngularFireAuth, private router: Router,
       private sharedService: SharedService
@@ -31,6 +32,7 @@ export class AuthService {
       this.afAuth.auth
         .signInWithPopup(provider)
         .then(res => {
+          this.user = res.user;
           this.player.name = res.user.displayName;
           this.player.id = res.user.uid;
           this.sharedService.setPlayer(this.player);
@@ -40,17 +42,42 @@ export class AuthService {
     });
   }
 
+  doEmailLogin(user) {
+    this.afAuth.auth
+      .signInWithEmailAndPassword(user.name, user.email)
+      .then(res => {
+        this.user.displayName = user.name;
+        this.user = res.user;
+        this.updateUserInfo();
+      });
+  }
+
   tryRegister(user: User) {
     this.afAuth
       .auth
       .createUserWithEmailAndPassword(user.email, user.password)
-      .then(value => console.log('Success!', value))
+      .then(userCredential => {
+        userCredential.user.updateProfile({
+          displayName: user.name,
+          photoURL: ''
+        });
+        console.log(userCredential.user.displayName);
+        this.user = userCredential.user;
+      })
       .catch(err => console.log('Something went wrong', err.message)
       );
   }
 
+  updateUserInfo() {
+    console.log(`Username: ${this.user.displayName}`);
+    this.afAuth.auth
+      .updateCurrentUser(this.user);
+  }
+
+
+
   get Player() {
-    return this.Player;
+    return this.user;
   }
 
   logOut() {

@@ -45,7 +45,7 @@ export class NavigationComponent {
 
   logOut() {
     this.authService.logOut();
-    this.player.set = false;
+    this.player = this.authService.player;
     this.sharedService.logOut();
   }
 

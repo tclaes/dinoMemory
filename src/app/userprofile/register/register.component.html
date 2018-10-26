@@ -1,6 +1,14 @@
 <form class="column" [formGroup]="registerForm" (ngSubmit)="register()">
   <mat-form-field>
-    <input matInput placeholder="Email" type="text" formControlName="email">
+    <input matInput placeholder="Name" type="text" formControlName="name"
+    autocomplete="username">
+    <mat-error *ngIf="f['name'].errors?.required">
+        Name is <strong>required</strong>
+      </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Email" type="text" formControlName="email"
+    autocomplete="email">
     <mat-error *ngIf="!f.email?.errors?.required && f['email']?.errors?.email" >
       Please enter a valid email address
     </mat-error>
@@ -9,11 +17,11 @@
     </mat-error>
   </mat-form-field>
   <mat-form-field>
-      <input matInput placeholder="Password" type="password" formControlName="password">
+      <input matInput placeholder="Password" type="password" formControlName="password"
+      autocomplete="password">
       <mat-error *ngIf="f['password']?.errors?.minlength">
         Min password length is <strong>6</strong>
       </mat-error>
   </mat-form-field>
   <button mat-flat-button color="primary" type="submit" [disabled]="!registerForm.valid">Register</button><br>
-  <a class="signedUp" routerLink="login">Already signed up</a>
 </form>

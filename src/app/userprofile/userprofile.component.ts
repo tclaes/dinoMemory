@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Player } from './player/player.component';
 
@@ -8,15 +7,11 @@ import { Player } from './player/player.component';
   templateUrl: './userprofile.component.html',
   styleUrls: ['./userprofile.component.scss']
 })
-export class UserprofileComponent implements OnInit {
+export class UserprofileComponent {
 
-  player: Player;
+  player: firebase.User;
 
   constructor(private authService: AuthService) {
-    this.player = authService.player;
+    this.player = authService.Player;
   }
-
-  ngOnInit() {
-  }
-
 }

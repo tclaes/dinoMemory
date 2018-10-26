@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from './../../auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,9 +10,25 @@ import { AuthService } from './../../auth.service';
 })
 export class LoginComponent {
 
-  constructor(private auth: AuthService) { }
+  signInForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)])
+  });
 
- login() {
+
+  get f() { return this.signInForm.controls; }
+
+  constructor(private auth: AuthService, private router: Router) { }
+
+  signInWithEmail() {
+    const player = {
+      email: this.signInForm.controls.email.value,
+      password: this.signInForm.controls.password.value
+    };
+    this.auth.doEmailLogin(player);
+  }
+
+ loginWithGoogle() {
   this.auth.doGoogleLogin();
  }
 

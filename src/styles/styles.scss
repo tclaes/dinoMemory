@@ -11,7 +11,9 @@
   --bg-color-2: #f8ffe5;
 }
 
+html, body { height: 100%; }
 body {
+  margin: 0;
   background: var(--main-bg-color);
   font-family: 'Roboto',sans-serif;
 }
@@ -81,5 +83,11 @@ input.mat-input-element {
   color: white;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--board-bg-color);
+  padding: 50px
+}

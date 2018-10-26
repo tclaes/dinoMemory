@@ -1,0 +1,23 @@
+.login button {
+    margin: 5px;
+}
+
+mat-form-field {
+    min-width: 300px;
+
+    @media screen and (min-width: 760px) {
+        min-width: 500px;
+    }
+}
+
+.register {
+    text-decoration: underline;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    &:hover {
+        color: var(--main-bg-color);
+        cursor: pointer;
+        
+    }
+}
