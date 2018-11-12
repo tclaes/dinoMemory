@@ -1,3 +1,30 @@
-<div class="back">
+<div class="back mb-1">
     <h1>Welkom {{user.displayName}}</h1>
 </div>
+
+  <form class="card">
+      <mat-card class="m-1">
+        <mat-grid-list cols="3" rows="2" rowHeight="200px">
+          <mat-grid-tile class="right">
+            <img src="{{user.photoURL}}" alt="Photo from current user" width="200px" class="img-circle">
+          </mat-grid-tile>
+          <mat-grid-tile colspan="2">
+            <div class="credentials column flex-start">
+              <mat-form-field >
+                <input matInput type="text" placeholder="Name" value="{{user.displayName}}" >
+              </mat-form-field>
+              <mat-form-field>
+                  <input matInput type="text" placeholder="Email" value="{{user.email}}" >
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+              <div class="upload_pic">
+                <input type="file" placeholder="Upload photo" accept=".png,.jpg,.jpeg" class="mb-1">
+                <button mat-flat-button color="primary">Upload</button>
+              </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card>
+  </form>
+

@@ -17,11 +17,10 @@ export class GameComponent implements AfterViewInit {
 
   @ViewChildren(CardsComponent, {read: ElementRef}) cards: QueryList<CardsComponent>;
 
-  constructor(public gameSrv: GameService, public renderer: Renderer,
+  constructor(public gameSrv: GameService,
     public renderer2: Renderer2,
     private sharedSrv: SharedService,
     private deckSrv: DeckService) {
-    gameSrv.renderer = renderer;
     gameSrv.renderer2 = renderer2;
     sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
   }

@@ -88,6 +88,21 @@ input.mat-input-element {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--board-bg-color);
   padding: 50px
+}
+
+.flex-start {
+  align-items: flex-start;
+}
+
+.yellow {
+  background: var(--board-bg-color);
+}
+
+.mb-1 {
+  margin-bottom: 10px;
+}
+
+.m-1 {
+  margin: 10px;
 }
