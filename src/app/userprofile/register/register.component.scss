@@ -1,12 +1,4 @@
-.column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--board-bg-color);
-    padding: 50px
 
-
-}
 
 mat-form-field {
     min-width: 300px;
@@ -16,14 +8,4 @@ mat-form-field {
     }
 }
 
-.signedUp {
-    text-decoration: underline;
-    font-size: 0.9rem;
-    font-weight: 500;
 
-    &:hover {
-        color: var(--main-bg-color);
-        cursor: pointer;
-        
-    }
-}

@@ -1,9 +1,8 @@
-import { Component, OnInit, Renderer, ViewChildren, AfterViewInit, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChildren, AfterViewInit, QueryList, ElementRef, Renderer2 } from '@angular/core';
 import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { SharedService } from '../shared/shared.service';
 import { Deck, DeckService } from '../shared/deck.service';
-import { Player } from './../userprofile/player/player.component';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -14,17 +13,16 @@ export class GameComponent implements AfterViewInit {
 
   clicked;
   deck: Deck;
-  player: Player;
   timer;
 
   @ViewChildren(CardsComponent, {read: ElementRef}) cards: QueryList<CardsComponent>;
 
-  constructor(public gameSrv: GameService, public renderer: Renderer,
+  constructor(public gameSrv: GameService,
+    public renderer2: Renderer2,
     private sharedSrv: SharedService,
     private deckSrv: DeckService) {
-    gameSrv.renderer = renderer;
+    gameSrv.renderer2 = renderer2;
     sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
-    sharedSrv.currentPlayer.subscribe(player => this.player = player);
   }
 
   newGame() {
@@ -41,8 +39,6 @@ export class GameComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.newGame();
-    console.log(`Afterview init deck: ${this.deck.name}`);
-    // this.gameSrv.changeDeck(this.deck.name);
     this.sharedSrv.currentTimesClicked.subscribe(timesClicked => this.clicked = timesClicked);
   }
 }

@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-userprofile',
   templateUrl: './userprofile.component.html',
   styleUrls: ['./userprofile.component.scss']
 })
-export class UserprofileComponent implements OnInit {
+export class UserprofileComponent {
 
-  constructor() { }
+  user: firebase.User;
 
-  ngOnInit() {
+  constructor(private authService: AuthService) {
+    authService.User.subscribe(user => this.user = user);
   }
 
 }

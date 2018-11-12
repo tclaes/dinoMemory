@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { DeckService, Deck } from './../../shared/deck.service';
 import { GameService } from './../../game/game.service';
 import { SharedService } from './../../shared/shared.service';
-import { Player } from './../../userprofile/player/player.component';
 import { AuthService } from './../../auth.service';
 import { Router } from '@angular/router';
 
@@ -18,8 +17,7 @@ export class NavigationComponent {
 
   decks$;
   _deck: Deck;
-  player: Player;
-  authenticated: Boolean;
+  user: firebase.User;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -27,29 +25,24 @@ export class NavigationComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
-    public deck: DeckService,
-    public game: GameService,
+    public deckService: DeckService,
+    public gameService: GameService,
     public sharedService: SharedService,
     public authService: AuthService,
     private router: Router) {
-    this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
+    this.decks$ = this.deckService.getData().then(data => data['deck'].map(x => x));
     sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
-    sharedService.currentPlayer.subscribe(player => this.player = player);
-    this.authenticated = false;
+    authService.User.subscribe(user => this.user = user);
   }
 
   newGame(e) {
-    this.game.changeDeck(e.currentTarget.innerText);
-    this.game.newGame();
+    this.gameService.changeDeck(e.currentTarget.innerText);
+    this.gameService.newGame();
     this.router.navigate(['/game']);
   }
 
   logOut() {
-    this.player.set = false;
-    this.sharedService.logOut();
-  }
-
-  login() {
+    this.authService.logOut();
     this.router.navigate(['/login']);
   }
 

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatButtonModule,
   MatCheckboxModule, MatIconModule, MatMenuModule, MatToolbarModule, MatInputModule,
-  MatSidenavModule, MatListModule, MatTableModule, MatCardModule } from '@angular/material';
+  MatSidenavModule, MatListModule, MatTableModule, MatCardModule, MatGridListModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -14,7 +14,7 @@ import {
     MatButtonModule, MatCheckboxModule, MatInputModule,
     MatIconModule, MatMenuModule,
     MatToolbarModule, MatSidenavModule, MatListModule,
-    MatTableModule, MatCardModule,
+    MatTableModule, MatCardModule, MatGridListModule,
   ],
   declarations: [],
   exports: [
@@ -23,7 +23,7 @@ import {
     MatButtonModule, MatCheckboxModule, MatInputModule,
     MatIconModule, MatMenuModule,
     MatToolbarModule, MatSidenavModule, MatListModule,
-    MatTableModule, MatCardModule,
+    MatTableModule, MatCardModule, MatGridListModule,
   ]
 })
 export class SharedModule { }

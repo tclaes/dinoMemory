@@ -1,1 +1,23 @@
-<button (click)="login()">Login with Google</button>
+<form class="column yellow" [formGroup]="signInForm" (ngSubmit)="signInWithEmail()">
+    <mat-form-field>
+        <input matInput placeholder="Email" type="text" formControlName="email"
+            autocomplete="username email">
+        <mat-error *ngIf="!f.email?.errors?.required && f['email']?.errors?.email">
+            Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="f['email'].errors?.required">
+            Email is <strong>required {{f['email'].errors.required}}</strong>
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Password" type="password" formControlName="password" autocomplete="current-password">
+        <mat-error *ngIf="f['password']?.errors?.minlength">
+            Min password length is <strong>6</strong>
+        </mat-error>
+    </mat-form-field>
+    <div class="login">
+        <button mat-flat-button color="primary" type="submit" [disabled]="!signInForm.valid">Sign in</button>
+        <button mat-flat-button (click)="loginWithGoogle($event)" type="button">Login with Google</button>
+    </div>
+        <a name="register" routerLink="/register" class="register">Registreren</a>
+</form>

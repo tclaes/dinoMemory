@@ -1,0 +1,22 @@
+.back {
+    display: flex;
+    justify-content: center;
+    background: var(--board-bg-color);
+}
+
+.img-circle {
+  border-radius: 50%;
+}
+
+.right {
+  text-align: left;
+}
+
+.upload_pic {
+  display: flex;
+  flex-direction: column;
+}
+
+.credentials {
+  min-width: 600px;
+}

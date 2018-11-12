@@ -1,19 +1,28 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { User } from './userprofile/register/register.component';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { switchMap } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   authState: Observable<firebase.User>;
+  user: firebase.User = null;
 
-  constructor(private afAuth: AngularFireAuth) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router
+    ) {
     this.authState = afAuth.authState;
+    afAuth.authState
+    .subscribe(user => this.user = user);
+  }
+
+  get User() {
+    return this.authState;
   }
 
   doGoogleLogin() {
@@ -24,22 +33,50 @@ export class AuthService {
       this.afAuth.auth
         .signInWithPopup(provider)
         .then(res => {
+          this.user = res.user;
+          this.router.navigate(['/']);
           resolve(res);
         });
     });
+  }
+
+  doEmailLogin(user) {
+    this.afAuth.auth
+      .signInWithEmailAndPassword(user.name, user.email)
+      .then(res => {
+        this.user.displayName = user.name;
+        this.user = res.user;
+        this.updateUserInfo();
+      });
   }
 
   tryRegister(user: User) {
     this.afAuth
       .auth
       .createUserWithEmailAndPassword(user.email, user.password)
-      .then(value => console.log('Success!', value))
+      .then(userCredential => {
+        userCredential.user.updateProfile({
+          displayName: user.name,
+          photoURL: ''
+        });
+        console.log(userCredential.user.displayName);
+        this.user = userCredential.user;
+      })
       .catch(err => console.log('Something went wrong', err.message)
       );
   }
 
-  get authenticated(): boolean {
-    return this.authState !== null;
+  updateUserInfo() {
+    console.log(`Username: ${this.user.displayName}`);
+    this.afAuth.auth
+      .updateCurrentUser(this.user);
+  }
+
+  logOut() {
+    this.afAuth.auth.signOut()
+      .then(() => {
+        this.router.navigate(['/']);
+      });
   }
 
 }

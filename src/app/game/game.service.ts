@@ -6,7 +6,7 @@ import { TimerService } from './timer/timer.service';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { Deck } from '../shared/deck.service';
-import { share } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
@@ -14,15 +14,17 @@ export class GameService {
   timer;
   private _timer: Subscription;
   deck: Deck;
+  user: firebase.User;
 
   constructor(private deckSrv: DeckService,
     private scoreSrv: ScoreService, private local: LocalstorageService,
-    private timerSrv: TimerService, private sharedSrv: SharedService) {
+    private timerSrv: TimerService, private sharedSrv: SharedService,
+    private authService: AuthService) {
       timerSrv.currentTime.subscribe(timer => this.timer = timer);
       sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
+      authService.User.subscribe(user => this.user = user);
     }
 
-  renderer: Renderer;
   renderer2: Renderer2;
 
   hasFlippedCard = false;
@@ -43,14 +45,12 @@ export class GameService {
   }
 
   changeDeck(deck) {
-    console.log(`Change deck variable: ${deck}`);
     this.deckSrv.setDeckObservable(deck)
     .subscribe(card => {
       this.deck.name = card['name'];
       this.deck.cards = card['cards'];
       this.deck.imgUrl = card['imgURL'];
       this.deck.frontFace = card['frontFace'];
-      console.log(`set Deck: ${card['imgURL']} this.deck: ${this.deck.name}`);
       this.sharedSrv.setDeck(this.deck);
     });
   }
@@ -74,7 +74,8 @@ export class GameService {
       return;
     }
 
-    this.renderer.setElementClass(clickedCard, 'flip', true);
+
+    this.renderer2.addClass(clickedCard, 'flip');
 
     if (!this.hasFlippedCard) {
       this.hasFlippedCard = true;
@@ -105,15 +106,15 @@ export class GameService {
         let clicks;
         this.sharedSrv.currentTimesClicked.subscribe(click => clicks = click);
         this._timer.unsubscribe();
-        this.scoreSrv.updateScores(this.local.getUser(), clicks , this.timer, this.deck.name);
+        this.scoreSrv.updateScores(this.user.displayName, clicks , this.timer, this.deck.name);
       }
   }
 
   unflipCards() {
     this.lockBoard = true;
     setTimeout(() => {
-      this.renderer.setElementClass(this.firstCard, 'flip', false);
-      this.renderer.setElementClass(this.secondCard, 'flip', false);
+      this.renderer2.removeClass(this.firstCard, 'flip');
+      this.renderer2.removeClass(this.secondCard, 'flip');
       this.lockBoard = false;
       this.resetBoard();
     }, 1000);
@@ -126,7 +127,7 @@ export class GameService {
 
   shuffle(card) {
       const randomPos = Math.floor(Math.random() * 12);
-      this.renderer.setElementClass(card.nativeElement, 'flip', false);
-      this.renderer.setElementStyle(card.nativeElement, 'order', `${randomPos}`);
+      this.renderer2.removeClass(card.nativeElement, 'flip');
+      this.renderer2.setStyle(card.nativeElement, 'order', `${randomPos}`);
   }
 }
