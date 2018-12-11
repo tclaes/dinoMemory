@@ -13,5 +13,4 @@ export class UserprofileComponent {
   constructor(private authService: AuthService) {
     authService.User.subscribe(user => this.user = user);
   }
-
 }

@@ -106,7 +106,7 @@ export class GameService {
         let clicks;
         this.sharedSrv.currentTimesClicked.subscribe(click => clicks = click);
         this._timer.unsubscribe();
-        this.scoreSrv.updateScores(this.user.displayName, clicks , this.timer, this.deck.name);
+        this.scoreSrv.updateScores(this.user.uid, this.user.displayName, clicks , this.timer, this.deck.name);
       }
   }
 

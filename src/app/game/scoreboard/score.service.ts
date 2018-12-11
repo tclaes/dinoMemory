@@ -21,6 +21,13 @@ export class ScoreService {
 
   }
 
+  loadUserStats(userId: string) {
+    this.scores = this.afs.collection('scores', ref =>
+      ref.where('userId', '==', userId));
+      this.collection$ = this.scores.valueChanges();
+      return this.collection$;
+  }
+
   loadScores(deck) {
     this.scores = this.afs.collection('scores', ref =>
       ref.where('deck', '==', deck).orderBy('clicks').orderBy('time').startAt(0).endAt(100).limit(10));
@@ -28,9 +35,10 @@ export class ScoreService {
     return this.collection$;
   }
 
-  updateScores(user, clicks, time, deck) {
+  updateScores(userId, user, clicks, time, deck) {
     this.loadScores(deck);
     const data = {
+      userId: userId,
       user: user,
       deck: deck,
       clicks: clicks,
