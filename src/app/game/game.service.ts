@@ -1,4 +1,4 @@
-import { Injectable, Renderer, Renderer2 } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
@@ -45,6 +45,14 @@ export class GameService {
   }
 
   changeDeck(deck) {
+    // this.deckSrv.setDeck(deck).then(cards => {
+    //   console.log(cards);
+    //   this.deck.name = cards[0].name;
+    //   this.deck.cards = cards[0].cards;
+    //   this.deck.imgUrl = cards[0].imgURL;
+    //   this.deck.frontFace = cards[0].frontFace;
+    //   this.sharedSrv.setDeck(this.deck);
+    // });
     this.deckSrv.setDeckObservable(deck)
     .subscribe(card => {
       this.deck.name = card['name'];

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 
 export interface Deck {
   name: string;
@@ -36,14 +36,9 @@ export class DeckService {
 
   setDeckObservable(e) {
     const data = this.getDataObservable();
-    // console.log(data);
     return data.pipe(
       switchMap(x => x['deck']),
       filter(x => x['name'] === e)
     );
   }
-
-
-
-
 }

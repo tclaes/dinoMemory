@@ -31,6 +31,11 @@ export class NavigationComponent {
     public authService: AuthService,
     private router: Router) {
     this.decks$ = this.deckService.getData().then(data => data['deck'].map(x => x));
+    // deckService.getDataObservable()
+    //   .subscribe(decks => {
+    //     this.decks$ = decks;
+    //     console.log(this.decks$);
+    //   });
     sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
     authService.User.subscribe(user => this.user = user);
   }
