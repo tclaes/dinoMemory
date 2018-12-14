@@ -11,13 +11,15 @@ import { Observable } from 'rxjs';
 export class StatsComponent {
 
   collection$: Observable<any>;
-  displayedColumns: string[] = ['user', 'clicks', 'time', 'date'];
+  testCollection$: Observable<any>;
+  displayedColumns: string[] = ['deck', 'user', 'clicks', 'time', 'date'];
 
   constructor(
     private scoreSrv: ScoreService,
     private authSrv: AuthService) {
       this.authSrv.User.subscribe(user => {
         this.collection$ = this.scoreSrv.loadUserStats(user.uid);
+        this.testCollection$ = this.scoreSrv.loadUserStatsPerDeck(user.uid, 'test');
       });
     }
 }
