@@ -24,7 +24,6 @@ export class SharedService {
   }
 
   setDeck(deck: Deck) {
-    console.log(`setDeck: ${deck.name}`);
     this.deck.next(deck);
   }
 }

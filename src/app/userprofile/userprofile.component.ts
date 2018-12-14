@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-userprofile',
@@ -8,9 +9,9 @@ import { AuthService } from '../auth.service';
 })
 export class UserprofileComponent {
 
-  user: firebase.User;
+  user$: Observable<firebase.User>;
 
   constructor(private authService: AuthService) {
-    authService.User.subscribe(user => this.user = user);
+    this.user$ = authService.User;
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DeckService } from '../../shared/deck.service';
 import { GameService } from '../game.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-score',

@@ -8,23 +8,16 @@ import { Observable } from 'rxjs';
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })
-export class StatsComponent implements OnInit {
+export class StatsComponent {
 
-  user: firebase.User;
   collection$: Observable<any>;
-  displayedColumns: string[] = ['user', 'clicks', 'time'];
+  displayedColumns: string[] = ['user', 'clicks', 'time', 'date'];
 
   constructor(
     private scoreSrv: ScoreService,
     private authSrv: AuthService) {
       this.authSrv.User.subscribe(user => {
-        this.user = user;
         this.collection$ = this.scoreSrv.loadUserStats(user.uid);
       });
-     }
-
-  ngOnInit() {
-    this.collection$ = this.scoreSrv.loadUserStats("umRYyQ0rhbYNZ4LWTOORWfI9NT62");
-  }
-
+    }
 }
