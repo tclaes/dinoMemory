@@ -22,6 +22,9 @@ import { HoldableDirective } from './shared/holdable.directive';
 import { RoutingModule } from './routing.module';
 import { AuthGuard } from './auth.guard';
 
+import {ChartModule} from 'primeng/chart';
+
+
 @NgModule({
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -35,6 +38,7 @@ import { AuthGuard } from './auth.guard';
     StorageServiceModule,
     SharedModule,
     RoutingModule,
+    ChartModule,
     ],
   declarations: [
     AppComponent,

@@ -7,6 +7,7 @@ import { RegisterComponent } from '../userprofile/register/register.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
 import { StatsComponent } from './stats/stats.component';
+import { LineChartComponent } from './stats/line-chart/line-chart.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { StatsComponent } from './stats/stats.component';
     UserprofileComponent,
     RegisterComponent,
     LoginComponent,
-    StatsComponent
+    StatsComponent,
+    LineChartComponent
   ],
   exports: [
     UserprofileComponent, CommonModule, FormsModule, RegisterComponent, ReactiveFormsModule
