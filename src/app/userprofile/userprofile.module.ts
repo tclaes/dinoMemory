@@ -8,13 +8,15 @@ import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
 import { StatsComponent } from './stats/stats.component';
 import { LineChartComponent } from './stats/line-chart/line-chart.component';
+import {ChartModule} from 'primeng/chart';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    ChartModule,
   ],
   declarations: [
     UserprofileComponent,

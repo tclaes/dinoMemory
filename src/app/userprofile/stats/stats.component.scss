@@ -1,7 +1,5 @@
+@import "../../../styles/mixins";
+
 .card {
-    background: #424242;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    
+  @include card
 }

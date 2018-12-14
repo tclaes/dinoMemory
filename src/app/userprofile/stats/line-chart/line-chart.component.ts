@@ -10,12 +10,17 @@ export class LineChartComponent implements OnInit {
   data: any;
 
   constructor() {
-
+    this.data = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+          {
+              label: 'Clicks',
+              data: [1, 2, 5, 3, 10, 8, 6]
+          }
+      ]
+  }
    }
 
-  update(event: Event) {
-    this.data = {};
-  }
 
   ngOnInit() {
   }

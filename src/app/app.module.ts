@@ -22,8 +22,6 @@ import { HoldableDirective } from './shared/holdable.directive';
 import { RoutingModule } from './routing.module';
 import { AuthGuard } from './auth.guard';
 
-import {ChartModule} from 'primeng/chart';
-
 
 @NgModule({
   imports: [
@@ -38,7 +36,6 @@ import {ChartModule} from 'primeng/chart';
     StorageServiceModule,
     SharedModule,
     RoutingModule,
-    ChartModule,
     ],
   declarations: [
     AppComponent,
