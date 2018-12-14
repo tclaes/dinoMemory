@@ -44,17 +44,9 @@ export class GameService {
     this.timerSrv.resetTimer();
   }
 
-  changeDeck(deck) {
-    // this.deckSrv.setDeck(deck).then(cards => {
-    //   console.log(cards);
-    //   this.deck.name = cards[0].name;
-    //   this.deck.cards = cards[0].cards;
-    //   this.deck.imgUrl = cards[0].imgURL;
-    //   this.deck.frontFace = cards[0].frontFace;
-    //   this.sharedSrv.setDeck(this.deck);
-    // });
-    this.deckSrv.setDeckObservable(deck)
-    .subscribe(card => {
+  changeDeck(deckName) {
+    const deck = this.deckSrv.setDeckObservable(deckName.trim());
+    deck.subscribe(card => {
       this.deck.name = card['name'];
       this.deck.cards = card['cards'];
       this.deck.imgUrl = card['imgURL'];
@@ -138,4 +130,9 @@ export class GameService {
       this.renderer2.removeClass(card.nativeElement, 'flip');
       this.renderer2.setStyle(card.nativeElement, 'order', `${randomPos}`);
   }
+
+  ngOnInit(): void {
+    this.sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
+  }
+
 }

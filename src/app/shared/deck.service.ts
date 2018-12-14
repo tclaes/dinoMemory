@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, toArray, tap } from 'rxjs/operators';
 
 export interface Deck {
   name: string;

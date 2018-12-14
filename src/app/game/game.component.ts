@@ -2,7 +2,7 @@ import { Component, OnInit, Renderer, ViewChildren, AfterViewInit, QueryList, El
 import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { SharedService } from '../shared/shared.service';
-import { Deck, DeckService } from '../shared/deck.service';
+import { Deck } from '../shared/deck.service';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -19,8 +19,7 @@ export class GameComponent implements AfterViewInit {
 
   constructor(public gameSrv: GameService,
     public renderer2: Renderer2,
-    private sharedSrv: SharedService,
-    private deckSrv: DeckService) {
+    private sharedSrv: SharedService) {
     gameSrv.renderer2 = renderer2;
     sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
   }

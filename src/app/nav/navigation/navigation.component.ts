@@ -41,6 +41,7 @@ export class NavigationComponent {
   }
 
   newGame(e) {
+    console.log(e.currentTarget);
     this.gameService.changeDeck(e.currentTarget.innerText);
     this.gameService.newGame();
     this.router.navigate(['/game']);
