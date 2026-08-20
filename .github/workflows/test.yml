@@ -1,0 +1,30 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    env:
+      CHROME_BIN: /usr/bin/google-chrome-stable
+      # webpack 4 (bundled with this Angular CLI version) hashes with an algorithm OpenSSL 3
+      # dropped by default; Node 18's OpenSSL 3 needs the legacy provider re-enabled.
+      NODE_OPTIONS: --openssl-legacy-provider
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - run: npm ci
+
+      - run: npx ng test --watch=false --browsers=ChromeHeadlessCI --code-coverage
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
