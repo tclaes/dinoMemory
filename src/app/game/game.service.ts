@@ -1,4 +1,4 @@
-import { Injectable, Renderer, Renderer2 } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
