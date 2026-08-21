@@ -12,7 +12,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { StorageServiceModule } from 'angular-webstorage-service';
+import { LOCAL_STORAGE, localStorageFactory } from 'angular-webstorage-service';
 
 import { GameComponent } from './game/game.component';
 import { NavigationComponent } from './nav/navigation/navigation.component';
@@ -32,7 +32,6 @@ import { AuthGuard } from './auth.guard';
     GameModule,
     HttpClientModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
-    StorageServiceModule,
     SharedModule,
     RoutingModule,
     ],
@@ -43,7 +42,10 @@ import { AuthGuard } from './auth.guard';
     HoldableDirective,
     NavigationComponent,
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard,
+    { provide: LOCAL_STORAGE, useFactory: localStorageFactory }
+  ],
   bootstrap: [AppComponent]
 })
 
