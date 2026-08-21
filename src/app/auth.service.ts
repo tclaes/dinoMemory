@@ -1,24 +1,24 @@
-import { Injectable } from '@angular/core';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+import { Inject, Injectable } from '@angular/core';
+import { Auth, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 import { User } from './userprofile/register/register.component';
-import { Observable} from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { AUTH_OPS, AuthOps } from './auth-ops';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  authState: Observable<firebase.User>;
-  user: firebase.User = null;
+  authState: Observable<FirebaseUser>;
+  user: FirebaseUser = null;
 
   constructor(
-    private afAuth: AngularFireAuth,
+    private auth: Auth,
+    @Inject(AUTH_OPS) private ops: AuthOps,
     private router: Router
     ) {
-    this.authState = afAuth.authState;
-    afAuth.authState
+    this.authState = this.ops.authState(this.auth);
+    this.authState
     .subscribe(user => this.user = user);
   }
 
@@ -28,11 +28,11 @@ export class AuthService {
 
   doGoogleLogin() {
     return new Promise<any>((resolve, reject) => {
-      const provider = new firebase.auth.GoogleAuthProvider();
+      const provider = new GoogleAuthProvider();
       provider.addScope('profile');
       provider.addScope('email');
-      this.afAuth
-        .signInWithPopup(provider)
+      this.ops
+        .signInWithPopup(this.auth, provider)
         .then(res => {
           this.user = res.user;
           this.router.navigate(['/']);
@@ -42,20 +42,19 @@ export class AuthService {
   }
 
   doEmailLogin(user) {
-    this.afAuth
-      .signInWithEmailAndPassword(user.name, user.email)
+    this.ops
+      .signInWithEmailAndPassword(this.auth, user.name, user.email)
       .then(res => {
-        this.user.displayName = user.name;
         this.user = res.user;
         this.updateUserInfo();
       });
   }
 
   tryRegister(user: User) {
-    this.afAuth
-      .createUserWithEmailAndPassword(user.email, user.password)
+    this.ops
+      .createUserWithEmailAndPassword(this.auth, user.email, user.password)
       .then(userCredential => {
-        userCredential.user.updateProfile({
+        this.ops.updateProfile(userCredential.user, {
           displayName: user.name,
           photoURL: ''
         });
@@ -68,12 +67,12 @@ export class AuthService {
 
   updateUserInfo() {
     console.log(`Username: ${this.user.displayName}`);
-    this.afAuth
-      .updateCurrentUser(this.user);
+    this.ops
+      .updateCurrentUser(this.auth, this.user);
   }
 
   logOut() {
-    this.afAuth.signOut()
+    this.ops.signOut(this.auth)
       .then(() => {
         this.router.navigate(['/']);
       });

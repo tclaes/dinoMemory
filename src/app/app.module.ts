@@ -8,9 +8,9 @@ import { SharedModule } from './shared/shared.module';
 
 import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebaseConfig;
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore, enableIndexedDbPersistence } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LOCAL_STORAGE, localStorageFactory } from 'angular-webstorage-service';
 
@@ -24,9 +24,13 @@ import { AuthGuard } from './auth.guard';
 
 @NgModule({
   imports: [
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule.enablePersistence(),
-    AngularFireAuthModule,
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      enableIndexedDbPersistence(firestore);
+      return firestore;
+    }),
     BrowserAnimationsModule,
     BrowserModule,
     GameModule,

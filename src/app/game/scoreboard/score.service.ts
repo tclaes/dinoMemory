@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Inject, Injectable } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { FIRESTORE_OPS, FirestoreOps } from './firestore-ops';
 
 export interface Score {
   user: string;
@@ -15,16 +16,26 @@ export interface Score {
 export class ScoreService {
 
   collection$: Observable<Score[]>;
-  scores: AngularFirestoreCollection<Score>;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(
+    private firestore: Firestore,
+    @Inject(FIRESTORE_OPS) private ops: FirestoreOps
+  ) {
 
   }
 
   loadScores(deck) {
-    this.scores = this.afs.collection('scores', ref =>
-      ref.where('deck', '==', deck).orderBy('clicks').orderBy('time').startAt(0).endAt(100).limit(10));
-    this.collection$ = this.scores.valueChanges();
+    const scoresRef = this.ops.collection(this.firestore, 'scores');
+    const q = this.ops.query(
+      scoresRef,
+      this.ops.where('deck', '==', deck),
+      this.ops.orderBy('clicks'),
+      this.ops.orderBy('time'),
+      this.ops.startAt(0),
+      this.ops.endAt(100),
+      this.ops.limit(10)
+    );
+    this.collection$ = this.ops.collectionData(q) as Observable<Score[]>;
     return this.collection$;
   }
 
@@ -37,7 +48,7 @@ export class ScoreService {
       time: time
     };
 
-    this.scores.add(data);
+    this.ops.addDoc(this.ops.collection(this.firestore, 'scores'), data);
 
   }
 }

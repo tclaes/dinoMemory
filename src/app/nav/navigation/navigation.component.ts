@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from '@angular/fire/auth';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -17,7 +18,7 @@ export class NavigationComponent {
 
   decks$;
   _deck: Deck;
-  user: firebase.User;
+  user: User;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
