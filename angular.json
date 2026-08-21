@@ -24,14 +24,15 @@
             ],
             "styles": [
               {
-                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+                "inject": true
               },
               "src/styles/styles.scss",
               "src/styles/dino.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                  "src/styles"
+                "src/styles"
               ]
             },
             "scripts": []
@@ -61,7 +62,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -101,14 +101,15 @@
             "scripts": [],
             "styles": [
               {
-                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+                "inject": true
               },
               "src/styles/styles.scss",
               "src/styles/dino.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                  "src/styles"
+                "src/styles"
               ]
             },
             "assets": [

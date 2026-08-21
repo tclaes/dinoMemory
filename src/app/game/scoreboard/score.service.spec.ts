@@ -31,7 +31,7 @@ describe('ScoreService', () => {
     let result: any[];
     service.loadScores('dinos').subscribe(scores => result = scores);
 
-    expect(afsSpy.collection).toHaveBeenCalledWith('scores', jasmine.any(Function));
+    expect(afsSpy.collection as jasmine.Spy).toHaveBeenCalledWith('scores', jasmine.any(Function));
     expect(result).toEqual([{ user: 'Rex', deck: 'dinos', clicks: 8, time: '0h - 0m - 30s' }]);
   });
 
