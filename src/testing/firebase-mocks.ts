@@ -15,13 +15,11 @@ export const mockUser: any = {
 export class MockAngularFireAuth {
   authStateSubject = new BehaviorSubject<any>(mockUser);
   authState = this.authStateSubject.asObservable();
-  auth = jasmine.createSpyObj('firebaseAuth', [
-    'signInWithPopup',
-    'signInWithEmailAndPassword',
-    'createUserWithEmailAndPassword',
-    'signOut',
-    'updateCurrentUser'
-  ]);
+  signInWithPopup = jasmine.createSpy('signInWithPopup');
+  signInWithEmailAndPassword = jasmine.createSpy('signInWithEmailAndPassword');
+  createUserWithEmailAndPassword = jasmine.createSpy('createUserWithEmailAndPassword');
+  signOut = jasmine.createSpy('signOut');
+  updateCurrentUser = jasmine.createSpy('updateCurrentUser');
 }
 
 export function createMockAngularFireAuth(): MockAngularFireAuth {
