@@ -33,7 +33,7 @@ describe('AuthService', () => {
 
   it('doGoogleLogin() sets the user from the popup result and navigates home', fakeAsync(() => {
     const popupResult = { user: { ...mockUser, uid: 'google-uid' } };
-    mockAfAuth.auth.signInWithPopup.and.returnValue(Promise.resolve(popupResult));
+    mockAfAuth.signInWithPopup.and.returnValue(Promise.resolve(popupResult));
 
     service.doGoogleLogin();
     tick();
@@ -45,30 +45,30 @@ describe('AuthService', () => {
   it('doEmailLogin() sets the display name and updates the current user', fakeAsync(() => {
     const player = { name: 'Player One', email: 'player@example.com' };
     const signInResult = { user: { ...mockUser, uid: 'email-uid' } };
-    mockAfAuth.auth.signInWithEmailAndPassword.and.returnValue(Promise.resolve(signInResult));
+    mockAfAuth.signInWithEmailAndPassword.and.returnValue(Promise.resolve(signInResult));
 
     service.doEmailLogin(player);
     tick();
 
-    expect(mockAfAuth.auth.signInWithEmailAndPassword).toHaveBeenCalledWith(player.name, player.email);
-    expect(mockAfAuth.auth.updateCurrentUser).toHaveBeenCalled();
+    expect(mockAfAuth.signInWithEmailAndPassword).toHaveBeenCalledWith(player.name, player.email);
+    expect(mockAfAuth.updateCurrentUser).toHaveBeenCalled();
   }));
 
   it('tryRegister() creates the account and sets the profile display name', fakeAsync(() => {
     const newUser = { name: 'New Player', email: 'new@example.com', password: 'secret1' };
     const updateProfileSpy = jasmine.createSpy('updateProfile');
     const userCredential = { user: { updateProfile: updateProfileSpy } };
-    mockAfAuth.auth.createUserWithEmailAndPassword.and.returnValue(Promise.resolve(userCredential));
+    mockAfAuth.createUserWithEmailAndPassword.and.returnValue(Promise.resolve(userCredential));
 
     service.tryRegister(newUser as any);
     tick();
 
-    expect(mockAfAuth.auth.createUserWithEmailAndPassword).toHaveBeenCalledWith(newUser.email, newUser.password);
+    expect(mockAfAuth.createUserWithEmailAndPassword).toHaveBeenCalledWith(newUser.email, newUser.password);
     expect(updateProfileSpy).toHaveBeenCalledWith({ displayName: newUser.name, photoURL: '' });
   }));
 
   it('logOut() signs out and navigates home', fakeAsync(() => {
-    mockAfAuth.auth.signOut.and.returnValue(Promise.resolve());
+    mockAfAuth.signOut.and.returnValue(Promise.resolve());
 
     service.logOut();
     tick();

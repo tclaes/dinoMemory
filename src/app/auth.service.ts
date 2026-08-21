@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import { User } from './userprofile/register/register.component';
 import { Observable} from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -30,7 +31,7 @@ export class AuthService {
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('profile');
       provider.addScope('email');
-      this.afAuth.auth
+      this.afAuth
         .signInWithPopup(provider)
         .then(res => {
           this.user = res.user;
@@ -41,7 +42,7 @@ export class AuthService {
   }
 
   doEmailLogin(user) {
-    this.afAuth.auth
+    this.afAuth
       .signInWithEmailAndPassword(user.name, user.email)
       .then(res => {
         this.user.displayName = user.name;
@@ -52,7 +53,6 @@ export class AuthService {
 
   tryRegister(user: User) {
     this.afAuth
-      .auth
       .createUserWithEmailAndPassword(user.email, user.password)
       .then(userCredential => {
         userCredential.user.updateProfile({
@@ -68,12 +68,12 @@ export class AuthService {
 
   updateUserInfo() {
     console.log(`Username: ${this.user.displayName}`);
-    this.afAuth.auth
+    this.afAuth
       .updateCurrentUser(this.user);
   }
 
   logOut() {
-    this.afAuth.auth.signOut()
+    this.afAuth.signOut()
       .then(() => {
         this.router.navigate(['/']);
       });
