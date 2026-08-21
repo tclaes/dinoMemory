@@ -6,6 +6,7 @@
     "declaration": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "experimentalDecorators": true,
     "target": "es5",
     "typeRoots": [
