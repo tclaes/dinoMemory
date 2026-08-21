@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, ViewChildren, AfterViewInit, QueryList, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChildren, AfterViewInit, QueryList, ElementRef, Renderer2 } from '@angular/core';
 import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { SharedService } from '../shared/shared.service';
