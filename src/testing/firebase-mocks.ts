@@ -1,9 +1,10 @@
 import { BehaviorSubject, of } from 'rxjs';
 
 /**
- * Reusable Firebase test doubles. Never import AngularFireModule / AngularFirestoreModule /
- * AngularFireAuthModule in specs — they call firebase.initializeApp() with the real project
- * config from src/environments/environment.ts and will try to talk to the live project.
+ * Reusable Firebase test doubles. Never import provideFirebaseApp/initializeApp in specs —
+ * that calls the real project config from src/environments/environment.ts and will try to
+ * talk to the live project. AUTH_OPS/FIRESTORE_OPS wrap the modular SDK's free functions so
+ * specs can spy on them via DI instead of spying on ES module exports directly.
  */
 
 export const mockUser: any = {
@@ -12,26 +13,20 @@ export const mockUser: any = {
   email: 'test@example.com'
 };
 
-export class MockAngularFireAuth {
-  authStateSubject = new BehaviorSubject<any>(mockUser);
-  authState = this.authStateSubject.asObservable();
-  signInWithPopup = jasmine.createSpy('signInWithPopup');
-  signInWithEmailAndPassword = jasmine.createSpy('signInWithEmailAndPassword');
-  createUserWithEmailAndPassword = jasmine.createSpy('createUserWithEmailAndPassword');
-  signOut = jasmine.createSpy('signOut');
-  updateCurrentUser = jasmine.createSpy('updateCurrentUser');
+export function createMockAuthOps(initialUser: any = mockUser) {
+  const authStateSubject = new BehaviorSubject<any>(initialUser);
+  const ops = jasmine.createSpyObj('AuthOps', [
+    'authState', 'signInWithPopup', 'signInWithEmailAndPassword',
+    'createUserWithEmailAndPassword', 'updateCurrentUser', 'signOut', 'updateProfile'
+  ]);
+  ops.authState.and.returnValue(authStateSubject.asObservable());
+  return { ops, authStateSubject };
 }
 
-export function createMockAngularFireAuth(): MockAngularFireAuth {
-  return new MockAngularFireAuth();
-}
-
-export function createMockAngularFirestore(scores: any[] = []) {
-  const collectionSpy = jasmine.createSpyObj('AngularFirestoreCollection', ['valueChanges', 'add']);
-  collectionSpy.valueChanges.and.returnValue(of(scores));
-
-  const afsSpy = jasmine.createSpyObj('AngularFirestore', ['collection']);
-  afsSpy.collection.and.returnValue(collectionSpy);
-
-  return { afsSpy, collectionSpy };
+export function createMockFirestoreOps(scores: any[] = []) {
+  const ops = jasmine.createSpyObj('FirestoreOps', [
+    'collection', 'query', 'where', 'orderBy', 'startAt', 'endAt', 'limit', 'collectionData', 'addDoc'
+  ]);
+  ops.collectionData.and.returnValue(of(scores));
+  return ops;
 }

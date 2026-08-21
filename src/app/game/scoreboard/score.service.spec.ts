@@ -1,23 +1,30 @@
 import { TestBed } from '@angular/core/testing';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 
 import { ScoreService } from './score.service';
-import { createMockAngularFirestore } from '../../../testing/firebase-mocks';
+import { FIRESTORE_OPS } from './firestore-ops';
+import { createMockFirestoreOps } from '../../../testing/firebase-mocks';
 
 describe('ScoreService', () => {
   let service: ScoreService;
-  let afsSpy: jasmine.SpyObj<AngularFirestore>;
-  let collectionSpy: jasmine.SpyObj<any>;
+  let opsSpy: jasmine.SpyObj<any>;
+  const fakeFirestore = {};
 
   beforeEach(() => {
-    const mocks = createMockAngularFirestore([{ user: 'Rex', deck: 'dinos', clicks: 8, time: '0h - 0m - 30s' }]);
-    afsSpy = mocks.afsSpy;
-    collectionSpy = mocks.collectionSpy;
+    opsSpy = createMockFirestoreOps([{ user: 'Rex', deck: 'dinos', clicks: 8, time: '0h - 0m - 30s' }]);
+    opsSpy.collection.and.returnValue('scores-ref');
+    opsSpy.query.and.returnValue('scores-query');
+    opsSpy.where.and.returnValue('where-constraint');
+    opsSpy.orderBy.and.returnValue('orderBy-constraint');
+    opsSpy.startAt.and.returnValue('startAt-constraint');
+    opsSpy.endAt.and.returnValue('endAt-constraint');
+    opsSpy.limit.and.returnValue('limit-constraint');
 
     TestBed.configureTestingModule({
       providers: [
         ScoreService,
-        { provide: AngularFirestore, useValue: afsSpy }
+        { provide: Firestore, useValue: fakeFirestore },
+        { provide: FIRESTORE_OPS, useValue: opsSpy }
       ]
     });
     service = TestBed.get(ScoreService);
@@ -31,14 +38,17 @@ describe('ScoreService', () => {
     let result: any[];
     service.loadScores('dinos').subscribe(scores => result = scores);
 
-    expect(afsSpy.collection as jasmine.Spy).toHaveBeenCalledWith('scores', jasmine.any(Function));
+    expect(opsSpy.collection).toHaveBeenCalledWith(fakeFirestore, 'scores');
+    expect(opsSpy.where).toHaveBeenCalledWith('deck', '==', 'dinos');
+    expect(opsSpy.orderBy).toHaveBeenCalledWith('clicks');
+    expect(opsSpy.orderBy).toHaveBeenCalledWith('time');
     expect(result).toEqual([{ user: 'Rex', deck: 'dinos', clicks: 8, time: '0h - 0m - 30s' }]);
   });
 
   it('updateScores() reloads the collection and adds a new score with the right shape', () => {
     service.updateScores('Rex', 12, '0h - 0m - 45s', 'dinos');
 
-    expect(collectionSpy.add).toHaveBeenCalledWith({
+    expect(opsSpy.addDoc).toHaveBeenCalledWith('scores-ref', {
       user: 'Rex',
       deck: 'dinos',
       clicks: 12,

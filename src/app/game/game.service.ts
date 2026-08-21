@@ -1,4 +1,5 @@
 import { Injectable, Renderer2 } from '@angular/core';
+import { User } from '@angular/fire/auth';
 import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { LocalstorageService } from '../shared/localstorage.service';
@@ -14,7 +15,7 @@ export class GameService {
   timer;
   private _timer: Subscription;
   deck: Deck;
-  user: firebase.User;
+  user: User;
 
   constructor(private deckSrv: DeckService,
     private scoreSrv: ScoreService, private local: LocalstorageService,

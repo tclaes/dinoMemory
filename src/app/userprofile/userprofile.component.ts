@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from '@angular/fire/auth';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { AuthService } from '../auth.service';
 })
 export class UserprofileComponent {
 
-  user: firebase.User;
+  user: User;
 
   constructor(private authService: AuthService) {
     authService.User.subscribe(user => this.user = user);
