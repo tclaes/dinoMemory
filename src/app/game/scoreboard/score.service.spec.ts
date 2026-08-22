@@ -27,7 +27,7 @@ describe('ScoreService', () => {
         { provide: FIRESTORE_OPS, useValue: opsSpy }
       ]
     });
-    service = TestBed.get(ScoreService);
+    service = TestBed.inject(ScoreService);
   });
 
   it('should be created', () => {

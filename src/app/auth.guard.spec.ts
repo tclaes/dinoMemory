@@ -22,7 +22,7 @@ describe('AuthGuard', () => {
         { provide: Router, useValue: routerSpy }
       ]
     });
-    guard = TestBed.get(AuthGuard);
+    guard = TestBed.inject(AuthGuard);
   });
 
   it('should be created', () => {

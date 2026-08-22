@@ -24,7 +24,7 @@ describe('AuthService', () => {
         { provide: Router, useValue: routerSpy }
       ]
     });
-    service = TestBed.get(AuthService);
+    service = TestBed.inject(AuthService);
   });
 
   it('should be created', () => {
