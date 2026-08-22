@@ -3,30 +3,36 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary">Memory</mat-toolbar>
-    <mat-nav-list *ngFor='let button of decks$ | async'>
-      <a mat-list-item class="controls button nav-item" (click)="newGame($event)">{{button.name}}</a>
-    </mat-nav-list>
+    @for (button of decks$ | async; track button) {
+      <mat-nav-list>
+        <a mat-list-item class="controls button nav-item" (click)="newGame($event)">{{button.name}}</a>
+      </mat-nav-list>
+    }
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
+      @if (isHandset$ | async) {
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+      }
       <span routerLink="/" class="header_logo">Memory</span>
-      <ng-container *ngIf="user !== null">
-      <div class="menu_links">
-        <mat-nav-list [ngClass]="{hidden: (isHandset$ | async)}" class="menu" *ngFor='let button of decks$ | async'>
-          <a mat-list-item (click)="newGame($event)">{{button.name}}</a>
+      @if (user !== null) {
+        <div class="menu_links">
+          @for (button of decks$ | async; track button) {
+            <mat-nav-list [ngClass]="{hidden: (isHandset$ | async)}" class="menu">
+              <a mat-list-item (click)="newGame($event)">{{button.name}}</a>
+            </mat-nav-list>
+          }
+        </div>
+        <mat-nav-list class="profile_menu">
+          <a mat-list-item routerLink="userprofile" name="user_profile">
+            <mat-icon class="md-48" aria-label="Profile icon">account_box</mat-icon>
+            <span class="visuallyhidden">Profile</span>
+          </a>
+          <a mat-list-item (click)="logOut()">Logout</a>
         </mat-nav-list>
-      </div>
-      <mat-nav-list class="profile_menu">
-        <a mat-list-item routerLink="userprofile" name="user_profile">
-          <mat-icon class="md-48" aria-label="Profile icon">account_box</mat-icon>
-          <span class="visuallyhidden">Profile</span>
-        </a>
-        <a mat-list-item (click)="logOut()">Logout</a>
-      </mat-nav-list>
-    </ng-container>
+      }
     </mat-toolbar>
     <!-- Add Content Here -->
     <ng-content></ng-content>

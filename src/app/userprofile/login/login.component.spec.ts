@@ -43,18 +43,21 @@ describe('LoginComponent', () => {
 
   it('flags a malformed email address', () => {
     component.signInForm.controls.email.setValue('not-an-email');
+    fixture.detectChanges(false);
     expect(component.f.email.errors.email).toBeTruthy();
   });
 
   it('is valid with a proper email and a password of at least 6 characters', () => {
     component.signInForm.controls.email.setValue('player@example.com');
     component.signInForm.controls.password.setValue('secret1');
+    fixture.detectChanges(false);
     expect(component.signInForm.valid).toBe(true);
   });
 
   it('signInWithEmail() delegates to AuthService with the raw form values', () => {
     component.signInForm.controls.email.setValue('player@example.com');
     component.signInForm.controls.password.setValue('secret1');
+    fixture.detectChanges(false);
 
     component.signInWithEmail();
 
