@@ -44,9 +44,9 @@ describe('GameService', () => {
       ]
     });
 
-    service = TestBed.get(GameService);
-    sharedSrv = TestBed.get(SharedService);
-    timerSrv = TestBed.get(TimerService);
+    service = TestBed.inject(GameService);
+    sharedSrv = TestBed.inject(SharedService);
+    timerSrv = TestBed.inject(TimerService);
 
     renderer2Spy = jasmine.createSpyObj('Renderer2', ['addClass', 'removeClass', 'setStyle']);
     // renderer2 is assigned by GameComponent at runtime, not injected via DI.

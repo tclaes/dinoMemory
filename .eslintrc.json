@@ -54,7 +54,8 @@
         "id-match": "off",
         "no-underscore-dangle": "off",
         "valid-typeof": "error",
-        "@angular-eslint/prefer-standalone": "off"
+        "@angular-eslint/prefer-standalone": "off",
+        "@angular-eslint/prefer-inject": "off"
       }
     },
     {

@@ -73,6 +73,16 @@ body {
   background-color: var(--main-bg-color);
 }
 
+// As of Material 20 mat-sidenav-container/-content paint an opaque
+// background from the theme's system tokens (#424242/#303030 here),
+// where prior versions left them transparent and let this app's own
+// body background show through. Restore that transparency explicitly
+// rather than adopt the new opaque default.
+.mat-sidenav-container {
+  --mat-sidenav-container-background-color: transparent;
+  --mat-sidenav-content-background-color: transparent;
+}
+
 .modal .score {
   display: flex;
   align-items: center;
@@ -88,8 +98,8 @@ input.mat-mdc-input-element {
 // just renamed). Make the fill container transparent to restore the original
 // underline look instead of adopting the new filled-box look everywhere.
 .mat-mdc-form-field:not(.mat-form-field-appearance-outline) {
-  --mdc-filled-text-field-container-color: transparent;
-  --mdc-filled-text-field-disabled-container-color: transparent;
+  --mat-form-field-filled-container-color: transparent;
+  --mat-form-field-filled-disabled-container-color: transparent;
   --mat-form-field-state-layer-color: transparent;
 }
 

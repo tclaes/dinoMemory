@@ -40,8 +40,8 @@ describe("DeckService", () => {
         provideHttpClientTesting(),
       ],
     });
-    service = TestBed.get(DeckService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(DeckService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

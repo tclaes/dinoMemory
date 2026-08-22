@@ -7,7 +7,7 @@ describe('TimerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.get(TimerService);
+    service = TestBed.inject(TimerService);
   });
 
   it('should be created', () => {

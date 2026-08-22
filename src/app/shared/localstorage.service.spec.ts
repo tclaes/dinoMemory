@@ -15,7 +15,7 @@ describe('LocalstorageService', () => {
         { provide: LOCAL_STORAGE, useValue: storageSpy }
       ]
     });
-    service = TestBed.get(LocalstorageService);
+    service = TestBed.inject(LocalstorageService);
   });
 
   it('should be created', () => {
