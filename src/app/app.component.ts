@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { GameService } from './game/game.service';
 import { SharedService } from './shared/shared.service';
 import { Deck } from './shared/deck.service';
@@ -6,6 +6,7 @@ import { Deck } from './shared/deck.service';
 @Component({
     selector: 'app-main',
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

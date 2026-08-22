@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { AuthService } from '../auth.service';
 
@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service';
     selector: 'app-userprofile',
     templateUrl: './userprofile.component.html',
     styleUrls: ['./userprofile.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UserprofileComponent {

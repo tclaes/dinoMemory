@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { GameService } from '../game.service';
 import { ScoreService, Score } from './score.service';
 import { Observable } from 'rxjs';
@@ -37,6 +37,7 @@ import { TimerService } from '../timer/timer.service';
 
   `,
     styleUrls: ['./scoreboard.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ScoreboardComponent implements OnInit {

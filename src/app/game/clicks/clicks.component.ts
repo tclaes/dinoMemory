@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { SharedService } from './../../shared/shared.service';
 
 @Component({
@@ -9,6 +9,7 @@ import { SharedService } from './../../shared/shared.service';
     </div>
   `,
     styleUrls: ['./clicks.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ClicksComponent {

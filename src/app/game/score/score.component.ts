@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { DeckService } from '../../shared/deck.service';
 import { GameService } from '../game.service';
 
@@ -6,6 +6,7 @@ import { GameService } from '../game.service';
     selector: 'app-score',
     templateUrl: './score.component.html',
     styleUrls: ['./score.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ScoreComponent implements OnInit {

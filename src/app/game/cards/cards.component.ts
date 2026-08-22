@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-card',
@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
     <img src="assets/img/{{imgUrl}}/{{frontFace}}.svg" alt="Memory Card" class="back-face">
   `,
     styleUrls: ['./cards.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CardsComponent {
