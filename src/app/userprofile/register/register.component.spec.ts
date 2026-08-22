@@ -41,6 +41,7 @@ describe('RegisterComponent', () => {
   it('flags a malformed email address and a too-short password', () => {
     component.registerForm.controls.email.setValue('not-an-email');
     component.registerForm.controls.password.setValue('abc');
+    fixture.detectChanges(false);
 
     expect(component.f.email.errors.email).toBeTruthy();
     expect(component.f.password.errors.minlength).toBeTruthy();
@@ -50,6 +51,7 @@ describe('RegisterComponent', () => {
     component.registerForm.controls.name.setValue('Player One');
     component.registerForm.controls.email.setValue('player@example.com');
     component.registerForm.controls.password.setValue('secret1');
+    fixture.detectChanges(false);
 
     expect(component.registerForm.valid).toBe(true);
   });
@@ -58,6 +60,7 @@ describe('RegisterComponent', () => {
     component.registerForm.controls.name.setValue('Player One');
     component.registerForm.controls.email.setValue('player@example.com');
     component.registerForm.controls.password.setValue('secret1');
+    fixture.detectChanges(false);
 
     component.register();
 

@@ -1,19 +1,25 @@
 <!-- <app-player *ngIf="!player.set"></app-player> -->
 <app-score id="header"></app-score>
-<app-scoreboard *ngIf="gameSrv.gameWon" appGameWon></app-scoreboard>
+@if (gameSrv.gameWon) {
+  <app-scoreboard appGameWon></app-scoreboard>
+}
 <section class="memory-game" id="memory-board">
-  <app-card *ngFor='let card of gameSrv.deck.cards' 
-  [card]="card" 
-  [imgUrl]="deck.imgUrl"
-  [frontFace]="deck.frontFace" 
-  class="memory-card" (click)="flipCard($event)"
-  [attr.identifier] = "card"></app-card>
+  @for (card of gameSrv.deck.cards; track card) {
+    <app-card
+      [card]="card"
+      [imgUrl]="deck.imgUrl"
+      [frontFace]="deck.frontFace"
+      class="memory-card" (click)="flipCard($event)"
+    [attr.identifier] = "card"></app-card>
+  }
 
-  <app-card *ngFor='let card of gameSrv.deck.cards'
-  [card]="card" 
-  [imgUrl]="deck.imgUrl"
-  [frontFace]="deck.frontFace"
-  class="memory-card" 
-  (click)="flipCard($event)" 
-  [attr.identifier] = "card"></app-card>
+  @for (card of gameSrv.deck.cards; track card) {
+    <app-card
+      [card]="card"
+      [imgUrl]="deck.imgUrl"
+      [frontFace]="deck.frontFace"
+      class="memory-card"
+      (click)="flipCard($event)"
+    [attr.identifier] = "card"></app-card>
+  }
 </section>

@@ -23,13 +23,13 @@ export class HoldableDirective {
     );
    }
 
-  @HostListener('mouseup', ['$event'])
-  @HostListener('mouseleave', ['$event'])
+  @HostListener('mouseup')
+  @HostListener('mouseleave')
   onExit() {
     this.state.next('cancel');
   }
 
-  @HostListener('mousedown', ['$event'])
+  @HostListener('mousedown')
   onHold() {
     // console.log('%c started hold', 'color: #5fba7d; font-weight: bold');
     this.state.next('start');
