@@ -1,8 +1,9 @@
 import { Directive, Renderer2, ElementRef } from '@angular/core';
 
 @Directive({
-  exportAs: 'gameWon',
-  selector: '[appGameWon]'
+    exportAs: 'gameWon',
+    selector: '[appGameWon]',
+    standalone: false
 })
 
 export class GameWonDirective {

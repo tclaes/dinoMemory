@@ -53,7 +53,8 @@
         "id-blacklist": "off",
         "id-match": "off",
         "no-underscore-dangle": "off",
-        "valid-typeof": "error"
+        "valid-typeof": "error",
+        "@angular-eslint/prefer-standalone": "off"
       }
     },
     {

@@ -4,7 +4,8 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { HoldableDirective } from './holdable.directive';
 
 @Component({
-  template: `<div holdable (holdTime)="record($event)"></div>`
+    template: `<div holdable (holdTime)="record($event)"></div>`,
+    standalone: false
 })
 class TestHostComponent {
   values: number[] = [];

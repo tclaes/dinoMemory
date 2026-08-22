@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @include mat.all-component-typographies();
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 $custom-background-color: #1b9aaa;
 

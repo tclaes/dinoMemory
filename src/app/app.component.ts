@@ -4,8 +4,9 @@ import { SharedService } from './shared/shared.service';
 import { Deck } from './shared/deck.service';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './app.component.html'
+    selector: 'app-main',
+    templateUrl: './app.component.html',
+    standalone: false
 })
 
 export class AppComponent implements OnInit {

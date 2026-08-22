@@ -6,8 +6,8 @@ import { SharedService } from './../../shared/shared.service';
 import { TimerService } from '../timer/timer.service';
 
 @Component({
-  selector: 'app-scoreboard',
-  template: `
+    selector: 'app-scoreboard',
+    template: `
     <div class="score">
       <h3>Game Won !!!</h3>
       <p>{{ nrOfClicks }} clicks</p>
@@ -36,7 +36,8 @@ import { TimerService } from '../timer/timer.service';
 
 
   `,
-  styleUrls: ['./scoreboard.component.scss']
+    styleUrls: ['./scoreboard.component.scss'],
+    standalone: false
 })
 export class ScoreboardComponent implements OnInit {
   nrOfClicks;

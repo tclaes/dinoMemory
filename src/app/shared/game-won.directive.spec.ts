@@ -4,7 +4,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameWonDirective } from './game-won.directive';
 
 @Component({
-  template: `<div appGameWon class="display"></div>`
+    template: `<div appGameWon class="display"></div>`,
+    standalone: false
 })
 class TestHostComponent { }
 

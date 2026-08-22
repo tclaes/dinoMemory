@@ -3,7 +3,8 @@ import { Observable , Subject, interval} from 'rxjs';
 import { takeUntil, tap, filter } from 'rxjs/operators';
 
 @Directive({
-  selector: '[holdable]'
+    selector: '[holdable]',
+    standalone: false
 })
 export class HoldableDirective {
 

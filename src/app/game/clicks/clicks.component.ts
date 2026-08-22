@@ -2,13 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { SharedService } from './../../shared/shared.service';
 
 @Component({
-  selector: 'app-clicks',
-  template: `
+    selector: 'app-clicks',
+    template: `
     <div id="clicks">
       Clicks: {{nrOfClicks}}
     </div>
   `,
-  styleUrls: ['./clicks.component.scss']
+    styleUrls: ['./clicks.component.scss'],
+    standalone: false
 })
 export class ClicksComponent {
 
