@@ -63,7 +63,7 @@ body {
   }
   }
 
-  tr.mat-row {
+  tr.mat-mdc-row {
     height: 30px;
   }
 
@@ -79,8 +79,18 @@ body {
   justify-content: center;
 }
 
-input.mat-input-element {
+input.mat-mdc-input-element {
   color: white;
+}
+
+// MDC's default "fill" form-field appearance replaced the legacy underline-only
+// style this app was designed around (that appearance was removed outright, not
+// just renamed). Make the fill container transparent to restore the original
+// underline look instead of adopting the new filled-box look everywhere.
+.mat-mdc-form-field:not(.mat-form-field-appearance-outline) {
+  --mdc-filled-text-field-container-color: transparent;
+  --mdc-filled-text-field-disabled-container-color: transparent;
+  --mat-form-field-state-layer-color: transparent;
 }
 
 
