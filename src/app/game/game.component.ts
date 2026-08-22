@@ -4,9 +4,10 @@ import { CardsComponent } from './cards/cards.component';
 import { SharedService } from '../shared/shared.service';
 import { Deck, DeckService } from '../shared/deck.service';
 @Component({
-  selector: 'app-game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+    selector: 'app-game',
+    templateUrl: './game.component.html',
+    styleUrls: ['./game.component.scss'],
+    standalone: false
 })
 
 export class GameComponent implements AfterViewInit {

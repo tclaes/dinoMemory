@@ -3,9 +3,10 @@ import { DeckService } from '../../shared/deck.service';
 import { GameService } from '../game.service';
 
 @Component({
-  selector: 'app-score',
-  templateUrl: './score.component.html',
-  styleUrls: ['./score.component.scss']
+    selector: 'app-score',
+    templateUrl: './score.component.html',
+    styleUrls: ['./score.component.scss'],
+    standalone: false
 })
 export class ScoreComponent implements OnInit {
 

@@ -3,9 +3,10 @@ import { User } from '@angular/fire/auth';
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-userprofile',
-  templateUrl: './userprofile.component.html',
-  styleUrls: ['./userprofile.component.scss']
+    selector: 'app-userprofile',
+    templateUrl: './userprofile.component.html',
+    styleUrls: ['./userprofile.component.scss'],
+    standalone: false
 })
 export class UserprofileComponent {
 

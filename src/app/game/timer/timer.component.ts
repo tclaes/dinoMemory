@@ -3,14 +3,15 @@ import { TimerService } from './timer.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-timer',
-  template: `
+    selector: 'app-timer',
+    template: `
     <div id="timer">
     <p>Time:</p>
       {{ stopwatch }}
     </div>
   `,
-  styleUrls: ['./timer.component.scss']
+    styleUrls: ['./timer.component.scss'],
+    standalone: false
 })
 export class TimerComponent {
 
