@@ -24,13 +24,6 @@ import { AuthGuard } from './auth.guard';
 
 @NgModule({
   imports: [
-    provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => {
-      const firestore = getFirestore();
-      enableIndexedDbPersistence(firestore);
-      return firestore;
-    }),
     BrowserAnimationsModule,
     BrowserModule,
     GameModule,
@@ -47,6 +40,13 @@ import { AuthGuard } from './auth.guard';
     NavigationComponent,
   ],
   providers: [
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      enableIndexedDbPersistence(firestore);
+      return firestore;
+    }),
     AuthGuard,
     { provide: LOCAL_STORAGE, useFactory: localStorageFactory }
   ],
