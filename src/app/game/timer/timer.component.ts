@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TimerService } from './timer.service';
 import { Subscription } from 'rxjs';
 
@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
     </div>
   `,
     styleUrls: ['./timer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TimerComponent {

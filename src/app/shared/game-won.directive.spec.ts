@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameWonDirective } from './game-won.directive';
 
 @Component({
     template: `<div appGameWon class="display"></div>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 class TestHostComponent { }

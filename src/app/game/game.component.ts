@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, AfterViewInit, QueryList, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChildren, AfterViewInit, QueryList, ElementRef, Renderer2, ChangeDetectionStrategy } from '@angular/core';
 import { GameService } from './game.service';
 import { CardsComponent } from './cards/cards.component';
 import { SharedService } from '../shared/shared.service';
@@ -7,6 +7,7 @@ import { Deck, DeckService } from '../shared/deck.service';
     selector: 'app-game',
     templateUrl: './game.component.html',
     styleUrls: ['./game.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

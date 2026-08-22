@@ -8,6 +8,7 @@ import { DeckService } from "./deck.service";
 import {
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr
 } from "@angular/common/http";
 
 const fixture = {
@@ -36,7 +37,7 @@ describe("DeckService", () => {
       imports: [],
       providers: [
         DeckService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

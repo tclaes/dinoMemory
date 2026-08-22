@@ -1,33 +1,34 @@
-import { AppComponent } from "./app.component";
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
+import { AppComponent } from './app.component';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
-} from "@angular/common/http";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { GameModule } from "./game/game.module";
-import { SharedModule } from "./shared/shared.module";
+  withXhr
+} from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GameModule } from './game/game.module';
+import { SharedModule } from './shared/shared.module';
 
-import { environment } from "../environments/environment";
+import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebaseConfig;
-import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
-import { provideAuth, getAuth } from "@angular/fire/auth";
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import {
   provideFirestore,
   getFirestore,
   enableIndexedDbPersistence,
-} from "@angular/fire/firestore";
-import { ServiceWorkerModule } from "@angular/service-worker";
-import { LOCAL_STORAGE, localStorageFactory } from "angular-webstorage-service";
+} from '@angular/fire/firestore';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { LOCAL_STORAGE, localStorageFactory } from 'angular-webstorage-service';
 
-import { GameComponent } from "./game/game.component";
-import { NavigationComponent } from "./nav/navigation/navigation.component";
+import { GameComponent } from './game/game.component';
+import { NavigationComponent } from './nav/navigation/navigation.component';
 
-import { GameWonDirective } from "./shared/game-won.directive";
-import { HoldableDirective } from "./shared/holdable.directive";
-import { RoutingModule } from "./routing.module";
-import { AuthGuard } from "./auth.guard";
+import { GameWonDirective } from './shared/game-won.directive';
+import { HoldableDirective } from './shared/holdable.directive';
+import { RoutingModule } from './routing.module';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { AuthGuard } from "./auth.guard";
     BrowserAnimationsModule,
     BrowserModule,
     GameModule,
-    ServiceWorkerModule.register("/ngsw-worker.js", {
+    ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production,
     }),
     SharedModule,
@@ -58,7 +59,7 @@ import { AuthGuard } from "./auth.guard";
     }),
     AuthGuard,
     { provide: LOCAL_STORAGE, useFactory: localStorageFactory },
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
   ],
 })
 export class AppModule {}
