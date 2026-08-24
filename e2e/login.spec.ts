@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import {expect, test} from '@playwright/test';
 
 test.describe('Login page', () => {
 
@@ -43,7 +43,7 @@ test.describe('Login page', () => {
   });
 
   // Regression test for the bug where loginWithGoogle() navigated to
-  // /userprofile synchronously, before the Google sign-in popup had even
+  // /user synchronously, before the Google sign-in popup had even
   // resolved -- which crashed the profile page with "Cannot read properties
   // of undefined (reading 'displayName')" because the signed-in user hadn't
   // arrived yet. The fix awaits AuthService.doGoogleLogin() before doing

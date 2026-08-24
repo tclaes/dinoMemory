@@ -1,41 +1,34 @@
-import { Injectable, Renderer2 } from '@angular/core';
-import { User } from '@angular/fire/auth';
-import { DeckService } from '../shared/deck.service';
-import { ScoreService } from './scoreboard/score.service';
-import { LocalstorageService } from '../shared/localstorage.service';
-import { TimerService } from './timer/timer.service';
-import { Subscription } from 'rxjs';
-import { SharedService } from '../shared/shared.service';
-import { Deck } from '../shared/deck.service';
-import { AuthService } from '../auth.service';
+import {inject, Injectable, Renderer2, signal} from '@angular/core';
+import {DeckService} from '../shared/deck.service';
+import {ScoreService} from './scoreboard/score.service';
+import {TimerService} from './timer/timer.service';
+import {SharedService} from '../shared/shared.service';
+import {AuthService} from '../auth.service';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
 
-  timer;
-  private _timer: Subscription;
-  deck: Deck;
-  user: User;
+  #deckService = inject(DeckService)
+  #scoreService = inject(ScoreService)
+  #timerService = inject(TimerService)
+  #sharedService = inject(SharedService)
+  #authService = inject(AuthService)
 
-  constructor(private deckSrv: DeckService,
-    private scoreSrv: ScoreService, private local: LocalstorageService,
-    private timerSrv: TimerService, private sharedSrv: SharedService,
-    private authService: AuthService) {
-      timerSrv.currentTime.subscribe(timer => this.timer = timer);
-      sharedSrv.standardDeck.subscribe(deck => this.deck = deck);
-      authService.User.subscribe(user => this.user = user);
-    }
+  deck = this.#deckService.selectedDeck
+  timer = this.#timerService.currentTime
+  user = toSignal(this.#authService.User)
 
   renderer2: Renderer2;
 
   hasFlippedCard = false;
-  private lockBoard;
+  private lockBoard: boolean;
   firstCard;
   secondCard;
   correctMatch = 0;
 
   gameWon = false;
-  gameStarted = false;
+  gameStarted = signal(false);
 
   // Bumped on every newGame() and folded into the *ngFor track expression in
   // game.component.html. Without it, restarting with the SAME deck (the
@@ -45,29 +38,23 @@ export class GameService {
   // the restart instead of being cleared.
   gameGeneration = 0;
 
-  newGame() {
-    this.gameStarted = false;
+  newGame(deck = 'dinos') {
+    this.gameStarted.set(false);
     this.gameWon = false;
-    this.sharedSrv.cardClicked(0);
+    this.#sharedService.cardClicked(0);
     this.correctMatch = 0;
-    this.timerSrv.resetTimer();
+    this.#timerService.resetTimer();
     ++this.gameGeneration;
+    this.changeDeck(deck)
   }
 
   restart() {
-    this.changeDeck(this.deck.name);
-    this.newGame();
+    this.resetBoard();
+    this.newGame(this.deck().name);
   }
 
-  changeDeck(deck) {
-    this.deckSrv.setDeckObservable(deck)
-    .subscribe(card => {
-      this.deck.name = card['name'];
-      this.deck.cards = card['cards'];
-      this.deck.imgUrl = card['imgURL'];
-      this.deck.frontFace = card['frontFace'];
-      this.sharedSrv.setDeck(this.deck);
-    });
+  changeDeck(deck: string) {
+    this.#deckService.selectDeck(deck);
   }
 
   flipCard(e) {
@@ -76,11 +63,9 @@ export class GameService {
     if (clickedCard.classList.contains('flip')) {
       return;
     }
-    if (!this.gameStarted) {
-      this.timerSrv.startTimer();
-      this.gameStarted = !this.gameStarted;
-      this._timer = this.timerSrv.getTimer().subscribe();
-      this.timerSrv.currentTime.subscribe(time => this.timer = time);
+    if (!this.gameStarted()) {
+      this.#timerService.startTimer();
+      this.gameStarted.set(true);
     }
     if (this.lockBoard) {
       return;
@@ -88,7 +73,6 @@ export class GameService {
     if (clickedCard === this.firstCard) {
       return;
     }
-
 
     this.renderer2.addClass(clickedCard, 'flip');
 
@@ -118,26 +102,30 @@ export class GameService {
   }
 
   checkWin() {
-      if (this.correctMatch === this.deck.cards.length) {
+      if (this.correctMatch === this.deck()?.cards?.length) {
         this.gameWon = !this.gameWon;
-        let clicks;
-        this.sharedSrv.currentTimesClicked.subscribe(click => clicks = click);
-        this._timer.unsubscribe();
-        this.scoreSrv.updateScores(this.user.displayName, clicks , this.timer, this.deck.name);
+        let clicks: number;
+        this.#sharedService.currentTimesClicked.subscribe(click => clicks = click);
+        this.#scoreService.updateScores(this.user().displayName, clicks , this.timer, this.deck.name);
       }
   }
 
   unflipCards() {
     this.lockBoard = true;
     setTimeout(() => {
-      this.renderer2.removeClass(this.firstCard, 'flip');
-      this.renderer2.removeClass(this.secondCard, 'flip');
-      this.lockBoard = false;
       this.resetBoard();
+      this.lockBoard = false;
     }, 1000);
   }
 
   resetBoard() {
+    if(this.firstCard){
+      this.renderer2.removeClass(this.firstCard, 'flip');
+    }
+    if(this.secondCard){
+      this.renderer2.removeClass(this.secondCard, 'flip');
+    }
+
     [this.hasFlippedCard, this.lockBoard] = [false, false];
     [this.firstCard, this.secondCard] = [null, null];
   }

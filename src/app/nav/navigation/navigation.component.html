@@ -1,11 +1,17 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="false" [ngClass]="{hidden: !(isHandset$ | async)}"
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="!(isHandset$ | async)">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="false"
+               [ngClass]="{hidden: (isHandset$ | async) === false}"
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
     <div class="drawer-header">Memory!</div>
     <nav class="drawer-nav" aria-label="Choose a card set">
-      @for (button of decks$ | async; track button) {
-        <button type="button" class="focusable deck-pill drawer-pill" [attr.aria-pressed]="button.name === _deck?.name" (click)="newGame($event)">{{button.name}}</button>
+      @for (button of decks$(); track button) {
+        <button type="button" class="focusable deck-pill drawer-pill"
+                [attr.aria-pressed]="button.name === _deck?.name"
+                (click)="newGame($event)">
+            {{button.name}}
+        </button>
       }
     </nav>
   </mat-sidenav>
@@ -24,8 +30,12 @@
       </div>
       @if (user !== null) {
         <nav class="deck-nav" aria-label="Choose a card set" [ngClass]="{hidden: (isHandset$ | async)}">
-          @for (button of decks$ | async; track button) {
-            <button type="button" class="focusable deck-pill" [attr.aria-pressed]="button.name === _deck?.name" (click)="newGame($event)">{{button.name}}</button>
+          @for (button of decks$(); track button) {
+            <button type="button" class="focusable deck-pill"
+                    [attr.aria-pressed]="button.name === _deck?.name"
+                    (click)="newGame($event)">
+                {{button.name}}
+            </button>
           }
         </nav>
         <div class="header-actions">

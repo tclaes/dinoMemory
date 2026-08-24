@@ -1,42 +1,28 @@
-import { AppComponent } from './app.component';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-  withXhr
-} from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GameModule } from './game/game.module';
-import { SharedModule } from './shared/shared.module';
+import {AppComponent} from './app.component';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {GameModule} from './game/game.module';
 
-import { environment } from '../environments/environment';
+import {environment} from '../environments/environment';
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {getAuth, provideAuth} from '@angular/fire/auth';
+import {enableIndexedDbPersistence, getFirestore, provideFirestore,} from '@angular/fire/firestore';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {LOCAL_STORAGE, localStorageFactory} from 'angular-webstorage-service';
+import {RoutingModule} from './routing.module';
+import {AuthGuard} from './auth.guard';
+import {CardComponent} from './game/components/cards/card.component';
+import {RouterOutlet} from '@angular/router';
+import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
+import {NavigationComponent} from './nav/navigation/navigation.component';
+
 export const firebaseConfig = environment.firebaseConfig;
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import {
-  provideFirestore,
-  getFirestore,
-  enableIndexedDbPersistence,
-} from '@angular/fire/firestore';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { LOCAL_STORAGE, localStorageFactory } from 'angular-webstorage-service';
-
-import { GameComponent } from './game/game.component';
-import { NavigationComponent } from './nav/navigation/navigation.component';
-
-import { GameWonDirective } from './shared/game-won.directive';
-import { HoldableDirective } from './shared/holdable.directive';
-import { RoutingModule } from './routing.module';
-import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GameComponent,
-    GameWonDirective,
-    HoldableDirective,
-    NavigationComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -46,8 +32,13 @@ import { AuthGuard } from './auth.guard';
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production,
     }),
-    SharedModule,
     RoutingModule,
+    CardComponent,
+    RouterOutlet,
+    MatSidenavContainer,
+    MatSidenav,
+    MatSidenavContent,
+    NavigationComponent,
   ],
   providers: [
     provideFirebaseApp(() => initializeApp(firebaseConfig)),

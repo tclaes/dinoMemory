@@ -1,10 +1,10 @@
-import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
-import { Observable , Subject, interval} from 'rxjs';
-import { takeUntil, tap, filter } from 'rxjs/operators';
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
+import {interval, Observable, Subject} from 'rxjs';
+import {filter, takeUntil, tap} from 'rxjs/operators';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
     selector: '[holdable]',
-    standalone: false
 })
 export class HoldableDirective {
 
@@ -17,7 +17,6 @@ export class HoldableDirective {
     this.cancel = this.state.pipe(
       filter(v => v === 'cancel'),
       tap(v => {
-        // console.log('%c stopped hold', 'color: #ec6969; font-weight: bold');
         this.holdTime.emit(0);
       })
     );

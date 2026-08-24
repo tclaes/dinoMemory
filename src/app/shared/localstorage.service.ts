@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { LOCAL_STORAGE, StorageService } from 'angular-webstorage-service';
+import {Inject, Injectable} from '@angular/core';
+import {LOCAL_STORAGE, StorageService} from 'angular-webstorage-service';
 
 const STORAGE_KEY = 'local_user';
 @Injectable({
@@ -9,7 +9,7 @@ export class LocalstorageService {
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
-  setUser(user) {
+  setUser(user: { name: string; }) {
     this.storage.set(STORAGE_KEY, user);
   }
 
@@ -18,6 +18,7 @@ export class LocalstorageService {
   }
 
   deleteUser() {
-    this.storage.remove(STORAGE_KEY);  }
+    this.storage.remove(STORAGE_KEY);  
+}
 
 }

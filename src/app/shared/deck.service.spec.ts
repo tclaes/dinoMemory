@@ -1,15 +1,8 @@
-import { TestBed, fakeAsync, tick } from "@angular/core/testing";
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from "@angular/common/http/testing";
+import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {HttpTestingController, provideHttpClientTesting,} from '@angular/common/http/testing';
 
-import { DeckService } from "./deck.service";
-import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-  withXhr
-} from "@angular/common/http";
+import {DeckService} from './deck.service';
+import {provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 
 const fixture = {
   deck: [
@@ -77,7 +70,7 @@ describe("DeckService", () => {
 
   it("setDeck() resolves to only the decks matching the given name", fakeAsync(() => {
     let result: any;
-    service.setDeck("dinos").then((data) => (result = data));
+    service.selectDeck("dinos").then((data) => (result = data));
 
     httpMock.expectOne(service.decksUrl).flush(fixture);
     tick();

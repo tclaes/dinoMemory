@@ -1,29 +1,21 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Deck } from './deck.service';
+import {computed, Injectable, signal} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {Deck} from './deck.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
 
-  _deck: Deck;
-
-  constructor() { }
-
   private timesClicked = new BehaviorSubject<number>(1);
   currentTimesClicked = this.timesClicked.asObservable();
 
-  private deck = new BehaviorSubject<Deck>({
-    name: 'dinos'
+  #deck = signal<Deck>({name: 'dinos'})
+  standardDeck = computed(() => {
+    return this.#deck()
   });
-  standardDeck = this.deck.asObservable();
 
-  cardClicked(clicks) {
+  cardClicked(clicks: number) {
     this.timesClicked.next(clicks);
-  }
-
-  setDeck(deck: Deck) {
-    this.deck.next(deck);
   }
 }

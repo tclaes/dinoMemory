@@ -1,52 +1,54 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { User } from '@angular/fire/auth';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DeckService, Deck } from './../../shared/deck.service';
-import { GameService } from './../../game/game.service';
-import { SharedService } from './../../shared/shared.service';
-import { AuthService } from './../../auth.service';
-import { Router } from '@angular/router';
+import {Component, inject} from '@angular/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {DeckService} from '../../shared/deck.service';
+import {GameService} from '../../game/game.service';
+import {AuthService} from '../../auth.service';
+import {Router, RouterLink} from '@angular/router';
+import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
+import {AsyncPipe, NgClass} from '@angular/common';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'app-navigation',
-    templateUrl: './navigation.component.html',
-    styleUrls: ['./navigation.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+  selector: 'app-navigation',
+  templateUrl: './navigation.component.html',
+  styleUrls: ['./navigation.component.scss'],
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    NgClass,
+    AsyncPipe,
+    MatSidenavContent,
+    RouterLink
+  ]
 })
 export class NavigationComponent {
+  deckService = inject(DeckService)
+  gameService = inject(GameService)
+  authService = inject(AuthService)
+  #breakpointObserver = inject(BreakpointObserver)
+  #router = inject(Router)
 
-  decks$;
-  _deck: Deck;
-  user: User;
+  decks$ = this.deckService.availableDecks
+  _deck = this.deckService.selectedDeck
+  user = toSignal(this.authService.User)
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.#breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver,
-    public deckService: DeckService,
-    public gameService: GameService,
-    public sharedService: SharedService,
-    public authService: AuthService,
-    private router: Router) {
-    this.decks$ = this.deckService.getData().then(data => data['deck'].map(x => x));
-    sharedService.standardDeck.subscribe(currentDeck => this._deck = currentDeck);
-    authService.User.subscribe(user => this.user = user);
-  }
-
   newGame(e) {
-    this.gameService.changeDeck(e.currentTarget.innerText);
-    this.gameService.newGame();
-    this.router.navigate(['/game']);
+    const deck = e.currentTarget.innerText.toLowerCase()
+    console.log(deck);
+    this.gameService.newGame(deck);
+    this.#router.navigate(['game', deck]);
   }
 
   logOut() {
     this.authService.logOut();
-    this.router.navigate(['/login']);
+    this.#router.navigate(['/login']);
   }
 
 }
