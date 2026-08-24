@@ -27,26 +27,25 @@ export class AuthService {
   }
 
   doGoogleLogin() {
-    return new Promise<any>((resolve, reject) => {
-      const provider = new GoogleAuthProvider();
-      provider.addScope('profile');
-      provider.addScope('email');
-      this.ops
-        .signInWithPopup(this.auth, provider)
-        .then(res => {
-          this.user = res.user;
-          this.router.navigate(['/']);
-          resolve(res);
-        });
-    });
+    const provider = new GoogleAuthProvider();
+    provider.addScope('profile');
+    provider.addScope('email');
+    return this.ops
+      .signInWithPopup(this.auth, provider)
+      .then(res => {
+        this.user = res.user;
+        this.router.navigate(['/']);
+        return res;
+      });
   }
 
   doEmailLogin(user) {
-    this.ops
+    return this.ops
       .signInWithEmailAndPassword(this.auth, user.name, user.email)
       .then(res => {
         this.user = res.user;
         this.updateUserInfo();
+        return res;
       });
   }
 

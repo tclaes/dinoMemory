@@ -39,6 +39,12 @@ testem.log
 /e2e/*.js
 /e2e/*.map
 
+# Playwright
+/playwright-report
+/test-results
+/blob-report
+/playwright/.cache
+
 # System Files
 .DS_Store
 Thumbs.db

@@ -1,8 +1,8 @@
 <div class="back mb-1">
-    <h1>Welkom {{user.displayName}}</h1>
+    <h1>Welkom {{user?.displayName}}</h1>
 </div>
 
-  <form class="card">
+  <form class="card" *ngIf="user">
       <mat-card class="m-1">
         <mat-grid-list cols="3" rows="2" rowHeight="200px">
           <mat-grid-tile class="right">

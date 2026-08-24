@@ -22,18 +22,26 @@ export class LoginComponent {
 
   constructor(private auth: AuthService, private router: Router) { }
 
-  signInWithEmail() {
+  async signInWithEmail() {
     const player = {
       email: this.signInForm.controls.email.value,
       password: this.signInForm.controls.password.value
     };
-    this.auth.doEmailLogin(player);
-    this.gotoUser();
+    try {
+      await this.auth.doEmailLogin(player);
+      this.gotoUser();
+    } catch {
+      // Login failed; stay on the sign-in page so the user can retry.
+    }
   }
 
-  loginWithGoogle(e) {
-    this.auth.doGoogleLogin();
-    this.gotoUser();
+  async loginWithGoogle(e) {
+    try {
+      // doGoogleLogin() navigates to '/' itself once the popup resolves.
+      await this.auth.doGoogleLogin();
+    } catch {
+      // Login failed (or the popup was dismissed); stay on the sign-in page.
+    }
   }
 
   gotoUser() {

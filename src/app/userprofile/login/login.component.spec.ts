@@ -59,23 +59,47 @@ describe('LoginComponent', () => {
     component.signInForm.controls.password.setValue('secret1');
     fixture.detectChanges(false);
 
+    authSpy.doEmailLogin.and.returnValue(Promise.resolve({} as any));
     component.signInWithEmail();
 
     expect(authSpy.doEmailLogin).toHaveBeenCalledWith({ email: 'player@example.com', password: 'secret1' });
   });
 
-  // KNOWN BUG (deliberately not fixed here — pinned down as an upgrade baseline):
-  // both sign-in methods navigate to /userprofile immediately after calling into
-  // AuthService, without waiting for the login to resolve or checking whether it succeeded.
-  it('KNOWN BUG: signInWithEmail() navigates to the profile page regardless of the login outcome', () => {
-    component.signInWithEmail();
+  it('signInWithEmail() only navigates to the profile page once login resolves', async () => {
+    let resolveLogin: (value: any) => void;
+    authSpy.doEmailLogin.and.returnValue(new Promise(resolve => resolveLogin = resolve));
+
+    const pending = component.signInWithEmail();
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
+
+    resolveLogin({} as any);
+    await pending;
+
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/userprofile']);
   });
 
-  it('KNOWN BUG: loginWithGoogle() also navigates immediately, regardless of the login outcome', () => {
-    component.loginWithGoogle({} as any);
+  it('signInWithEmail() does not navigate when login fails', async () => {
+    authSpy.doEmailLogin.and.returnValue(Promise.reject(new Error('bad credentials')));
+
+    await component.signInWithEmail();
+
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
+  });
+
+  it('loginWithGoogle() delegates to AuthService and does not itself navigate (AuthService navigates home on success)', async () => {
+    authSpy.doGoogleLogin.and.returnValue(Promise.resolve({} as any));
+
+    await component.loginWithGoogle({} as any);
 
     expect(authSpy.doGoogleLogin).toHaveBeenCalled();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/userprofile']);
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
+  });
+
+  it('loginWithGoogle() does not navigate when the popup fails or is dismissed', async () => {
+    authSpy.doGoogleLogin.and.returnValue(Promise.reject(new Error('popup closed')));
+
+    await component.loginWithGoogle({} as any);
+
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
   });
 });
