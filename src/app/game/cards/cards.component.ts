@@ -1,10 +1,17 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-card',
     template: `
-    <img src="assets/img/{{imgUrl}}/{{card}}.svg" alt="{{card}}" [className]="'front-face'">
-    <img src="assets/img/{{imgUrl}}/{{frontFace}}.svg" alt="Memory Card" class="back-face">
+    <img src="assets/img/{{imgUrl}}/{{card}}.svg" alt="{{card}}" class="front-face">
+    <div class="back-face" [style.background]="cover.bg">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="cover-star">
+        <path d="M12 3l1.9 4.5L18.5 8l-3.5 3.3.9 5.2L12 14l-3.9 2.5.9-5.2L5.5 8l4.6-.5L12 3z" [attr.fill]="cover.star" stroke="#1B1233" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="matched-badge" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l5 5L19 7" stroke="#1B1233" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
   `,
     styleUrls: ['./cards.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
@@ -15,6 +22,15 @@ export class CardsComponent {
   @Input() card;
   @Input() imgUrl;
   @Input() frontFace;
+  @Input() coverIndex = 0;
 
-  constructor() { }
+  private readonly covers = [
+    { bg: 'var(--dd-blue-bright)', star: 'var(--dd-yellow)' },
+    { bg: 'var(--dd-pink-bright)', star: 'var(--dd-yellow)' },
+    { bg: 'var(--dd-yellow)', star: 'var(--dd-pink-bright)' }
+  ];
+
+  get cover() {
+    return this.covers[this.coverIndex % this.covers.length];
+  }
 }

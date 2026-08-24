@@ -1,7 +1,14 @@
-@import 'mixins';
-
 #clicks {
-    @media (min-width: 980px) {
-        @include whiteBold;
-      }
+  align-items: center;
+  background: var(--dd-blue);
+  border: 2px solid var(--dd-ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--dd-ink);
+  color: #fff;
+  display: flex;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  gap: 11px;
+  padding: 13px 24px;
 }

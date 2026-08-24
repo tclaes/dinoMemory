@@ -9,6 +9,19 @@
   --board-bg-color: #ffc43d;
   --bg-color: #ef476f;
   --bg-color-2: #f8ffe5;
+
+  // "Dino Disco" redesign palette -- kept separate from the legacy tokens
+  // above; pages opt in as they're migrated to the new look (game, nav
+  // chrome, login).
+  --dd-bg: #5b3a9e;
+  --dd-bg-accent: #6b49ae;
+  --dd-ink: #1b1233;
+  --dd-pink: #d6316f;
+  --dd-pink-bright: #ff4d8d;
+  --dd-blue: #1a6fb0;
+  --dd-blue-bright: #2fa9ff;
+  --dd-yellow: #ffd23f;
+  --dd-cream: #fff6da;
 }
 
 html, body { height: 100%; }
@@ -18,15 +31,22 @@ body {
   font-family: 'Roboto',sans-serif;
 }
 
-#header {
-  background: var(--board-bg-color);
-  box-shadow: #06d6a0 1px 1px;
-  border-radius: 5px;
-  display: flex;
-    align-items: center;
-    justify-content: space-between;
-  margin: 5px 15px;
-  padding: 5px 20px;
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.focusable:focus-visible {
+  outline: 4px solid var(--dd-ink);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 8px var(--dd-yellow);
+  border-radius: 18px;
 }
 
 .disabled {

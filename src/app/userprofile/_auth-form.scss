@@ -1,0 +1,164 @@
+// Shared "Dino Disco" auth card styling for the login and register pages.
+
+.auth-page {
+  background: var(--dd-bg);
+  min-height: calc(100vh - 76px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  position: relative;
+  overflow: hidden;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: var(--dd-bg-accent);
+    z-index: 0;
+  }
+  &::before {
+    width: 220px;
+    height: 220px;
+    left: -80px;
+    bottom: -80px;
+  }
+  &::after {
+    width: 160px;
+    height: 160px;
+    right: -60px;
+    top: -40px;
+  }
+}
+
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border: 5px solid var(--dd-ink);
+  border-radius: 28px;
+  box-shadow: 8px 8px 0 var(--dd-ink);
+  padding: 32px 24px;
+  font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
+
+  @media screen and (min-width: 600px) {
+    padding: 40px 36px;
+  }
+}
+
+.auth-title {
+  margin: 0 0 6px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--dd-ink);
+}
+
+.auth-subtitle {
+  margin: 0 0 24px;
+  color: var(--dd-ink);
+  opacity: 0.75;
+  font-size: 0.95rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--dd-ink);
+}
+
+.field-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--dd-ink);
+  border-radius: 12px;
+  font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
+  font-size: 1rem;
+  color: var(--dd-ink);
+  background: #fff;
+
+  &[aria-invalid="true"] {
+    border-color: var(--dd-pink);
+  }
+}
+
+.field-error {
+  margin: 0;
+  color: var(--dd-pink);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.btn-primary {
+  padding: 13px 24px;
+  border: 2px solid var(--dd-ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--dd-ink);
+  background: var(--dd-pink);
+  color: #fff;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 24px;
+  border: 2px solid var(--dd-ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--dd-ink);
+  background: #fff;
+  color: var(--dd-ink);
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.auth-footer {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--dd-ink);
+}
+
+.auth-link {
+  color: var(--dd-pink);
+  font-weight: 600;
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--dd-blue);
+  }
+}

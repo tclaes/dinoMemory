@@ -37,12 +37,26 @@ export class GameService {
   gameWon = false;
   gameStarted = false;
 
+  // Bumped on every newGame() and folded into the *ngFor track expression in
+  // game.component.html. Without it, restarting with the SAME deck (the
+  // "New Game" button) reuses the existing card elements -- Angular's track
+  // matches on the card name string, which is unchanged -- so the 'flip'
+  // and 'matched' classes added imperatively via Renderer2 would survive
+  // the restart instead of being cleared.
+  gameGeneration = 0;
+
   newGame() {
     this.gameStarted = false;
     this.gameWon = false;
     this.sharedSrv.cardClicked(0);
     this.correctMatch = 0;
     this.timerSrv.resetTimer();
+    ++this.gameGeneration;
+  }
+
+  restart() {
+    this.changeDeck(this.deck.name);
+    this.newGame();
   }
 
   changeDeck(deck) {
@@ -97,6 +111,8 @@ export class GameService {
 
   disableCards() {
     ++this.correctMatch;
+    this.renderer2.addClass(this.firstCard, 'matched');
+    this.renderer2.addClass(this.secondCard, 'matched');
     this.checkWin();
     this.resetBoard();
   }
