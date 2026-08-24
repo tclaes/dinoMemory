@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Router } from '@angular/router';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { LoginComponent } from './login.component';
-import { AuthService } from '../../auth.service';
+import {LoginComponent} from './login.component';
+import {AuthService} from '../../auth.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -75,7 +75,7 @@ describe('LoginComponent', () => {
     resolveLogin({} as any);
     await pending;
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/userprofile']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/user']);
   });
 
   it('signInWithEmail() does not navigate when login fails', async () => {

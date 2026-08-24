@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from './../../auth.service';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {AuthService} from '../../auth.service';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -18,7 +18,9 @@ export class LoginComponent {
   });
 
 
-  get f() { return this.signInForm.controls; }
+  get f() {
+ return this.signInForm.controls; 
+}
 
   constructor(private auth: AuthService, private router: Router) { }
 

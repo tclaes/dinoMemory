@@ -27,15 +27,6 @@
         "lambeosaurus",
         "iguanodon"
     ]
-  },
-  {
-    "name": "test",
-    "imgURL": "dinos",
-    "frontFace": "velociraptor",
-    "cards": [
-        "ichthyosaurus",
-        "ouranosaurus"
-    ]
   }
 ]
 }

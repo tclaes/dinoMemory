@@ -1,49 +1,45 @@
-import { Injectable } from '@angular/core';
-import { interval, BehaviorSubject } from 'rxjs';
-import { map, takeUntil, take, takeWhile } from 'rxjs/operators';
+import {computed, Injectable, signal} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
 
-  private timerSubject = new BehaviorSubject<string>('0h - 0m - 0s');
-  currentTime = this.timerSubject.asObservable();
-  timer;
-
-  constructor() {}
+  #timer = signal('0h - 0m - 0s')
+  currentTime = computed(() => {
+    return this.#timer()
+  });
+  intervalId: number;
 
    startTimer() {
-    let hours = 0;
-    let minutes = 0;
-    let seconds = 0;
-    this.timer = interval(1000).pipe(
-      map(() => {
-        if (seconds < 59) {
-          seconds++;
+     let hours = 0;
+     let minutes = 0;
+     let seconds = 0;
+
+    this.intervalId = setInterval(() => {
+      if (seconds < 59) {
+        seconds++;
+      } else {
+        seconds = 0;
+        if (minutes < 59) {
+          minutes++;
         } else {
-          seconds = 0;
-          if (minutes < 59) {
-            minutes++;
-          } else {
-            if (hours < 24) {
-              hours++;
-            }
+          if (hours < 24) {
+            hours++;
           }
         }
-        this.timerSubject.next(`${hours}h - ${minutes}m - ${seconds}s`);
-      })
-    );
+      }
+      this.#timer.set(`${hours}h - ${minutes}m - ${seconds}s`);
+    }, 1000)
    }
 
-   getTimer() {
-     return this.timer;
+   #stopTimer() {
+     clearInterval(this.intervalId);
    }
 
    resetTimer() {
-     this.timerSubject.next(`0h - 0m - 0s`);
+     this.#stopTimer()
+     this.#timer.set(`0h - 0m - 0s`);
    }
-
-
 
 }

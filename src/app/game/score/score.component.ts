@@ -1,25 +1,21 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { DeckService } from '../../shared/deck.service';
-import { GameService } from '../game.service';
+import {Component, inject} from '@angular/core';
+import {DeckService} from '../../shared/deck.service';
+import {GameService} from '../game.service';
+import {ClicksComponent} from '../clicks/clicks.component';
+import {TimerComponent} from '../timer/timer.component';
 
 @Component({
-    selector: 'app-score',
-    templateUrl: './score.component.html',
-    styleUrls: ['./score.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+  selector: 'app-score',
+  templateUrl: './score.component.html',
+  styleUrls: ['./score.component.scss'],
+  imports: [
+    ClicksComponent,
+    TimerComponent
+  ]
 })
-export class ScoreComponent implements OnInit {
+export class ScoreComponent {
+  #deckService = inject(DeckService)
+  protected _gameService = inject(GameService)
 
-  decks$;
-
-  constructor(public deck: DeckService, public game: GameService) {}
-
-  loadControls() {
-    this.decks$ = this.deck.getData().then(data => data['deck'].map(x => x));
-  }
-
-  ngOnInit() {
-    this.loadControls();
-  }
+  decks$ = this.#deckService.availableDecks
 }

@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
-import { User } from './userprofile/register/register.component';
-import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
-import { AUTH_OPS, AuthOps } from './auth-ops';
+import {Inject, Injectable} from '@angular/core';
+import {Auth, GoogleAuthProvider, User as FirebaseUser} from '@angular/fire/auth';
+import {User} from './user/register/register.component';
+import {Observable} from 'rxjs';
+import {Router} from '@angular/router';
+import {AUTH_OPS, AuthOps} from './auth-ops';
 
 @Injectable({
   providedIn: 'root'
