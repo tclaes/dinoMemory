@@ -1,7 +1,23 @@
 service firebase.storage {
   match /b/{bucket}/o {
+    // User profile photos: users can only read/write their own files
+    match /users/{userId}/{allPaths=**} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null && request.auth.uid == userId
+                   && request.resource.size < 5 * 1024 * 1024  // Max 5MB
+                   && request.resource.contentType.matches('image/(jpeg|png|jpg)');
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Public assets (if needed): read-only for authenticated users
+    match /public/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if false;  // Only admins via Admin SDK can write public assets
+    }
+    
+    // Deny all other paths by default
     match /{allPaths=**} {
-      allow read, write: if request.auth!=null;
+      allow read, write: if false;
     }
   }
 }
