@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { GameService } from './game.service';
 import { DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
-import { LocalstorageService } from '../shared/localstorage.service';
 import { TimerService } from './timer/timer.service';
 import { SharedService } from '../shared/shared.service';
 import { AuthService } from '../auth.service';
@@ -30,7 +29,6 @@ describe('GameService', () => {
   beforeEach(() => {
     deckSrvSpy = jasmine.createSpyObj('DeckService', ['setDeckObservable']);
     scoreSrvSpy = jasmine.createSpyObj('ScoreService', ['updateScores']);
-    const localSpy = jasmine.createSpyObj('LocalstorageService', ['getUser', 'setUser', 'deleteUser']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -39,7 +37,6 @@ describe('GameService', () => {
         TimerService,
         { provide: DeckService, useValue: deckSrvSpy },
         { provide: ScoreService, useValue: scoreSrvSpy },
-        { provide: LocalstorageService, useValue: localSpy },
         { provide: AuthService, useValue: { User: of(mockUser) } }
       ]
     });

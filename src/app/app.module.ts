@@ -10,7 +10,6 @@ import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {getAuth, provideAuth} from '@angular/fire/auth';
 import {enableIndexedDbPersistence, getFirestore, provideFirestore,} from '@angular/fire/firestore';
 import {ServiceWorkerModule} from '@angular/service-worker';
-import {LOCAL_STORAGE, localStorageFactory} from 'angular-webstorage-service';
 import {RoutingModule} from './routing.module';
 import {AuthGuard} from './auth.guard';
 import {CardComponent} from './game/components/cards/card.component';
@@ -49,7 +48,6 @@ export const firebaseConfig = environment.firebaseConfig;
       return firestore;
     }),
     AuthGuard,
-    { provide: LOCAL_STORAGE, useFactory: localStorageFactory },
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
   ],
 })
