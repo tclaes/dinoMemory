@@ -5,17 +5,18 @@ import { GameComponent } from './game.component';
 import { GameService } from './game.service';
 import { SharedService } from '../shared/shared.service';
 import { DeckService } from '../shared/deck.service';
+import { SpyObj, createSpyObj } from '../../testing/spy';
 
 describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
-  let gameSrvSpy: jasmine.SpyObj<GameService>;
+  let gameSrvSpy: SpyObj<GameService>;
 
   beforeEach(() => {
-    gameSrvSpy = jasmine.createSpyObj('GameService', ['newGame', 'flipCard', 'shuffle']);
+    gameSrvSpy = createSpyObj('GameService', ['newGame', 'flipCard', 'shuffle']);
     (gameSrvSpy as any).deck = { name: 'dinos', cards: ['a', 'b'] };
     (gameSrvSpy as any).gameWon = false;
-    const deckSrvSpy = jasmine.createSpyObj('DeckService', ['getData']);
+    const deckSrvSpy = createSpyObj('DeckService', ['getData']);
 
     TestBed.configureTestingModule({
       declarations: [GameComponent],

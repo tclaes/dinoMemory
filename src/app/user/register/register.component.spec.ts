@@ -3,14 +3,15 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../auth.service';
+import { SpyObj, createSpyObj } from '../../../testing/spy';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
-  let authSpy: jasmine.SpyObj<AuthService>;
+  let authSpy: SpyObj<AuthService>;
 
   beforeEach(() => {
-    authSpy = jasmine.createSpyObj('AuthService', ['tryRegister']);
+    authSpy = createSpyObj('AuthService', ['tryRegister']);
 
     TestBed.configureTestingModule({
       imports: [RegisterComponent],

@@ -10,24 +10,25 @@ import { GameService } from '../../game/game.service';
 import { SharedService } from '../../shared/shared.service';
 import { AuthService } from '../../auth.service';
 import { mockUser } from '../../../testing/firebase-mocks';
+import { SpyObj, createSpyObj } from '../../../testing/spy';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
   let fixture: ComponentFixture<NavigationComponent>;
-  let deckSrvSpy: jasmine.SpyObj<DeckService>;
-  let gameSrvSpy: jasmine.SpyObj<GameService>;
-  let authSrvSpy: jasmine.SpyObj<AuthService>;
-  let routerSpy: jasmine.SpyObj<Router>;
+  let deckSrvSpy: SpyObj<DeckService>;
+  let gameSrvSpy: SpyObj<GameService>;
+  let authSrvSpy: SpyObj<AuthService>;
+  let routerSpy: SpyObj<Router>;
   const decksFixture = { deck: [{ name: 'dinos' }, { name: 'frameworks' }] };
 
   beforeEach(fakeAsync(() => {
-    deckSrvSpy = jasmine.createSpyObj('DeckService', ['getData']);
-    deckSrvSpy.getData.and.returnValue(Promise.resolve(decksFixture));
+    deckSrvSpy = createSpyObj('DeckService', ['getData']);
+    deckSrvSpy.getData.mockReturnValue(Promise.resolve(decksFixture));
 
-    gameSrvSpy = jasmine.createSpyObj('GameService', ['changeDeck', 'newGame']);
-    authSrvSpy = jasmine.createSpyObj('AuthService', ['logOut']);
+    gameSrvSpy = createSpyObj('GameService', ['changeDeck', 'newGame']);
+    authSrvSpy = createSpyObj('AuthService', ['logOut']);
     (authSrvSpy as any).User = of(mockUser);
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    routerSpy = createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       declarations: [NavigationComponent],

@@ -4,16 +4,17 @@ import {Router} from '@angular/router';
 
 import {LoginComponent} from './login.component';
 import {AuthService} from '../../auth.service';
+import { SpyObj, createSpyObj } from '../../../testing/spy';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authSpy: jasmine.SpyObj<AuthService>;
-  let routerSpy: jasmine.SpyObj<Router>;
+  let authSpy: SpyObj<AuthService>;
+  let routerSpy: SpyObj<Router>;
 
   beforeEach(() => {
-    authSpy = jasmine.createSpyObj('AuthService', ['doEmailLogin', 'doGoogleLogin']);
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    authSpy = createSpyObj('AuthService', ['doEmailLogin', 'doGoogleLogin']);
+    routerSpy = createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       imports: [LoginComponent],
@@ -57,7 +58,7 @@ describe('LoginComponent', () => {
     component.signInForm.controls.password.setValue('secret1');
     fixture.detectChanges(false);
 
-    authSpy.doEmailLogin.and.returnValue(Promise.resolve({} as any));
+    authSpy.doEmailLogin.mockReturnValue(Promise.resolve({} as any));
     component.signInWithEmail();
 
     expect(authSpy.doEmailLogin).toHaveBeenCalledWith({ email: 'player@example.com', password: 'secret1' });
@@ -65,7 +66,7 @@ describe('LoginComponent', () => {
 
   it('signInWithEmail() only navigates to the profile page once login resolves', async () => {
     let resolveLogin: (value: any) => void;
-    authSpy.doEmailLogin.and.returnValue(new Promise(resolve => resolveLogin = resolve));
+    authSpy.doEmailLogin.mockReturnValue(new Promise(resolve => resolveLogin = resolve));
 
     const pending = component.signInWithEmail();
     expect(routerSpy.navigate).not.toHaveBeenCalled();
@@ -77,7 +78,7 @@ describe('LoginComponent', () => {
   });
 
   it('signInWithEmail() does not navigate when login fails', async () => {
-    authSpy.doEmailLogin.and.returnValue(Promise.reject(new Error('bad credentials')));
+    authSpy.doEmailLogin.mockReturnValue(Promise.reject(new Error('bad credentials')));
 
     await component.signInWithEmail();
 
@@ -85,7 +86,7 @@ describe('LoginComponent', () => {
   });
 
   it('loginWithGoogle() delegates to AuthService and does not itself navigate (AuthService navigates home on success)', async () => {
-    authSpy.doGoogleLogin.and.returnValue(Promise.resolve({} as any));
+    authSpy.doGoogleLogin.mockReturnValue(Promise.resolve({} as any));
 
     await component.loginWithGoogle({} as any);
 
@@ -94,7 +95,7 @@ describe('LoginComponent', () => {
   });
 
   it('loginWithGoogle() does not navigate when the popup fails or is dismissed', async () => {
-    authSpy.doGoogleLogin.and.returnValue(Promise.reject(new Error('popup closed')));
+    authSpy.doGoogleLogin.mockReturnValue(Promise.reject(new Error('popup closed')));
 
     await component.loginWithGoogle({} as any);
 

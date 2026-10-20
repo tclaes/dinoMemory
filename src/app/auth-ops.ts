@@ -12,8 +12,8 @@ import {
 /**
  * The modular Firebase SDK exposes auth operations as free functions (e.g.
  * `signInWithPopup(auth, provider)`) rather than methods on an injected object.
- * Jasmine can't reliably spyOn() named ES module exports under this project's
- * webpack/Karma toolchain, so these are wrapped behind an injectable token instead —
+ * Named ES module exports can't be reliably spied on in bundled ESM test builds,
+ * so these are wrapped behind an injectable token instead —
  * AuthService calls `this.ops.signInWithPopup(...)`, and specs swap in a spy object.
  */
 export interface AuthOps {

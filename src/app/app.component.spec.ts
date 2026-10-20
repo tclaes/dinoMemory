@@ -4,13 +4,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
 import { GameService } from './game/game.service';
 import { SharedService } from './shared/shared.service';
+import { SpyObj, createSpyObj } from '../testing/spy';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
-  let gameSrvSpy: jasmine.SpyObj<GameService>;
+  let gameSrvSpy: SpyObj<GameService>;
 
   beforeEach(() => {
-    gameSrvSpy = jasmine.createSpyObj('GameService', ['changeDeck']);
+    gameSrvSpy = createSpyObj('GameService', ['changeDeck']);
 
     TestBed.configureTestingModule({
       imports: [AppComponent],

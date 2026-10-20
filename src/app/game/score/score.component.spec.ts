@@ -4,16 +4,17 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ScoreComponent } from './score.component';
 import { DeckService } from '../../shared/deck.service';
 import { GameService } from '../game.service';
+import { SpyObj, createSpyObj } from '../../../testing/spy';
 
 describe('ScoreComponent', () => {
   let component: ScoreComponent;
   let fixture: ComponentFixture<ScoreComponent>;
-  let deckSrvSpy: jasmine.SpyObj<DeckService>;
+  let deckSrvSpy: SpyObj<DeckService>;
   const decksFixture = { deck: [{ name: 'dinos' }, { name: 'frameworks' }] };
 
   beforeEach(() => {
-    deckSrvSpy = jasmine.createSpyObj('DeckService', ['getData']);
-    deckSrvSpy.getData.and.returnValue(Promise.resolve(decksFixture));
+    deckSrvSpy = createSpyObj('DeckService', ['getData']);
+    deckSrvSpy.getData.mockReturnValue(Promise.resolve(decksFixture));
 
     TestBed.configureTestingModule({
       declarations: [ScoreComponent],

@@ -4,21 +4,22 @@ import { Firestore } from '@angular/fire/firestore';
 import { ScoreService } from './score.service';
 import { FIRESTORE_OPS } from './firestore-ops';
 import { createMockFirestoreOps } from '../../../testing/firebase-mocks';
+import { SpyObj } from '../../../testing/spy';
 
 describe('ScoreService', () => {
   let service: ScoreService;
-  let opsSpy: jasmine.SpyObj<any>;
+  let opsSpy: SpyObj<any>;
   const fakeFirestore = {};
 
   beforeEach(() => {
     opsSpy = createMockFirestoreOps([{ user: 'Rex', deck: 'dinos', clicks: 8, time: '0h - 0m - 30s' }]);
-    opsSpy.collection.and.returnValue('scores-ref');
-    opsSpy.query.and.returnValue('scores-query');
-    opsSpy.where.and.returnValue('where-constraint');
-    opsSpy.orderBy.and.returnValue('orderBy-constraint');
-    opsSpy.startAt.and.returnValue('startAt-constraint');
-    opsSpy.endAt.and.returnValue('endAt-constraint');
-    opsSpy.limit.and.returnValue('limit-constraint');
+    opsSpy.collection.mockReturnValue('scores-ref');
+    opsSpy.query.mockReturnValue('scores-query');
+    opsSpy.where.mockReturnValue('where-constraint');
+    opsSpy.orderBy.mockReturnValue('orderBy-constraint');
+    opsSpy.startAt.mockReturnValue('startAt-constraint');
+    opsSpy.endAt.mockReturnValue('endAt-constraint');
+    opsSpy.limit.mockReturnValue('limit-constraint');
 
     TestBed.configureTestingModule({
       providers: [
