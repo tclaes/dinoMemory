@@ -1,16 +1,16 @@
-import { vi } from 'vitest';
-import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
-import { Renderer2, signal } from '@angular/core';
-import { of } from 'rxjs';
+import {vi} from 'vitest';
+import {discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {Renderer2, signal} from '@angular/core';
+import {of} from 'rxjs';
 
-import { GameService } from './game.service';
-import { Deck, DeckService } from '../shared/deck.service';
-import { ScoreService } from './scoreboard/score.service';
-import { TimerService } from './timer/timer.service';
-import { SharedService } from '../shared/shared.service';
-import { AuthService } from '../auth.service';
-import { mockUser } from '../../testing/firebase-mocks';
-import { SpyObj, createSpyObj } from '../../testing/spy';
+import {GameService} from './game.service';
+import {Deck, DeckService} from '../../../shared/deck.service';
+import {ScoreService} from '../../scoreboard/score.service';
+import {TimerService} from '../../timer/timer.service';
+import {SharedService} from '../../../shared/shared.service';
+import {AuthService} from '../../../core/auth/services/auth.service';
+import {mockUser} from '../../../../testing/firebase-mocks';
+import {createSpyObj, SpyObj} from '../../../../testing/spy';
 
 function createFakeCard(identifier: string): any {
   const classes = new Set<string>();

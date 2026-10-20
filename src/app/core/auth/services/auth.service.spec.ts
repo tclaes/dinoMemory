@@ -3,9 +3,9 @@ import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 import { AuthService } from './auth.service';
-import { AUTH_OPS } from './auth-ops';
-import { createMockAuthOps, mockUser } from '../testing/firebase-mocks';
-import { SpyObj, createSpyObj } from '../testing/spy';
+import { AUTH_OPS } from '../auth-ops';
+import { createMockAuthOps, mockUser } from '../../../../testing/firebase-mocks';
+import { SpyObj, createSpyObj } from '../../../../testing/spy';
 
 describe('AuthService', () => {
   let service: AuthService;

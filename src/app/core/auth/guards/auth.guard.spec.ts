@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import {TestBed} from '@angular/core/testing';
+import {Router} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
 
-import { AuthGuard } from './auth.guard';
-import { AuthService } from './auth.service';
-import { mockUser } from '../testing/firebase-mocks';
-import { SpyObj, createSpyObj } from '../testing/spy';
+import {AuthGuard} from './auth.guard';
+import {AuthService} from '../services/auth.service';
+import {mockUser} from '../../../../testing/firebase-mocks';
+import {createSpyObj, SpyObj} from '../../../../testing/spy';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;

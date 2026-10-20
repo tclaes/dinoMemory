@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
-import {GameComponent} from './game/game.component';
+import {GameComponent} from './game/playfield/components/game.component';
 import {UserprofileComponent} from './user/userprofile.component';
-import {AuthGuard} from './auth.guard';
+import {AuthGuard} from './core/auth/guards/auth.guard';
 import {RegisterComponent} from './user/register/register.component';
 import {LoginComponent} from './user/login/login.component';
 

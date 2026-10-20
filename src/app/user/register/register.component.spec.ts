@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {provideRouter} from '@angular/router';
 
-import { RegisterComponent } from './register.component';
-import { AuthService } from '../../auth.service';
-import { SpyObj, createSpyObj } from '../../../testing/spy';
+import {RegisterComponent} from './register.component';
+import {AuthService} from '../../core/auth/services/auth.service';
+import {createSpyObj, SpyObj} from '../../../testing/spy';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;

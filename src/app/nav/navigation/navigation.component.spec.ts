@@ -1,17 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA, signal} from '@angular/core';
+import {AsyncPipe, NgClass} from '@angular/common';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {Router} from '@angular/router';
+import {of} from 'rxjs';
 
-import { NavigationComponent } from './navigation.component';
-import { DeckService } from '../../shared/deck.service';
-import { GameService } from '../../game/game.service';
-import { SharedService } from '../../shared/shared.service';
-import { AuthService } from '../../auth.service';
-import { mockUser } from '../../../testing/firebase-mocks';
-import { SpyObj, createSpyObj } from '../../../testing/spy';
+import {NavigationComponent} from './navigation.component';
+import {DeckService} from '../../shared/deck.service';
+import {GameService} from '../../game/playfield/services/game.service';
+import {SharedService} from '../../shared/shared.service';
+import {AuthService} from '../../core/auth/services/auth.service';
+import {mockUser} from '../../../testing/firebase-mocks';
+import {createSpyObj, SpyObj} from '../../../testing/spy';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;

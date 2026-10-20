@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {User} from '@angular/fire/auth';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../core/auth/services/auth.service';
 import {MatCard} from '@angular/material/card';
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 import {MatFormField, MatInput} from '@angular/material/input';
