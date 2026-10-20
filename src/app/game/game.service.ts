@@ -116,7 +116,7 @@ export class GameService {
         this.gameWon = !this.gameWon;
         let clicks: number;
         this.#sharedService.currentTimesClicked.subscribe(click => clicks = click);
-        this.#scoreService.updateScores(this.user().displayName, clicks , this.timer, this.deck.name);
+        this.#scoreService.updateScores(this.user().displayName, clicks, this.timer(), this.deck().name);
       }
   }
 

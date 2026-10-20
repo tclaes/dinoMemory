@@ -7,7 +7,7 @@ export class TimerService {
 
   #timer = signal('0h - 0m - 0s')
   currentTime = this.#timer.asReadonly();
-  intervalId: number;
+  intervalId: ReturnType<typeof setInterval>;
 
    startTimer() {
      let hours = 0;
