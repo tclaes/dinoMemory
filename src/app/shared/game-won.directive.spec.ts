@@ -6,7 +6,7 @@ import { GameWonDirective } from './game-won.directive';
 @Component({
     template: `<div appGameWon class="display"></div>`,
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [GameWonDirective]
 })
 class TestHostComponent { }
 
@@ -15,7 +15,7 @@ describe('GameWonDirective', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [GameWonDirective, TestHostComponent]
+      imports: [TestHostComponent]
     });
     fixture = TestBed.createComponent(TestHostComponent);
     fixture.detectChanges();

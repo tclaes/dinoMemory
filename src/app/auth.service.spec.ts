@@ -5,17 +5,18 @@ import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { AUTH_OPS } from './auth-ops';
 import { createMockAuthOps, mockUser } from '../testing/firebase-mocks';
+import { SpyObj, createSpyObj } from '../testing/spy';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let authOps: jasmine.SpyObj<any>;
-  let routerSpy: jasmine.SpyObj<Router>;
+  let authOps: SpyObj<any>;
+  let routerSpy: SpyObj<Router>;
   const fakeAuth = {};
 
   beforeEach(() => {
     const mocks = createMockAuthOps();
     authOps = mocks.ops;
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    routerSpy = createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -37,7 +38,7 @@ describe('AuthService', () => {
 
   it('doGoogleLogin() sets the user from the popup result and navigates home', fakeAsync(() => {
     const popupResult = { user: { ...mockUser, uid: 'google-uid' } };
-    authOps.signInWithPopup.and.returnValue(Promise.resolve(popupResult));
+    authOps.signInWithPopup.mockReturnValue(Promise.resolve(popupResult));
 
     service.doGoogleLogin();
     tick();
@@ -49,7 +50,7 @@ describe('AuthService', () => {
   it('doEmailLogin() sets the display name and updates the current user', fakeAsync(() => {
     const player = { name: 'Player One', email: 'player@example.com' };
     const signInResult = { user: { ...mockUser, uid: 'email-uid' } };
-    authOps.signInWithEmailAndPassword.and.returnValue(Promise.resolve(signInResult));
+    authOps.signInWithEmailAndPassword.mockReturnValue(Promise.resolve(signInResult));
 
     service.doEmailLogin(player);
     tick();
@@ -61,7 +62,7 @@ describe('AuthService', () => {
   it('tryRegister() creates the account and sets the profile display name', fakeAsync(() => {
     const newUser = { name: 'New Player', email: 'new@example.com', password: 'secret1' };
     const userCredential = { user: { displayName: newUser.name } };
-    authOps.createUserWithEmailAndPassword.and.returnValue(Promise.resolve(userCredential));
+    authOps.createUserWithEmailAndPassword.mockReturnValue(Promise.resolve(userCredential));
 
     service.tryRegister(newUser as any);
     tick();
@@ -71,7 +72,7 @@ describe('AuthService', () => {
   }));
 
   it('logOut() signs out and navigates home', fakeAsync(() => {
-    authOps.signOut.and.returnValue(Promise.resolve());
+    authOps.signOut.mockReturnValue(Promise.resolve());
 
     service.logOut();
     tick();

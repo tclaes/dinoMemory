@@ -1,14 +1,16 @@
+import { vi } from 'vitest';
 import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
-import { Renderer2 } from '@angular/core';
+import { Renderer2, signal } from '@angular/core';
 import { of } from 'rxjs';
 
 import { GameService } from './game.service';
-import { DeckService } from '../shared/deck.service';
+import { Deck, DeckService } from '../shared/deck.service';
 import { ScoreService } from './scoreboard/score.service';
 import { TimerService } from './timer/timer.service';
 import { SharedService } from '../shared/shared.service';
 import { AuthService } from '../auth.service';
 import { mockUser } from '../../testing/firebase-mocks';
+import { SpyObj, createSpyObj } from '../../testing/spy';
 
 function createFakeCard(identifier: string): any {
   const classes = new Set<string>();
@@ -22,20 +24,22 @@ describe('GameService', () => {
   let service: GameService;
   let sharedSrv: SharedService;
   let timerSrv: TimerService;
-  let deckSrvSpy: jasmine.SpyObj<DeckService>;
-  let scoreSrvSpy: jasmine.SpyObj<ScoreService>;
-  let renderer2Spy: jasmine.SpyObj<Renderer2>;
+  let selectedDeck: ReturnType<typeof signal<Deck>>;
+  let deckSrvFake: { selectedDeck: typeof selectedDeck; selectDeck: ReturnType<typeof vi.fn> };
+  let scoreSrvSpy: SpyObj<ScoreService>;
+  let renderer2Spy: SpyObj<Renderer2>;
 
   beforeEach(() => {
-    deckSrvSpy = jasmine.createSpyObj('DeckService', ['setDeckObservable']);
-    scoreSrvSpy = jasmine.createSpyObj('ScoreService', ['updateScores']);
+    selectedDeck = signal<Deck>({ name: 'dinos', cards: ['a', 'b'] });
+    deckSrvFake = { selectedDeck, selectDeck: vi.fn() };
+    scoreSrvSpy = createSpyObj('ScoreService', ['updateScores']);
 
     TestBed.configureTestingModule({
       providers: [
         GameService,
         SharedService,
         TimerService,
-        { provide: DeckService, useValue: deckSrvSpy },
+        { provide: DeckService, useValue: deckSrvFake },
         { provide: ScoreService, useValue: scoreSrvSpy },
         { provide: AuthService, useValue: { User: of(mockUser) } }
       ]
@@ -45,36 +49,37 @@ describe('GameService', () => {
     sharedSrv = TestBed.inject(SharedService);
     timerSrv = TestBed.inject(TimerService);
 
-    renderer2Spy = jasmine.createSpyObj('Renderer2', ['addClass', 'removeClass', 'setStyle']);
+    renderer2Spy = createSpyObj('Renderer2', ['addClass', 'removeClass', 'setStyle']);
     // renderer2 is assigned by GameComponent at runtime, not injected via DI.
     service.renderer2 = renderer2Spy;
+  });
 
-    sharedSrv.setDeck({ name: 'dinos', cards: ['a', 'b'] } as any);
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('newGame() resets game state, the click counter and the timer', () => {
+  it('newGame() resets game state, the click counter and the timer, and selects the deck', () => {
     sharedSrv.cardClicked(9);
-    service.gameStarted = true;
+    service.gameStarted.set(true);
     service.gameWon = true;
     service.correctMatch = 3;
 
-    service.newGame();
+    service.newGame('sharks');
 
-    expect(service.gameStarted).toBe(false);
+    expect(service.gameStarted()).toBe(false);
     expect(service.gameWon).toBe(false);
     expect(service.correctMatch).toBe(0);
+    expect(deckSrvFake.selectDeck).toHaveBeenCalledWith('sharks');
 
     let clicks: number;
     sharedSrv.currentTimesClicked.subscribe(c => (clicks = c));
     expect(clicks).toBe(0);
 
-    let time: string;
-    timerSrv.currentTime.subscribe(t => (time = t));
-    expect(time).toBe('0h - 0m - 0s');
+    expect(timerSrv.currentTime()).toBe('0h - 0m - 0s');
   });
 
   it('the first flip of a game starts the timer and records the first card', fakeAsync(() => {
@@ -82,7 +87,7 @@ describe('GameService', () => {
 
     service.flipCard({ currentTarget: card1 });
 
-    expect(service.gameStarted).toBe(true);
+    expect(service.gameStarted()).toBe(true);
     expect(renderer2Spy.addClass).toHaveBeenCalledWith(card1, 'flip');
     expect(service.hasFlippedCard).toBe(true);
     expect(service.firstCard).toBe(card1);
@@ -93,7 +98,7 @@ describe('GameService', () => {
   it('clicking the same card twice is a no-op', fakeAsync(() => {
     const card1 = createFakeCard('a');
     service.flipCard({ currentTarget: card1 });
-    renderer2Spy.addClass.calls.reset();
+    renderer2Spy.addClass.mockClear();
 
     service.flipCard({ currentTarget: card1 });
 
@@ -121,7 +126,7 @@ describe('GameService', () => {
   }));
 
   it('a full match reports the score with the elapsed time and click count', fakeAsync(() => {
-    sharedSrv.setDeck({ name: 'dinos', cards: ['a'] } as any);
+    selectedDeck.set({ name: 'dinos', cards: ['a'] });
     sharedSrv.cardClicked(4);
 
     const card1 = createFakeCard('a');
@@ -138,7 +143,7 @@ describe('GameService', () => {
   }));
 
   it('shuffle() removes the flip class and sets a deterministic order style', () => {
-    spyOn(Math, 'random').and.returnValue(0.5);
+    vi.spyOn(Math, 'random').mockReturnValue(0.5);
     const card = { nativeElement: {} };
 
     service.shuffle(card);

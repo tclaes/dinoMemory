@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
 import { of } from 'rxjs';
 
 import { ScoreboardComponent } from './scoreboard.component';
@@ -8,22 +6,21 @@ import { GameService } from '../game.service';
 import { ScoreService } from './score.service';
 import { SharedService } from '../../shared/shared.service';
 import { TimerService } from '../timer/timer.service';
+import { SpyObj, createSpyObj } from '../../../testing/spy';
 
 describe('ScoreboardComponent', () => {
   let component: ScoreboardComponent;
   let fixture: ComponentFixture<ScoreboardComponent>;
-  let gameSrvSpy: jasmine.SpyObj<GameService>;
-  let scoreSrvSpy: jasmine.SpyObj<ScoreService>;
+  let gameSrvSpy: SpyObj<GameService>;
+  let scoreSrvSpy: SpyObj<ScoreService>;
 
   beforeEach(() => {
-    gameSrvSpy = jasmine.createSpyObj('GameService', ['newGame']);
-    scoreSrvSpy = jasmine.createSpyObj('ScoreService', ['loadScores']);
-    scoreSrvSpy.loadScores.and.returnValue(of([]));
+    gameSrvSpy = createSpyObj('GameService', ['newGame']);
+    scoreSrvSpy = createSpyObj('ScoreService', ['loadScores']);
+    scoreSrvSpy.loadScores.mockReturnValue(of([]));
 
     TestBed.configureTestingModule({
-      declarations: [ScoreboardComponent],
-      imports: [MatTableModule],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [ScoreboardComponent],
       providers: [
         { provide: GameService, useValue: gameSrvSpy },
         { provide: ScoreService, useValue: scoreSrvSpy },

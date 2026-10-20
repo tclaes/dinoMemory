@@ -27,16 +27,7 @@ describe('SharedService', () => {
     expect(value).toBe(5);
   });
 
-  it('emits the default "dinos" deck before any deck is set', () => {
-    let deck: any;
-    service.standardDeck.subscribe(d => deck = d);
-    expect(deck).toEqual({ name: 'dinos' });
-  });
-
-  it('setDeck() pushes the new deck', () => {
-    let deck: any;
-    service.standardDeck.subscribe(d => deck = d);
-    service.setDeck({ name: 'sharks' });
-    expect(deck).toEqual({ name: 'sharks' });
+  it('exposes the default "dinos" deck', () => {
+    expect(service.standardDeck()).toEqual({ name: 'dinos' });
   });
 });

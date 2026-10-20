@@ -8,8 +8,8 @@ describe('CardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CardComponent]
-    }).compileComponents();
+      imports: [CardComponent]
+    });
 
     fixture = TestBed.createComponent(CardComponent);
     component = fixture.componentInstance;
@@ -20,8 +20,8 @@ describe('CardComponent', () => {
   });
 
   it('renders the front face using the given card', () => {
-    component.card = 'stegosaurus';
-    component.imgUrl = 'dinos';
+    fixture.componentRef.setInput('card', 'stegosaurus');
+    fixture.componentRef.setInput('imgUrl', 'dinos');
     fixture.detectChanges();
 
     const image: HTMLImageElement = fixture.nativeElement.querySelector('img.front-face');
@@ -29,7 +29,7 @@ describe('CardComponent', () => {
   });
 
   it('renders a colored star cover on the back face, cycling by coverIndex', () => {
-    component.coverIndex = 1;
+    fixture.componentRef.setInput('coverIndex', 1);
     fixture.detectChanges();
 
     const back: HTMLElement = fixture.nativeElement.querySelector('.back-face');

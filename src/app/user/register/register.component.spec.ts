@@ -1,22 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { provideRouter } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../auth.service';
+import { SpyObj, createSpyObj } from '../../../testing/spy';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
-  let authSpy: jasmine.SpyObj<AuthService>;
+  let authSpy: SpyObj<AuthService>;
 
   beforeEach(() => {
-    authSpy = jasmine.createSpyObj('AuthService', ['tryRegister']);
+    authSpy = createSpyObj('AuthService', ['tryRegister']);
 
     TestBed.configureTestingModule({
       imports: [RegisterComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: AuthService, useValue: authSpy }
+        { provide: AuthService, useValue: authSpy },
+        // The template's routerLink needs a router.
+        provideRouter([])
       ]
     }).compileComponents();
 

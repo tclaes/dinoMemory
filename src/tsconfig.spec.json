@@ -2,14 +2,17 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
+    "typeRoots": [
+      "../node_modules/@types",
+      "../node_modules"
+    ],
     "types": [
-      "jasmine",
+      "vitest/globals",
       "node"
     ]
   },
   "files": [
-    "test.ts",
-    "polyfills.ts"
+    "test-setup.ts"
   ],
   "include": [
     "**/*.spec.ts",
@@ -19,4 +22,3 @@
     "strictTemplates": false
   }
 }
-  

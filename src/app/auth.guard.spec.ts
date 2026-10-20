@@ -5,15 +5,16 @@ import { BehaviorSubject } from 'rxjs';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { mockUser } from '../testing/firebase-mocks';
+import { SpyObj, createSpyObj } from '../testing/spy';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
   let authStateSubject: BehaviorSubject<any>;
-  let routerSpy: jasmine.SpyObj<Router>;
+  let routerSpy: SpyObj<Router>;
 
   beforeEach(() => {
     authStateSubject = new BehaviorSubject<any>(mockUser);
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    routerSpy = createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       providers: [

@@ -1,4 +1,5 @@
 import { BehaviorSubject, of } from 'rxjs';
+import { createSpyObj } from './spy';
 
 /**
  * Reusable Firebase test doubles. Never import provideFirebaseApp/initializeApp in specs —
@@ -15,18 +16,18 @@ export const mockUser: any = {
 
 export function createMockAuthOps(initialUser: any = mockUser) {
   const authStateSubject = new BehaviorSubject<any>(initialUser);
-  const ops = jasmine.createSpyObj('AuthOps', [
+  const ops = createSpyObj('AuthOps', [
     'authState', 'signInWithPopup', 'signInWithEmailAndPassword',
     'createUserWithEmailAndPassword', 'updateCurrentUser', 'signOut', 'updateProfile'
   ]);
-  ops.authState.and.returnValue(authStateSubject.asObservable());
+  ops.authState.mockReturnValue(authStateSubject.asObservable());
   return { ops, authStateSubject };
 }
 
 export function createMockFirestoreOps(scores: any[] = []) {
-  const ops = jasmine.createSpyObj('FirestoreOps', [
+  const ops = createSpyObj('FirestoreOps', [
     'collection', 'query', 'where', 'orderBy', 'startAt', 'endAt', 'limit', 'collectionData', 'addDoc'
   ]);
-  ops.collectionData.and.returnValue(of(scores));
+  ops.collectionData.mockReturnValue(of(scores));
   return ops;
 }

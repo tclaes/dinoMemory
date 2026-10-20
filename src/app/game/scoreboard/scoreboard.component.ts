@@ -82,6 +82,6 @@ export class ScoreboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.collection$ = this.#scoreService.loadScores(this.standardDeck.name);
+    this.collection$ = this.#scoreService.loadScores(this.standardDeck().name);
   }
 }

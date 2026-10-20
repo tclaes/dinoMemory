@@ -1,46 +1,45 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 
 import { ScoreComponent } from './score.component';
 import { DeckService } from '../../shared/deck.service';
 import { GameService } from '../game.service';
+import { SpyObj, createSpyObj } from '../../../testing/spy';
 
 describe('ScoreComponent', () => {
   let component: ScoreComponent;
   let fixture: ComponentFixture<ScoreComponent>;
-  let deckSrvSpy: jasmine.SpyObj<DeckService>;
-  const decksFixture = { deck: [{ name: 'dinos' }, { name: 'frameworks' }] };
+  let gameSrvSpy: SpyObj<GameService>;
+  const decksFixture = [{ name: 'dinos' }, { name: 'frameworks' }];
 
   beforeEach(() => {
-    deckSrvSpy = jasmine.createSpyObj('DeckService', ['getData']);
-    deckSrvSpy.getData.and.returnValue(Promise.resolve(decksFixture));
+    gameSrvSpy = createSpyObj('GameService', ['restart']);
 
     TestBed.configureTestingModule({
-      declarations: [ScoreComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [ScoreComponent],
       providers: [
-        { provide: DeckService, useValue: deckSrvSpy },
-        { provide: GameService, useValue: {} }
+        { provide: DeckService, useValue: { availableDecks: signal(decksFixture) } },
+        { provide: GameService, useValue: gameSrvSpy }
       ]
-    }).compileComponents();
+    });
+    // Clicks/timer children are covered by their own specs; render them as unknown elements.
+    TestBed.overrideComponent(ScoreComponent, { set: { imports: [], schemas: [NO_ERRORS_SCHEMA] } });
 
     fixture = TestBed.createComponent(ScoreComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
-  it('ngOnInit() loads and maps the deck list', fakeAsync(() => {
-    fixture.detectChanges();
-    tick();
+  it('exposes the available deck list', () => {
+    expect(component.decks$()).toEqual(decksFixture);
+  });
 
-    let result: any;
-    component.decks$.then(data => (result = data));
-    tick();
-
-    expect(result).toEqual(decksFixture.deck);
-  }));
+  it('the New Game button restarts the game', () => {
+    fixture.nativeElement.querySelector('.new-game-btn').click();
+    expect(gameSrvSpy.restart).toHaveBeenCalled();
+  });
 });
