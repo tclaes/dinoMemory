@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, computed, ElementRef, inject, QueryList, Renderer2, ViewChildren} from '@angular/core';
 import {GameService} from './game.service';
-import {CardComponent} from './components/cards/card.component';
+import {CardComponent} from './cards/card.component';
 import {SharedService} from '../shared/shared.service';
-import {GameModule} from './game.module';
 import {ScoreComponent} from './score/score.component';
 import {ScoreboardComponent} from './scoreboard/scoreboard.component';
 import {GameWonDirective} from '../shared/game-won.directive';
@@ -14,7 +13,6 @@ import {DeckService} from '../shared/deck.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
   imports: [
-    GameModule,
     CardComponent,
     ScoreComponent,
     ScoreboardComponent,

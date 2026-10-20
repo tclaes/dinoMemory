@@ -13,7 +13,7 @@ describe('AppComponent', () => {
     gameSrvSpy = jasmine.createSpyObj('GameService', ['changeDeck']);
 
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      imports: [AppComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: GameService, useValue: gameSrvSpy },

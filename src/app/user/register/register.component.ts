@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
+import { UntypedFormGroup, Validators, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthService } from './../../auth.service';
 
 export interface User {
@@ -14,7 +15,7 @@ export interface User {
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [ReactiveFormsModule, RouterLink]
 })
 export class RegisterComponent {
 

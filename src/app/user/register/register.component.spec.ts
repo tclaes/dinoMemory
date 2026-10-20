@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { RegisterComponent } from './register.component';
@@ -14,8 +13,7 @@ describe('RegisterComponent', () => {
     authSpy = jasmine.createSpyObj('AuthService', ['tryRegister']);
 
     TestBed.configureTestingModule({
-      declarations: [RegisterComponent],
-      imports: [ReactiveFormsModule],
+      imports: [RegisterComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: AuthService, useValue: authSpy }
