@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {of} from 'rxjs';
 
-import { UserprofileComponent } from './userprofile.component';
-import { AuthService } from '../auth.service';
-import { mockUser } from '../../testing/firebase-mocks';
+import {UserprofileComponent} from './userprofile.component';
+import {AuthService} from '../core/auth/services/auth.service';
+import {mockUser} from '../../testing/firebase-mocks';
 
 function configure(user$: any) {
   TestBed.configureTestingModule({

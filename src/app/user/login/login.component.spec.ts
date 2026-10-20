@@ -4,8 +4,8 @@ import {provideRouter, Router} from '@angular/router';
 import {vi} from 'vitest';
 
 import {LoginComponent} from './login.component';
-import {AuthService} from '../../auth.service';
-import { SpyObj, createSpyObj } from '../../../testing/spy';
+import {AuthService} from '../../core/auth/services/auth.service';
+import {createSpyObj, SpyObj} from '../../../testing/spy';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;

@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {DeckService} from '../../shared/deck.service';
 import {GameService} from '../../game/game.service';
-import {AuthService} from '../../auth.service';
+import {AuthService} from '../../core/auth/services/auth.service';
 import {Router, RouterLink} from '@angular/router';
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
 import {AsyncPipe, NgClass} from '@angular/common';

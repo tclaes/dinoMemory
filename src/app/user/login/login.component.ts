@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {AuthService} from '../../auth.service';
+import {AuthService} from '../../core/auth/services/auth.service';
 import {ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 

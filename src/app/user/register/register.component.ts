@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormGroup, Validators, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { AuthService } from './../../auth.service';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {RouterLink} from '@angular/router';
+import {AuthService} from '../../core/auth/services/auth.service';
 
 export interface User {
   name: string;
@@ -27,7 +27,9 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService) {}
 
-  get f() { return this.registerForm.controls; }
+  get f() {
+ return this.registerForm.controls; 
+}
 
   register() {
     const user: User = {
