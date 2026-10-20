@@ -14,46 +14,42 @@ describe('TimerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('getTimer() returns undefined before startTimer() has been called', () => {
-    expect(service.getTimer()).toBeUndefined();
+  it('starts at the zeroed stopwatch value', () => {
+    expect(service.currentTime()).toBe('0h - 0m - 0s');
   });
 
-  it('resetTimer() emits the zeroed stopwatch value', () => {
-    let value: string;
-    service.currentTime.subscribe(v => value = v);
-    service.resetTimer();
-    expect(value).toBe('0h - 0m - 0s');
-  });
-
-  it('startTimer() emits one second per tick once subscribed', fakeAsync(() => {
-    let value: string;
-    service.currentTime.subscribe(v => value = v);
-
+  it('startTimer() advances one second per tick', fakeAsync(() => {
     service.startTimer();
-    service.getTimer().subscribe();
 
     tick(1000);
-    expect(value).toBe('0h - 0m - 1s');
+    expect(service.currentTime()).toBe('0h - 0m - 1s');
     tick(1000);
-    expect(value).toBe('0h - 0m - 2s');
+    expect(service.currentTime()).toBe('0h - 0m - 2s');
     tick(1000);
-    expect(value).toBe('0h - 0m - 3s');
+    expect(service.currentTime()).toBe('0h - 0m - 3s');
 
     discardPeriodicTasks();
   }));
 
   it('rolls seconds over into minutes after 60 ticks', fakeAsync(() => {
-    let value: string;
-    service.currentTime.subscribe(v => value = v);
-
     service.startTimer();
-    service.getTimer().subscribe();
 
     for (let i = 0; i < 60; i++) {
       tick(1000);
     }
-    expect(value).toBe('0h - 1m - 0s');
+    expect(service.currentTime()).toBe('0h - 1m - 0s');
 
     discardPeriodicTasks();
+  }));
+
+  it('resetTimer() stops the timer and zeroes the stopwatch value', fakeAsync(() => {
+    service.startTimer();
+    tick(3000);
+
+    service.resetTimer();
+    expect(service.currentTime()).toBe('0h - 0m - 0s');
+
+    tick(3000);
+    expect(service.currentTime()).toBe('0h - 0m - 0s');
   }));
 });

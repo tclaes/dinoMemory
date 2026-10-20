@@ -6,7 +6,7 @@ import { HoldableDirective } from './holdable.directive';
 @Component({
     template: `<div holdable (holdTime)="record($event)"></div>`,
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [HoldableDirective]
 })
 class TestHostComponent {
   values: number[] = [];
@@ -22,7 +22,7 @@ describe('HoldableDirective', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HoldableDirective, TestHostComponent]
+      imports: [TestHostComponent]
     });
     fixture = TestBed.createComponent(TestHostComponent);
     host = fixture.componentInstance;

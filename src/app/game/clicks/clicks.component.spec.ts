@@ -10,7 +10,7 @@ describe('ClicksComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ClicksComponent],
+      imports: [ClicksComponent],
       providers: [
         { provide: SharedService, useValue: { currentTimesClicked: of(7) } }
       ]
@@ -26,7 +26,7 @@ describe('ClicksComponent', () => {
   });
 
   it('picks up the current click count from SharedService and renders it', () => {
-    expect(component.nrOfClicks).toBe(7);
+    expect(component.nrOfClicks()).toBe(7);
     expect(fixture.nativeElement.textContent).toContain('7');
   });
 });

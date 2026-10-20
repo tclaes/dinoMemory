@@ -1,6 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {Router} from '@angular/router';
+import {provideRouter, Router} from '@angular/router';
+import {vi} from 'vitest';
 
 import {LoginComponent} from './login.component';
 import {AuthService} from '../../auth.service';
@@ -10,20 +11,21 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authSpy: SpyObj<AuthService>;
-  let routerSpy: SpyObj<Router>;
+  let navigateSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     authSpy = createSpyObj('AuthService', ['doEmailLogin', 'doGoogleLogin']);
-    routerSpy = createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       imports: [LoginComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: AuthService, useValue: authSpy },
-        { provide: Router, useValue: routerSpy }
+        // A real router is needed for the template's routerLink; navigation itself is spied on.
+        provideRouter([])
       ]
-    }).compileComponents();
+    });
+    navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
@@ -69,12 +71,12 @@ describe('LoginComponent', () => {
     authSpy.doEmailLogin.mockReturnValue(new Promise(resolve => resolveLogin = resolve));
 
     const pending = component.signInWithEmail();
-    expect(routerSpy.navigate).not.toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalled();
 
     resolveLogin({} as any);
     await pending;
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/user']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/userprofile']);
   });
 
   it('signInWithEmail() does not navigate when login fails', async () => {
@@ -82,7 +84,7 @@ describe('LoginComponent', () => {
 
     await component.signInWithEmail();
 
-    expect(routerSpy.navigate).not.toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalled();
   });
 
   it('loginWithGoogle() delegates to AuthService and does not itself navigate (AuthService navigates home on success)', async () => {
@@ -91,7 +93,7 @@ describe('LoginComponent', () => {
     await component.loginWithGoogle({} as any);
 
     expect(authSpy.doGoogleLogin).toHaveBeenCalled();
-    expect(routerSpy.navigate).not.toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalled();
   });
 
   it('loginWithGoogle() does not navigate when the popup fails or is dismissed', async () => {
@@ -99,6 +101,6 @@ describe('LoginComponent', () => {
 
     await component.loginWithGoogle({} as any);
 
-    expect(routerSpy.navigate).not.toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalled();
   });
 });

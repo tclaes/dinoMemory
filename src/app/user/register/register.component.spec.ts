@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { provideRouter } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../auth.service';
@@ -17,7 +18,9 @@ describe('RegisterComponent', () => {
       imports: [RegisterComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: AuthService, useValue: authSpy }
+        { provide: AuthService, useValue: authSpy },
+        // The template's routerLink needs a router.
+        provideRouter([])
       ]
     }).compileComponents();
 

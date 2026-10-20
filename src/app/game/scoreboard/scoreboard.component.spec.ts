@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
 import { of } from 'rxjs';
 
 import { ScoreboardComponent } from './scoreboard.component';
@@ -22,9 +20,7 @@ describe('ScoreboardComponent', () => {
     scoreSrvSpy.loadScores.mockReturnValue(of([]));
 
     TestBed.configureTestingModule({
-      declarations: [ScoreboardComponent],
-      imports: [MatTableModule],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [ScoreboardComponent],
       providers: [
         { provide: GameService, useValue: gameSrvSpy },
         { provide: ScoreService, useValue: scoreSrvSpy },

@@ -2,34 +2,26 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { GameService } from './game/game.service';
-import { SharedService } from './shared/shared.service';
-import { SpyObj, createSpyObj } from '../testing/spy';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
-  let gameSrvSpy: SpyObj<GameService>;
 
   beforeEach(() => {
-    gameSrvSpy = createSpyObj('GameService', ['changeDeck']);
-
     TestBed.configureTestingModule({
-      imports: [AppComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: GameService, useValue: gameSrvSpy },
-        SharedService
-      ]
-    }).compileComponents();
+      imports: [AppComponent]
+    });
+    // Navigation and the router outlet are out of scope here; render them as unknown elements.
+    TestBed.overrideComponent(AppComponent, { set: { imports: [], schemas: [NO_ERRORS_SCHEMA] } });
 
     fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('loads the current standard deck on construction', () => {
-    expect(gameSrvSpy.changeDeck).toHaveBeenCalledWith('dinos');
+  it('renders the navigation shell', () => {
+    expect(fixture.nativeElement.querySelector('app-navigation')).toBeTruthy();
   });
 });

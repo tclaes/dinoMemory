@@ -1,5 +1,6 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -15,15 +16,16 @@ import { SpyObj, createSpyObj } from '../../../testing/spy';
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
   let fixture: ComponentFixture<NavigationComponent>;
-  let deckSrvSpy: SpyObj<DeckService>;
   let gameSrvSpy: SpyObj<GameService>;
   let authSrvSpy: SpyObj<AuthService>;
   let routerSpy: SpyObj<Router>;
-  const decksFixture = { deck: [{ name: 'dinos' }, { name: 'frameworks' }] };
+  const decksFixture = [{ name: 'dinos' }, { name: 'frameworks' }];
 
-  beforeEach(fakeAsync(() => {
-    deckSrvSpy = createSpyObj('DeckService', ['getData']);
-    deckSrvSpy.getData.mockReturnValue(Promise.resolve(decksFixture));
+  beforeEach(() => {
+    const deckSrvFake = {
+      availableDecks: signal(decksFixture),
+      selectedDeck: signal(decksFixture[0])
+    };
 
     gameSrvSpy = createSpyObj('GameService', ['changeDeck', 'newGame']);
     authSrvSpy = createSpyObj('AuthService', ['logOut']);
@@ -31,40 +33,41 @@ describe('NavigationComponent', () => {
     routerSpy = createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      declarations: [NavigationComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [NavigationComponent],
       providers: [
         { provide: BreakpointObserver, useValue: { observe: () => of({ matches: false }) } },
-        { provide: DeckService, useValue: deckSrvSpy },
+        { provide: DeckService, useValue: deckSrvFake },
         { provide: GameService, useValue: gameSrvSpy },
         SharedService,
         { provide: AuthService, useValue: authSrvSpy },
         { provide: Router, useValue: routerSpy }
       ]
-    }).compileComponents();
+    });
+    // Material sidenav and routerLink are out of scope here; render them as unknown elements/attributes.
+    TestBed.overrideComponent(NavigationComponent, {
+      set: { imports: [NgClass, AsyncPipe], schemas: [NO_ERRORS_SCHEMA] }
+    });
 
     fixture = TestBed.createComponent(NavigationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    tick();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('loads the deck list and the current user without throwing', () => {
-    expect(deckSrvSpy.getData).toHaveBeenCalled();
-    expect(component.user).toEqual(mockUser);
+  it('exposes the deck list and the current user', () => {
+    expect(component.decks$()).toEqual(decksFixture);
+    expect(component.user()).toEqual(mockUser);
   });
 
-  it('newGame() changes the deck, starts a new game and navigates to /game', () => {
-    const event = { currentTarget: { innerText: 'dinos' } };
+  it('newGame() starts a new game with the clicked deck and navigates to it', () => {
+    const event = { currentTarget: { innerText: 'Dinos' } };
     component.newGame(event);
 
-    expect(gameSrvSpy.changeDeck).toHaveBeenCalledWith('dinos');
-    expect(gameSrvSpy.newGame).toHaveBeenCalled();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/game']);
+    expect(gameSrvSpy.newGame).toHaveBeenCalledWith('dinos');
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['game', 'dinos']);
   });
 
   it('logOut() logs out and navigates to /login', () => {

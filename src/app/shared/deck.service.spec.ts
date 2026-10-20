@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {HttpTestingController, provideHttpClientTesting,} from '@angular/common/http/testing';
 
 import {DeckService} from './deck.service';
@@ -36,6 +36,11 @@ describe("DeckService", () => {
     });
     service = TestBed.inject(DeckService);
     httpMock = TestBed.inject(HttpTestingController);
+
+    // The decks signal (toSignal) requests the deck list as soon as the service is created.
+    const req = httpMock.expectOne(service.decksUrl);
+    expect(req.request.method).toBe("GET");
+    req.flush(fixture);
   });
 
   afterEach(() => {
@@ -46,17 +51,18 @@ describe("DeckService", () => {
     expect(service).toBeTruthy();
   });
 
-  it("getData() issues a single GET to the decks url and resolves with the response", fakeAsync(() => {
-    let result: any;
-    service.getData().then((data) => (result = data));
+  it("availableDecks() exposes the loaded deck list", () => {
+    expect(service.availableDecks()).toEqual(fixture.deck);
+  });
 
-    const req = httpMock.expectOne(service.decksUrl);
-    expect(req.request.method).toBe("GET");
-    req.flush(fixture);
-    tick();
+  it("selectedDeck() defaults to the dinos deck", () => {
+    expect(service.selectedDeck()).toEqual(fixture.deck[1]);
+  });
 
-    expect(result).toEqual(fixture);
-  }));
+  it("selectDeck() switches the selected deck by name", () => {
+    service.selectDeck("frameworks");
+    expect(service.selectedDeck()).toEqual(fixture.deck[0]);
+  });
 
   it("getDataObservable() issues a single GET to the decks url", () => {
     let result: any;
@@ -67,16 +73,6 @@ describe("DeckService", () => {
 
     expect(result).toEqual(fixture);
   });
-
-  it("setDeck() resolves to only the decks matching the given name", fakeAsync(() => {
-    let result: any;
-    service.selectDeck("dinos").then((data) => (result = data));
-
-    httpMock.expectOne(service.decksUrl).flush(fixture);
-    tick();
-
-    expect(result).toEqual([fixture.deck[1]]);
-  }));
 
   it("setDeckObservable() flattens the deck array and filters it down to the matching name", () => {
     const emitted: any[] = [];

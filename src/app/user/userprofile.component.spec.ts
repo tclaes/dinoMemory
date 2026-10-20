@@ -6,18 +6,23 @@ import { UserprofileComponent } from './userprofile.component';
 import { AuthService } from '../auth.service';
 import { mockUser } from '../../testing/firebase-mocks';
 
+function configure(user$: any) {
+  TestBed.configureTestingModule({
+    imports: [UserprofileComponent],
+    providers: [
+      { provide: AuthService, useValue: { User: user$ } }
+    ]
+  });
+  // Material card/grid/form-field are out of scope here; render them as unknown elements.
+  TestBed.overrideComponent(UserprofileComponent, { set: { imports: [], schemas: [NO_ERRORS_SCHEMA] } });
+}
+
 describe('UserprofileComponent', () => {
   let component: UserprofileComponent;
   let fixture: ComponentFixture<UserprofileComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [UserprofileComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: AuthService, useValue: { User: of(mockUser) } }
-      ]
-    }).compileComponents();
+    configure(of(mockUser));
 
     fixture = TestBed.createComponent(UserprofileComponent);
     component = fixture.componentInstance;
@@ -34,13 +39,7 @@ describe('UserprofileComponent', () => {
 
   it('does not throw and shows no user data before AuthService emits', () => {
     TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      declarations: [UserprofileComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: AuthService, useValue: { User: of() } }
-      ]
-    }).compileComponents();
+    configure(of());
 
     const pendingFixture = TestBed.createComponent(UserprofileComponent);
 
