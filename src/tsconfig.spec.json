@@ -11,6 +11,9 @@
       "node"
     ]
   },
+  "files": [
+    "test-setup.ts"
+  ],
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts"
