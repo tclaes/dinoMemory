@@ -5,7 +5,7 @@
 .sidenav {
   width: 240px;
   background: var(--dd-bg-accent);
-  color: #fff;
+  color: var(--white);
 }
 
 .hidden {
@@ -23,7 +23,7 @@
   gap: 16px;
   flex-wrap: wrap;
   padding: 16px 20px;
-  background: #fff;
+  background: var(--white);
   border-bottom: 4px solid var(--dd-ink);
   font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
 
@@ -59,7 +59,7 @@
   height: 44px;
   border-radius: 12px;
   border: 2px solid var(--dd-ink);
-  background: #fff;
+  background: var(--white);
   color: var(--dd-ink);
   cursor: pointer;
   box-shadow: 3px 3px 0 var(--dd-ink);
@@ -67,7 +67,7 @@
 
 .profile-btn {
   background: var(--dd-blue);
-  color: #fff;
+  color: var(--white);
   text-decoration: none;
 }
 
@@ -75,7 +75,7 @@
   padding: 11px 20px;
   border-radius: 12px;
   border: 2px solid var(--dd-ink);
-  background: #fff;
+  background: var(--white);
   color: var(--dd-ink);
   font-family: 'Fredoka', sans-serif;
   font-weight: 600;
@@ -97,7 +97,7 @@
   padding: 11px 22px;
   border-radius: 12px;
   border: 2px solid var(--dd-ink);
-  background: #fff;
+  background: var(--white);
   color: var(--dd-ink);
   font-family: 'Fredoka', sans-serif;
   font-weight: 600;
@@ -108,7 +108,7 @@
 
   &[aria-pressed="true"] {
     background: var(--dd-pink);
-    color: #fff;
+    color: var(--white);
   }
 }
 
@@ -126,7 +126,7 @@
   font-family: 'Fredoka', sans-serif;
   font-weight: 700;
   font-size: 1.3rem;
-  color: #fff;
+  color: var(--white);
 }
 
 .drawer-nav {
