@@ -2,10 +2,12 @@
   border-radius: 18px;
   display: block;
   flex: 0 0 80px;
+  height: 100%;
   position: relative;
   transform: scale(1);
   transform-style: preserve-3d;
   transition: transform 0.5s;
+  width: 100%;
 
   &:active {
     transform: scale(0.96);
