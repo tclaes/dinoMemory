@@ -1,12 +1,10 @@
 :host {
-  --card-size: calc(var(--column-width) - var(--grid-gap));
-  --container-size: min(calc(100vw - 12px), 1100px);
   --grid-columns: 4;
   --grid-gap: 8px;
-  --column-width: calc(100cqw / var(--grid-columns) - var(--grid-gap));
+  --max-playfield-width: 1100px;
 
   background: var(--dd-bg);
-  container: playfield;
+  container: playfield / inline-size;
   display: grid;
   grid-template-rows: 100px auto;
   justify-content: center;
@@ -43,6 +41,10 @@
 }
 
 .memory-game {
+  // cqw resolves against the nearest ancestor container (:host), so these must live on a descendant.
+  --column-width: calc(min(var(--max-playfield-width), 100cqw) / var(--grid-columns) - var(--grid-gap));
+  --card-size: calc(var(--column-width) - var(--grid-gap));
+
   background: var(--white);
   border: 5px solid var(--dd-ink);
   border-radius: 28px;
@@ -54,11 +56,11 @@
   justify-items: center;
   padding: 12px;
   perspective: 1000px;
-  width: min(calc(100vw - 12px), var(--container-size));
+  width: min(100cqw, var(--max-playfield-width));
   z-index: 1;
 }
 
 app-card {
-  height: var(--card-size);
   width: var(--card-size);
+  height: var(--card-size);
 }
