@@ -96,7 +96,11 @@ export class GameService {
 
   checkForMatch() {
     const isMatch = this.firstCard.getAttribute('identifier') === this.secondCard.getAttribute('identifier');
-    isMatch ? this.disableCards() : this.unflipCards();
+    if (isMatch) {
+      this.disableCards();
+    } else {
+      this.unflipCards();
+    }
   }
 
   disableCards() {
@@ -127,8 +131,10 @@ export class GameService {
   }
 
   resetBoard() {
-    [this.hasFlippedCard, this.lockBoard] = [false, false];
-    [this.firstCard, this.secondCard] = [null, null];
+    this.hasFlippedCard = false;
+    this.lockBoard = false;
+    this.firstCard = null;
+    this.secondCard = null;
   }
 
   shuffle(card) {

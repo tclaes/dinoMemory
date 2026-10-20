@@ -1,4 +1,4 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {Deck} from './deck.service';
 
@@ -11,9 +11,7 @@ export class SharedService {
   currentTimesClicked = this.timesClicked.asObservable();
 
   #deck = signal<Deck>({name: 'dinos'})
-  standardDeck = computed(() => {
-    return this.#deck()
-  });
+  standardDeck = this.#deck.asReadonly();
 
   cardClicked(clicks: number) {
     this.timesClicked.next(clicks);

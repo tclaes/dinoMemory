@@ -1,4 +1,4 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -6,9 +6,7 @@ import {computed, Injectable, signal} from '@angular/core';
 export class TimerService {
 
   #timer = signal('0h - 0m - 0s')
-  currentTime = computed(() => {
-    return this.#timer()
-  });
+  currentTime = this.#timer.asReadonly();
   intervalId: number;
 
    startTimer() {

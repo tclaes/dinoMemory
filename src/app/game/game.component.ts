@@ -8,7 +8,6 @@ import {ScoreboardComponent} from './scoreboard/scoreboard.component';
 import {GameWonDirective} from '../shared/game-won.directive';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {DeckService} from '../shared/deck.service';
-import {TimerService} from './timer/timer.service';
 
 @Component({
   selector: 'app-game',
@@ -30,7 +29,6 @@ export class GameComponent implements AfterViewInit {
   renderer2 = inject(Renderer2)
   #deckService = inject(DeckService)
   #sharedService = inject(SharedService)
-  #timerService = inject(TimerService)
 
   clicked = toSignal(this.#sharedService.currentTimesClicked)
   timesClicked = computed(() => this.clicked() + 1)
@@ -43,7 +41,7 @@ export class GameComponent implements AfterViewInit {
   newGame() {
     this.gameSrv.newGame();
     this.cards.changes.subscribe(c => {
-      c.toArray().map(item => this.gameSrv.shuffle(item));
+      c.forEach(item => this.gameSrv.shuffle(item));
     });
   }
 
