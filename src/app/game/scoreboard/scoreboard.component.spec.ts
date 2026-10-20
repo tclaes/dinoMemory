@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {of} from 'rxjs';
 
-import { ScoreboardComponent } from './scoreboard.component';
-import { GameService } from '../game.service';
-import { ScoreService } from './score.service';
-import { SharedService } from '../../shared/shared.service';
-import { TimerService } from '../timer/timer.service';
-import { SpyObj, createSpyObj } from '../../../testing/spy';
+import {ScoreboardComponent} from './scoreboard.component';
+import {GameService} from '../playfield/services/game.service';
+import {ScoreService} from './score.service';
+import {SharedService} from '../../shared/shared.service';
+import {TimerService} from '../timer/timer.service';
+import {createSpyObj, SpyObj} from '../../../testing/spy';
 
 describe('ScoreboardComponent', () => {
   let component: ScoreboardComponent;

@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {GameService} from '../game.service';
+import {GameService} from '../playfield/services/game.service';
 import {Score, ScoreService} from './score.service';
 import {Observable} from 'rxjs';
 import {SharedService} from '../../shared/shared.service';

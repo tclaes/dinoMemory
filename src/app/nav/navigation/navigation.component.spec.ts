@@ -7,7 +7,7 @@ import {of} from 'rxjs';
 
 import {NavigationComponent} from './navigation.component';
 import {DeckService} from '../../shared/deck.service';
-import {GameService} from '../../game/game.service';
+import {GameService} from '../../game/playfield/services/game.service';
 import {SharedService} from '../../shared/shared.service';
 import {AuthService} from '../../core/auth/services/auth.service';
 import {mockUser} from '../../../testing/firebase-mocks';

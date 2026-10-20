@@ -4,13 +4,13 @@ import {Renderer2, signal} from '@angular/core';
 import {of} from 'rxjs';
 
 import {GameService} from './game.service';
-import {Deck, DeckService} from '../shared/deck.service';
-import {ScoreService} from './scoreboard/score.service';
-import {TimerService} from './timer/timer.service';
-import {SharedService} from '../shared/shared.service';
-import {AuthService} from '../core/auth/services/auth.service';
-import {mockUser} from '../../testing/firebase-mocks';
-import {createSpyObj, SpyObj} from '../../testing/spy';
+import {Deck, DeckService} from '../../../shared/deck.service';
+import {ScoreService} from '../../scoreboard/score.service';
+import {TimerService} from '../../timer/timer.service';
+import {SharedService} from '../../../shared/shared.service';
+import {AuthService} from '../../../core/auth/services/auth.service';
+import {mockUser} from '../../../../testing/firebase-mocks';
+import {createSpyObj, SpyObj} from '../../../../testing/spy';
 
 function createFakeCard(identifier: string): any {
   const classes = new Set<string>();

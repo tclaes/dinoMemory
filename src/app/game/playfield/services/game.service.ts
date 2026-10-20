@@ -1,9 +1,9 @@
 import {inject, Injectable, Renderer2, signal} from '@angular/core';
-import {DeckService} from '../shared/deck.service';
-import {ScoreService} from './scoreboard/score.service';
-import {TimerService} from './timer/timer.service';
-import {SharedService} from '../shared/shared.service';
-import {AuthService} from '../core/auth/services/auth.service';
+import {DeckService} from '../../../shared/deck.service';
+import {ScoreService} from '../../scoreboard/score.service';
+import {TimerService} from '../../timer/timer.service';
+import {SharedService} from '../../../shared/shared.service';
+import {AuthService} from '../../../core/auth/services/auth.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 @Injectable({providedIn: 'root'})

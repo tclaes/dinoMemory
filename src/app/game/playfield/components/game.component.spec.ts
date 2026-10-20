@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA, signal} from '@angular/core';
 
-import { GameComponent } from './game.component';
-import { GameService } from './game.service';
-import { SharedService } from '../shared/shared.service';
-import { DeckService } from '../shared/deck.service';
-import { SpyObj, createSpyObj } from '../../testing/spy';
+import {GameComponent} from './game.component';
+import {GameService} from '../services/game.service';
+import {SharedService} from '../../../shared/shared.service';
+import {DeckService} from '../../../shared/deck.service';
+import {createSpyObj, SpyObj} from '../../../../testing/spy';
 
 describe('GameComponent', () => {
   let component: GameComponent;

@@ -3,7 +3,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {DeckService} from '../../shared/deck.service';
-import {GameService} from '../../game/game.service';
+import {GameService} from '../../game/playfield/services/game.service';
 import {AuthService} from '../../core/auth/services/auth.service';
 import {Router, RouterLink} from '@angular/router';
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
