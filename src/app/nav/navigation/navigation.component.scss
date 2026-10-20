@@ -3,9 +3,9 @@
 }
 
 .sidenav {
-  width: 240px;
   background: var(--dd-bg-accent);
   color: var(--white);
+  width: 240px;
 }
 
 .hidden {
@@ -15,17 +15,17 @@
 // Header (was mat-toolbar) -------------------------------------------------
 
 .app-header {
+  align-items: center;
+  background: var(--white);
+  border-bottom: 4px solid var(--dd-ink);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
+  gap: 16px;
+  padding: 16px 20px;
   position: sticky;
   top: 0;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 16px 20px;
-  background: var(--white);
-  border-bottom: 4px solid var(--dd-ink);
-  font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
 
   @media screen and (min-width: 980px) {
     padding: 16px 48px;
@@ -33,18 +33,18 @@
 }
 
 .brand {
-  display: flex;
   align-items: center;
+  display: flex;
   gap: 12px;
 }
 
 .header_logo {
-  margin: 0;
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 700;
-  font-size: 1.4rem;
   color: var(--dd-ink);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
   letter-spacing: -0.3px;
+  margin: 0;
 
   &:hover {
     cursor: pointer;
@@ -52,17 +52,17 @@
 }
 
 .icon-btn {
-  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: 2px solid var(--dd-ink);
   background: var(--white);
+  border: 2px solid var(--dd-ink);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 var(--dd-ink);
   color: var(--dd-ink);
   cursor: pointer;
-  box-shadow: 3px 3px 0 var(--dd-ink);
+  display: flex;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
 }
 
 .profile-btn {
@@ -72,39 +72,39 @@
 }
 
 .ghost-btn {
-  padding: 11px 20px;
-  border-radius: 12px;
-  border: 2px solid var(--dd-ink);
   background: var(--white);
-  color: var(--dd-ink);
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
+  border: 2px solid var(--dd-ink);
+  border-radius: 12px;
   box-shadow: 3px 3px 0 var(--dd-ink);
+  color: var(--dd-ink);
+  cursor: pointer;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 11px 20px;
 }
 
 .deck-nav {
-  display: flex;
   align-items: center;
-  gap: 12px;
+  display: flex;
   flex: 1 1 auto;
+  gap: 12px;
   overflow-x: auto;
 }
 
 .deck-pill {
-  flex: 0 0 auto;
-  padding: 11px 22px;
-  border-radius: 12px;
-  border: 2px solid var(--dd-ink);
   background: var(--white);
-  color: var(--dd-ink);
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-transform: capitalize;
-  cursor: pointer;
+  border: 2px solid var(--dd-ink);
+  border-radius: 12px;
   box-shadow: 3px 3px 0 var(--dd-ink);
+  color: var(--dd-ink);
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 11px 22px;
+  text-transform: capitalize;
 
   &[aria-pressed="true"] {
     background: var(--dd-pink);
@@ -113,8 +113,8 @@
 }
 
 .header-actions {
-  display: flex;
   align-items: center;
+  display: flex;
   gap: 12px;
   margin-left: auto;
 }
@@ -122,11 +122,11 @@
 // Drawer (mobile) -----------------------------------------------------------
 
 .drawer-header {
-  padding: 20px;
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 700;
-  font-size: 1.3rem;
   color: var(--white);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 20px;
 }
 
 .drawer-nav {
@@ -137,6 +137,6 @@
 }
 
 .drawer-pill {
-  width: 100%;
   text-align: left;
+  width: 100%;
 }
