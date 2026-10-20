@@ -14,12 +14,12 @@ html {
 }
 
 :root {
-  --mat-sys-background: #1b9aaa;
+  --mat-sys-background: var(--main-bg-color);
 }
 
 // The scoreboard table stays light on the teal background.
 .mat-mdc-table {
-  --mat-table-background-color: #fff;
-  --mat-table-header-headline-color: rgb(0 0 0 / 87%);
-  --mat-table-row-item-label-text-color: rgb(0 0 0 / 87%);
+  --mat-table-background-color: var(--white);
+  --mat-table-header-headline-color: var(--black-87);
+  --mat-table-row-item-label-text-color: var(--black-87);
 }

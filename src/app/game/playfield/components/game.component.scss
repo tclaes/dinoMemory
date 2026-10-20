@@ -30,7 +30,7 @@
 .board-frame {
   position: relative;
   z-index: 1;
-  background: #fff;
+  background: var(--white);
   border: 5px solid var(--dd-ink);
   border-radius: 28px;
   box-shadow: 8px 8px 0 var(--dd-ink);

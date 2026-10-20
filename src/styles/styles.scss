@@ -2,24 +2,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  --main-bg-color: #1b9aaa;
-  --card-bg-color: #06d6a0;
-  --board-bg-color: #ffc43d;
-  --bg-color: #ef476f;
-  --bg-color-2: #f8ffe5;
-
-  // "Dino Disco" redesign palette -- kept separate from the legacy tokens
-  // above; pages opt in as they're migrated to the new look (game, nav
-  // chrome, login).
-  --dd-bg: #5b3a9e;
-  --dd-bg-accent: #6b49ae;
-  --dd-ink: #1b1233;
-  --dd-pink: #d6316f;
-  --dd-pink-bright: #ff4d8d;
-  --dd-blue: #1a6fb0;
-  --dd-blue-bright: #2fa9ff;
-  --dd-yellow: #ffd23f;
-  --dd-cream: #fff6da;
 }
 
 html, body { height: 100%; }
@@ -60,13 +42,13 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--black-30);
   z-index: 999;
 
   & > div:nth-child(1) {
-    background: rgba(0,0,0,0.5);
-    color: white;
-    border: 3px solid white;
+    background: var(--black-50);
+    color: var(--white);
+    border: 3px solid var(--white);
     border-radius: 10px;
     display: flex;
     justify-content: flex-start;
@@ -108,7 +90,7 @@ body {
 }
 
 input.mat-mdc-input-element {
-  color: white;
+  color: var(--white);
 }
 
 // MDC's default "fill" form-field appearance replaced the legacy underline-only
