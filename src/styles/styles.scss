@@ -6,9 +6,9 @@
 
 html, body { height: 100%; }
 body {
-  margin: 0;
   background: var(--main-bg-color);
   font-family: 'Roboto',sans-serif;
+  margin: 0;
 }
 
 .visuallyhidden {
@@ -23,10 +23,10 @@ body {
 }
 
 .focusable:focus-visible {
+  border-radius: 18px;
+  box-shadow: 0 0 0 8px var(--dd-yellow);
   outline: 4px solid var(--dd-ink);
   outline-offset: 3px;
-  box-shadow: 0 0 0 8px var(--dd-yellow);
-  border-radius: 18px;
 }
 
 .disabled {
@@ -34,28 +34,28 @@ body {
 }
 
 .modal {
+  align-items: center;
+  background: var(--black-30);
+  bottom: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
-  background: var(--black-30);
+  position: absolute;
+  right: 0;
+  top: 0;
   z-index: 999;
 
   & > div:nth-child(1) {
+    align-items: center;
     background: var(--black-50);
-    color: var(--white);
     border: 3px solid var(--white);
     border-radius: 10px;
+    color: var(--white);
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
     flex-direction: column;
-    min-width: 300px;
+    justify-content: flex-start;
     min-height: 300px;
+    min-width: 300px;
     padding: 20px 0;
 
     @media screen and (min-width: 600px) {
@@ -84,8 +84,8 @@ body {
 }
 
 .modal .score {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
 }
 
@@ -105,9 +105,9 @@ input.mat-mdc-input-element {
 
 
 .column {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 50px
 }
 

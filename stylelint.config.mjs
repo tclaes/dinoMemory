@@ -1,8 +1,10 @@
 // Colors are defined once in src/styles/colors.css; everywhere else must use var(--…).
 export default {
   customSyntax: 'postcss-scss',
+  plugins: ['stylelint-order'],
   rules: {
     'color-no-hex': true,
+    'order/properties-alphabetical-order': true,
     'color-named': 'never',
     'function-disallowed-list': [
       'rgb', 'rgba', 'hsl', 'hsla', 'hwb', 'lab', 'lch', 'oklab', 'oklch', 'color', 'color-mix',

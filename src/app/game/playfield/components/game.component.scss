@@ -1,104 +1,64 @@
-.game-page {
+:host {
+  --card-size: calc(var(--column-width) - var(--grid-gap));
+  --container-size: min(calc(100vw - 12px), 1100px);
+  --grid-columns: 4;
+  --grid-gap: 8px;
+  --column-width: calc(100cqw / var(--grid-columns) - var(--grid-gap));
+
   background: var(--dd-bg);
+  container: playfield;
+  display: grid;
+  grid-template-rows: 100px auto;
+  justify-content: center;
   min-height: calc(100vh - 76px);
+  overflow: hidden;
   padding: 20px 15px 32px;
   position: relative;
-  overflow: hidden;
 
   // A couple of soft decorative circles, matching the chosen "Dino Disco" design.
   &::before, &::after {
+    background: var(--dd-bg-accent);
+    border-radius: 50%;
     content: '';
     position: absolute;
-    border-radius: 50%;
-    background: var(--dd-bg-accent);
-    z-index: 0;
+    z-index: -1;
   }
   &::before {
-    width: 220px;
+    bottom: -80px;
     height: 220px;
     left: -80px;
-    bottom: -80px;
+    width: 220px;
   }
   &::after {
-    width: 160px;
     height: 160px;
     right: -60px;
     top: -40px;
+    width: 160px;
   }
-}
-
-.board-frame {
-  position: relative;
-  z-index: 1;
-  background: var(--white);
-  border: 5px solid var(--dd-ink);
-  border-radius: 28px;
-  box-shadow: 8px 8px 0 var(--dd-ink);
-  padding: 20px;
-  margin: 0 auto;
-  max-width: 1100px;
 
   @media screen and (min-width: 600px) {
-    padding: 28px;
-  }
-}
-
-#memory-board {
-  border-radius: 18px;
-  height: calc(100vh - 300px);
-  align-items: center;
-
-  @media screen and (min-width: 980px) {
-    height: calc(100vh - 320px);
+    --grid-columns: 5;
+    --grid-gap: 16px;
   }
 }
 
 .memory-game {
-  display: flex;
+  background: var(--white);
+  border: 5px solid var(--dd-ink);
+  border-radius: 28px;
+  box-shadow: 8px 8px 0 var(--dd-ink);
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat(var(--grid-columns), fit-content(var(--column-width)));
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
+  justify-items: center;
+  padding: 12px;
   perspective: 1000px;
+  width: min(calc(100vw - 12px), var(--container-size));
+  z-index: 1;
 }
 
-.memory-card {
-  border-radius: 18px;
-  flex: 0 0 80px;
-  height: calc(15% - 5px);
-  position: relative;
-  transform: scale(1);
-  transform-style: preserve-3d;
-  transition: transform 0.5s;
-
-  @media screen and (min-width: 600px){
-    flex: 0 0 90px;
-    max-height: 90px;
-  }
-
-  @media screen and (min-width: 750px) and (orientation: portrait) {
-      flex: 0 0 150px;
-      height: calc(25% - 5px);
-      max-width: 130px;
-      max-height: 150px;
-  }
-
-  @media screen and (min-width: 1025px) and (min-height: 450px) and (orientation: landscape) {
-    flex: 0 0 200px;
-    height: calc(25% - 5px);
-    max-height: 150px;
-}
-
-  @media screen and (orientation: landscape){
-    height: calc(30% - 5px);
-    max-height: 150px;
-  }
-}
-
-.memory-card:active {
-  transform: scale(0.96);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.memory-card.flip {
-  transform: rotateY(180deg);
+app-card {
+  height: var(--card-size);
+  width: var(--card-size);
 }
