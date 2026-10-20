@@ -19,21 +19,15 @@ export class DeckService {
   decksUrl = '../../assets/data.json';
   #decks = toSignal<{deck: Deck[]}>(this.http.get(this.decksUrl));
   #selected = signal('dinos')
-  selectedDeck = computed(() => {
-    return this.#decks()?.deck?.find(deck => deck.name === this.#selected())
-  })
-  availableDecks = computed(() => {
-    return this.#decks()?.deck
-  })
-
+  selectedDeck = computed(() => this.#decks()?.deck?.find(deck => deck.name === this.#selected()))
+  availableDecks = computed(() => this.#decks()?.deck)
 
   selectDeck(name: string) {
     this.#selected.set(name);
   }
 
   getDataObservable() {
-    return this.http
-      .get(this.decksUrl);
+    return this.http.get(this.decksUrl);
   }
 
   setDeckObservable(e) {
@@ -43,8 +37,4 @@ export class DeckService {
       filter(x => x['name'] === e)
     );
   }
-
-
-
-
 }

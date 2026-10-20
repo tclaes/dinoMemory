@@ -1,21 +1,18 @@
 import {AfterViewInit, Component, computed, ElementRef, inject, QueryList, Renderer2, ViewChildren} from '@angular/core';
 import {GameService} from './game.service';
-import {CardComponent} from './components/cards/card.component';
+import {CardComponent} from './cards/card.component';
 import {SharedService} from '../shared/shared.service';
-import {GameModule} from './game.module';
 import {ScoreComponent} from './score/score.component';
 import {ScoreboardComponent} from './scoreboard/scoreboard.component';
 import {GameWonDirective} from '../shared/game-won.directive';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {DeckService} from '../shared/deck.service';
-import {TimerService} from './timer/timer.service';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
   imports: [
-    GameModule,
     CardComponent,
     ScoreComponent,
     ScoreboardComponent,
@@ -30,7 +27,6 @@ export class GameComponent implements AfterViewInit {
   renderer2 = inject(Renderer2)
   #deckService = inject(DeckService)
   #sharedService = inject(SharedService)
-  #timerService = inject(TimerService)
 
   clicked = toSignal(this.#sharedService.currentTimesClicked)
   timesClicked = computed(() => this.clicked() + 1)
@@ -43,7 +39,7 @@ export class GameComponent implements AfterViewInit {
   newGame() {
     this.gameSrv.newGame();
     this.cards.changes.subscribe(c => {
-      c.toArray().map(item => this.gameSrv.shuffle(item));
+      c.forEach(item => this.gameSrv.shuffle(item));
     });
   }
 

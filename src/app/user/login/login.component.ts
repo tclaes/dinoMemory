@@ -1,14 +1,14 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {AuthService} from '../../auth.service';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [ReactiveFormsModule, RouterLink]
 })
 export class LoginComponent {
 
