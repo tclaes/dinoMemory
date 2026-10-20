@@ -27,6 +27,7 @@
               "src/manifest.json"
             ],
             "styles": [
+              "src/styles/colors.css",
               "src/styles/styles.scss",
               "src/styles/dino.scss"
             ],

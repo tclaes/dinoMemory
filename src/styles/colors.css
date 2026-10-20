@@ -1,0 +1,29 @@
+/* Every color used by the app lives here. All other stylesheets must refer to
+   these through var(--…); stylelint enforces that (see stylelint.config.mjs). */
+:root {
+  /* Base */
+  --white: #fff;
+  --black-30: rgb(0 0 0 / 30%);
+  --black-50: rgb(0 0 0 / 50%);
+  --black-87: rgb(0 0 0 / 87%);
+
+  /* Legacy tokens */
+  --main-bg-color: #1b9aaa;
+  --card-bg-color: #06d6a0;
+  --board-bg-color: #ffc43d;
+  --bg-color: #ef476f;
+  --bg-color-2: #f8ffe5;
+
+  /* "Dino Disco" redesign palette -- kept separate from the legacy tokens
+     above; pages opt in as they're migrated to the new look (game, nav
+     chrome, login). */
+  --dd-bg: #5b3a9e;
+  --dd-bg-accent: #6b49ae;
+  --dd-ink: #1b1233;
+  --dd-pink: #d6316f;
+  --dd-pink-bright: #ff4d8d;
+  --dd-blue: #1a6fb0;
+  --dd-blue-bright: #2fa9ff;
+  --dd-yellow: #ffd23f;
+  --dd-cream: #fff6da;
+}

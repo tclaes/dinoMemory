@@ -36,7 +36,7 @@
   z-index: 1;
   width: 100%;
   max-width: 420px;
-  background: #fff;
+  background: var(--white);
   border: 5px solid var(--dd-ink);
   border-radius: 28px;
   box-shadow: 8px 8px 0 var(--dd-ink);
@@ -89,7 +89,7 @@
   font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
   font-size: 1rem;
   color: var(--dd-ink);
-  background: #fff;
+  background: var(--white);
 
   &[aria-invalid="true"] {
     border-color: var(--dd-pink);
@@ -116,7 +116,7 @@
   border-radius: 14px;
   box-shadow: 3px 3px 0 var(--dd-ink);
   background: var(--dd-pink);
-  color: #fff;
+  color: var(--white);
   font-family: 'Fredoka', sans-serif;
   font-weight: 600;
   font-size: 0.95rem;
@@ -138,7 +138,7 @@
   border: 2px solid var(--dd-ink);
   border-radius: 14px;
   box-shadow: 3px 3px 0 var(--dd-ink);
-  background: #fff;
+  background: var(--white);
   color: var(--dd-ink);
   font-family: 'Fredoka', sans-serif;
   font-weight: 600;
