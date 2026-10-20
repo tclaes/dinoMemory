@@ -1,18 +1,17 @@
-<div class="game-page">
   <app-score />
   @if (gameSrv.gameWon) {
     <app-scoreboard appGameWon />
   }
-  <div class="board-frame">
-    <section class="memory-game" id="memory-board">
+    <section class="memory-game">
       @for (card of deck()?.cards; track card + '_' + gameSrv.gameGeneration; let i = $index) {
         <app-card
           [card]="card"
           [imgUrl]="deck().imgURL"
           [frontFace]="deck().frontFace"
           [coverIndex]="i"
-          class="memory-card" (click)="flipCard($event)"
-        [attr.identifier] = "card" />
+          (click)="flipCard($event)"
+          [attr.identifier] = "card"
+        />
       }
 
       @for (card of deck()?.cards; track card + '_' + gameSrv.gameGeneration; let i = $index) {
@@ -21,10 +20,7 @@
           [imgUrl]="deck().imgURL"
           [frontFace]="deck().frontFace"
           [coverIndex]="i + 1"
-          class="memory-card"
           (click)="flipCard($event)"
         [attr.identifier] = "card" />
       }
     </section>
-  </div>
-</div>

@@ -1,47 +1,47 @@
 // Shared "Dino Disco" auth card styling for the login and register pages.
 
 .auth-page {
-  background: var(--dd-bg);
-  min-height: calc(100vh - 76px);
-  display: flex;
   align-items: center;
+  background: var(--dd-bg);
+  display: flex;
   justify-content: center;
+  min-height: calc(100vh - 76px);
+  overflow: hidden;
   padding: 32px 16px;
   position: relative;
-  overflow: hidden;
 
   &::before, &::after {
+    background: var(--dd-bg-accent);
+    border-radius: 50%;
     content: '';
     position: absolute;
-    border-radius: 50%;
-    background: var(--dd-bg-accent);
     z-index: 0;
   }
   &::before {
-    width: 220px;
+    bottom: -80px;
     height: 220px;
     left: -80px;
-    bottom: -80px;
+    width: 220px;
   }
   &::after {
-    width: 160px;
     height: 160px;
     right: -60px;
     top: -40px;
+    width: 160px;
   }
 }
 
 .auth-card {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 420px;
   background: var(--white);
   border: 5px solid var(--dd-ink);
   border-radius: 28px;
   box-shadow: 8px 8px 0 var(--dd-ink);
-  padding: 32px 24px;
   font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
+  max-width: 420px;
+  padding: 32px 24px;
+  position: relative;
+  width: 100%;
+  z-index: 1;
 
   @media screen and (min-width: 600px) {
     padding: 40px 36px;
@@ -49,18 +49,18 @@
 }
 
 .auth-title {
-  margin: 0 0 6px;
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 700;
-  font-size: 1.6rem;
   color: var(--dd-ink);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 6px;
 }
 
 .auth-subtitle {
-  margin: 0 0 24px;
   color: var(--dd-ink);
-  opacity: 0.75;
   font-size: 0.95rem;
+  margin: 0 0 24px;
+  opacity: 0.75;
 }
 
 .auth-form {
@@ -76,20 +76,20 @@
 }
 
 .field-label {
-  font-weight: 600;
-  font-size: 0.9rem;
   color: var(--dd-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .field-input {
-  width: 100%;
-  padding: 12px 16px;
+  background: var(--white);
   border: 2px solid var(--dd-ink);
   border-radius: 12px;
+  color: var(--dd-ink);
   font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
   font-size: 1rem;
-  color: var(--dd-ink);
-  background: var(--white);
+  padding: 12px 16px;
+  width: 100%;
 
   &[aria-invalid="true"] {
     border-color: var(--dd-pink);
@@ -97,10 +97,10 @@
 }
 
 .field-error {
-  margin: 0;
   color: var(--dd-pink);
   font-size: 0.85rem;
   font-weight: 600;
+  margin: 0;
 }
 
 .auth-actions {
@@ -111,46 +111,46 @@
 }
 
 .btn-primary {
-  padding: 13px 24px;
+  background: var(--dd-pink);
   border: 2px solid var(--dd-ink);
   border-radius: 14px;
   box-shadow: 3px 3px 0 var(--dd-ink);
-  background: var(--dd-pink);
   color: var(--white);
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.95rem;
   cursor: pointer;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 13px 24px;
 
   &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
     box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 }
 
 .btn-google {
-  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 13px 24px;
+  background: var(--white);
   border: 2px solid var(--dd-ink);
   border-radius: 14px;
   box-shadow: 3px 3px 0 var(--dd-ink);
-  background: var(--white);
   color: var(--dd-ink);
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.95rem;
   cursor: pointer;
+  display: flex;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  gap: 10px;
+  justify-content: center;
+  padding: 13px 24px;
 }
 
 .auth-footer {
+  color: var(--dd-ink);
+  font-size: 0.9rem;
   margin: 24px 0 0;
   text-align: center;
-  font-size: 0.9rem;
-  color: var(--dd-ink);
 }
 
 .auth-link {
