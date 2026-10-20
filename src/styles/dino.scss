@@ -1,28 +1,25 @@
 @use '@angular/material' as mat;
-@include mat.all-component-typographies();
-@include mat.elevation-classes();
-@include mat.app-background();
 
-$custom-background-color: #1b9aaa;
+// Generates the --mat-sys-* base tokens; everything below is plain CSS.
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$chartreuse-palette,
+      theme-type: dark,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
 
-$custom-primary: mat.m2-define-palette(mat.$m2-blue-palette, 600);
-$custom-accent: mat.m2-define-palette(mat.$m2-lime-palette, 200);
+:root {
+  --mat-sys-background: #1b9aaa;
+}
 
-$custom-theme: mat.m2-define-dark-theme($custom-primary, $custom-accent);
-
-$background: map-get($custom-theme, background);
-$background: map_merge($background, (background: $custom-background-color));
-$custom-theme: map_merge($custom-theme, (background: $background));
-
-@include mat.all-component-themes($custom-theme);
-// @include mat-drawer-theme($custom-theme);
-
-$table-primary: mat.m2-define-palette(mat.$m2-blue-palette, 600);
-$table-accent: mat.m2-define-palette(mat.$m2-grey-palette, 200);
-
-$table-theme: mat.m2-define-light-theme($table-primary, $table-accent);
-
-@include mat.table-theme($table-theme);
-
-
-
+// The scoreboard table stays light on the teal background.
+.mat-mdc-table {
+  --mat-table-background-color: #fff;
+  --mat-table-header-headline-color: rgb(0 0 0 / 87%);
+  --mat-table-row-item-label-text-color: rgb(0 0 0 / 87%);
+}
