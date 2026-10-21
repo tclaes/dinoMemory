@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, computed, ElementRef, inject, QueryList, Renderer2, ViewChildren} from '@angular/core';
 import {GameService} from '../services/game.service';
-import {CardComponent} from '../../cards/card.component';
 import {SharedService} from '../../../shared/shared.service';
 import {ScoreComponent} from '../../score/score.component';
 import {ScoreboardComponent} from '../../scoreboard/scoreboard.component';
 import {GameWonDirective} from '../../../shared/game-won.directive';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {DeckService} from '../../../shared/deck.service';
+import {CardComponent} from '../../cards/card.component';
 
 @Component({
   selector: 'app-game',
