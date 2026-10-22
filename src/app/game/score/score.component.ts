@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {DeckService} from '../../shared/deck.service';
+import {DeckService} from '../playfield/services/deck.service';
 import {GameService} from '../playfield/services/game.service';
 import {ClicksComponent} from '../clicks/clicks.component';
 import {TimerComponent} from '../timer/timer.component';
@@ -14,8 +14,7 @@ import {TimerComponent} from '../timer/timer.component';
   ]
 })
 export class ScoreComponent {
-  #deckService = inject(DeckService)
-  protected _gameService = inject(GameService)
-
-  decks$ = this.#deckService.availableDecks
+  protected _gameService = inject(GameService);
+  #deckService = inject(DeckService);
+  decks$ = this.#deckService.availableDecks;
 }

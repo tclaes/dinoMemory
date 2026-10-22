@@ -6,9 +6,9 @@ import {Router} from '@angular/router';
 import {of} from 'rxjs';
 
 import {NavigationComponent} from './navigation.component';
-import {DeckService} from '../../shared/deck.service';
+import {DeckService} from '../../game/playfield/services/deck.service';
 import {GameService} from '../../game/playfield/services/game.service';
-import {SharedService} from '../../shared/shared.service';
+import {SharedService} from '../../game/playfield/services/shared.service';
 import {AuthService} from '../../core/auth/services/auth.service';
 import {mockUser} from '../../../testing/firebase-mocks';
 import {createSpyObj, SpyObj} from '../../../testing/spy';
@@ -19,7 +19,7 @@ describe('NavigationComponent', () => {
   let gameSrvSpy: SpyObj<GameService>;
   let authSrvSpy: SpyObj<AuthService>;
   let routerSpy: SpyObj<Router>;
-  const decksFixture = [{ name: 'dinos' }, { name: 'frameworks' }];
+  const decksFixture = [{name: 'dinos'}, {name: 'frameworks'}];
 
   beforeEach(() => {
     const deckSrvFake = {
@@ -35,17 +35,17 @@ describe('NavigationComponent', () => {
     TestBed.configureTestingModule({
       imports: [NavigationComponent],
       providers: [
-        { provide: BreakpointObserver, useValue: { observe: () => of({ matches: false }) } },
-        { provide: DeckService, useValue: deckSrvFake },
-        { provide: GameService, useValue: gameSrvSpy },
+        {provide: BreakpointObserver, useValue: {observe: () => of({matches: false})}},
+        {provide: DeckService, useValue: deckSrvFake},
+        {provide: GameService, useValue: gameSrvSpy},
         SharedService,
-        { provide: AuthService, useValue: authSrvSpy },
-        { provide: Router, useValue: routerSpy }
+        {provide: AuthService, useValue: authSrvSpy},
+        {provide: Router, useValue: routerSpy}
       ]
     });
     // Material sidenav and routerLink are out of scope here; render them as unknown elements/attributes.
     TestBed.overrideComponent(NavigationComponent, {
-      set: { imports: [NgClass, AsyncPipe], schemas: [NO_ERRORS_SCHEMA] }
+      set: {imports: [NgClass, AsyncPipe], schemas: [NO_ERRORS_SCHEMA]}
     });
 
     fixture = TestBed.createComponent(NavigationComponent);
@@ -63,7 +63,7 @@ describe('NavigationComponent', () => {
   });
 
   it('newGame() starts a new game with the clicked deck and navigates to it', () => {
-    const event = { currentTarget: { innerText: 'Dinos' } };
+    const event = {currentTarget: {innerText: 'Dinos'}};
     component.newGame(event);
 
     expect(gameSrvSpy.newGame).toHaveBeenCalledWith('dinos');

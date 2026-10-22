@@ -23,15 +23,15 @@ import {NgOptimizedImage} from '@angular/common';
 })
 export class CardComponent {
 
-  card = input()
-  imgUrl = input()
-  frontFace = input()
+  card = input();
+  imgUrl = input.required<string>();
+  frontFace = input();
   coverIndex = input(0);
 
   private readonly covers = [
-    { bg: 'var(--dd-blue-bright)', star: 'var(--dd-yellow)' },
-    { bg: 'var(--dd-pink-bright)', star: 'var(--dd-yellow)' },
-    { bg: 'var(--dd-yellow)', star: 'var(--dd-pink-bright)' }
+    {bg: 'var(--dd-blue-bright)', star: 'var(--dd-yellow)'},
+    {bg: 'var(--dd-pink-bright)', star: 'var(--dd-yellow)'},
+    {bg: 'var(--dd-yellow)', star: 'var(--dd-pink-bright)'}
   ];
 
   get cover() {

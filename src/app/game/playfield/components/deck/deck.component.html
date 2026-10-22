@@ -1,0 +1,11 @@
+@for (card of gameService.board(); track card.id; ) {
+    <app-card
+            (click)="flipCard(card.id)"
+            [card]="card.name"
+            [class.flip]="gameService.faceUpIds().has(card.id)"
+            [class.matched]="gameService.matchedIds().has(card.id)"
+            [coverIndex]="card.coverIndex"
+            [frontFace]="deck().frontFace"
+            [imgUrl]="deck().imgURL"
+    />
+}

@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {of} from 'rxjs';
 
-import { ClicksComponent } from './clicks.component';
-import { SharedService } from '../../shared/shared.service';
+import {ClicksComponent} from './clicks.component';
+import {SharedService} from '../playfield/services/shared.service';
 
 describe('ClicksComponent', () => {
   let component: ClicksComponent;
@@ -12,7 +12,7 @@ describe('ClicksComponent', () => {
     TestBed.configureTestingModule({
       imports: [ClicksComponent],
       providers: [
-        { provide: SharedService, useValue: { currentTimesClicked: of(7) } }
+        {provide: SharedService, useValue: {currentTimesClicked: of(7)}}
       ]
     }).compileComponents();
 

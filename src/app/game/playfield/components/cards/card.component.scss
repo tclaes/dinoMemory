@@ -37,7 +37,7 @@
   padding: 12px;
   position: absolute;
 
-  @media screen and (max-width: 800px){
+  @media screen and (max-width: 800px) {
     border-width: 3px;
     box-shadow: 3px 3px 0 var(--dd-ink);
     padding: 6px;
@@ -46,8 +46,10 @@
 
 .front-face {
   background: var(--dd-cream);
+  height: 100%;
   object-fit: contain;
   transform: rotateY(180deg);
+  width: 100%;
 }
 
 .back-face {

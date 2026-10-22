@@ -1,61 +1,62 @@
-import {inject, Injectable, Renderer2, signal} from '@angular/core';
-import {DeckService} from '../../../shared/deck.service';
+import {computed, inject, Injectable, signal} from '@angular/core';
+import {DeckService} from './deck.service';
 import {ScoreService} from '../../scoreboard/score.service';
 import {TimerService} from '../../timer/timer.service';
-import {SharedService} from '../../../shared/shared.service';
 import {AuthService} from '../../../core/auth/services/auth.service';
 import {toSignal} from '@angular/core/rxjs-interop';
+
+export interface BoardCard {
+  id: string;
+  name: string;
+  coverIndex: number;
+}
 
 @Injectable({providedIn: 'root'})
 export class GameService {
 
-  #deckService = inject(DeckService)
-  #scoreService = inject(ScoreService)
-  #timerService = inject(TimerService)
-  #sharedService = inject(SharedService)
-  #authService = inject(AuthService)
-
-  deck = this.#deckService.selectedDeck
-  timer = this.#timerService.currentTime
-  user = toSignal(this.#authService.User)
-
-  renderer2: Renderer2;
-
-  hasFlippedCard = false;
-  private lockBoard: boolean;
-  firstCard;
-  secondCard;
-  correctMatch = 0;
-
   gameWon = false;
   gameStarted = signal(false);
+  #flippedIds = signal<readonly string[]>([]);
+  flippedIds = this.#flippedIds.asReadonly();
+  #matchedIds = signal<ReadonlySet<string>>(new Set());
+  matchedIds = this.#matchedIds.asReadonly();
+  faceUpIds = computed(() => new Set([...this.#flippedIds(), ...this.#matchedIds()]));
+  #clicked = signal(0);
+  clicked = this.#clicked.asReadonly();
+  #deckService = inject(DeckService);
+  deck = this.#deckService.selectedDeck;
+  #scoreService = inject(ScoreService);
+  #timerService = inject(TimerService);
+  timer = this.#timerService.currentTime;
+  #authService = inject(AuthService);
+  user = toSignal(this.#authService.User);
 
-  // Bumped on every newGame() and folded into the *ngFor track expression in
-  // game.component.html. Without it, restarting with the SAME deck (the
-  // "New Game" button) reuses the existing card elements -- Angular's track
-  // matches on the card name string, which is unchanged -- so the 'flip'
-  // and 'matched' classes added imperatively via Renderer2 would survive
-  // the restart instead of being cleared.
-  gameGeneration = 0;
+  // Bumped on every newGame() so the board is rebuilt and reshuffled, also when
+  // restarting with the same deck.
+  #generation = signal(0);
+  board = computed<BoardCard[]>(() => {
+    this.#generation();
+    const names = this.deck()?.cards ?? [];
+    const pairs = names.flatMap((name, i) => [
+      {id: `${name}-a`, name, coverIndex: i},
+      {id: `${name}-b`, name, coverIndex: i + 1}
+    ]);
+    return this.#shuffle(pairs);
+  });
+  #lockBoard = false;
+  #unflipTimeout: ReturnType<typeof setTimeout>;
 
   newGame(deck = 'dinos') {
     this.gameStarted.set(false);
     this.gameWon = false;
-    this.#sharedService.cardClicked(0);
-    this.correctMatch = 0;
     this.#timerService.resetTimer();
-    ++this.gameGeneration;
-    this.changeDeck(deck)
+    this.#resetBoard();
+    this.#matchedIds.set(new Set());
+    this.#generation.update(g => g + 1);
+    this.changeDeck(deck);
   }
 
   restart() {
-    if(this.firstCard){
-      this.renderer2.removeClass(this.firstCard, 'flip');
-    }
-    if(this.secondCard){
-      this.renderer2.removeClass(this.secondCard, 'flip');
-    }
-    this.resetBoard()
     this.newGame(this.deck().name);
   }
 
@@ -63,83 +64,56 @@ export class GameService {
     this.#deckService.selectDeck(deck);
   }
 
-  flipCard(e) {
-
-    const clickedCard = e.currentTarget;
-    if (clickedCard.classList.contains('flip')) {
+  flipCard(id: string) {
+    if (this.faceUpIds().has(id)) {
       return;
     }
     if (!this.gameStarted()) {
       this.#timerService.startTimer();
       this.gameStarted.set(true);
     }
-    if (this.lockBoard) {
-      return;
-    }
-    if (clickedCard === this.firstCard) {
+    if (this.#lockBoard) {
       return;
     }
 
-    this.renderer2.addClass(clickedCard, 'flip');
-
-    if (!this.hasFlippedCard) {
-      this.hasFlippedCard = true;
-      this.firstCard = clickedCard;
-      return;
+    this.#flippedIds.update(flipped => [...flipped, id]);
+    if (this.#flippedIds().length === 2) {
+      this.#lockBoard = true;
+      this.#checkForMatch();
     }
-
-    this.secondCard = clickedCard;
-    this.lockBoard = true;
-
-    this.checkForMatch();
   }
 
-  checkForMatch() {
-    const isMatch = this.firstCard.getAttribute('identifier') === this.secondCard.getAttribute('identifier');
-    if (isMatch) {
-      this.disableCards();
+  #checkForMatch() {
+    const [first, second] = this.#flippedIds().map(id => this.board().find(card => card.id === id));
+    if (first.name === second.name) {
+      this.#matchedIds.update(matched => new Set([...matched, first.id, second.id]));
+      this.#checkWin();
+      this.#resetBoard();
     } else {
-      this.unflipCards();
+      this.#unflipTimeout = setTimeout(() => this.#resetBoard(), 1000);
     }
   }
 
-  disableCards() {
-    ++this.correctMatch;
-    this.renderer2.addClass(this.firstCard, 'matched');
-    this.renderer2.addClass(this.secondCard, 'matched');
-    this.checkWin();
-    this.resetBoard();
+  #checkWin() {
+    if (this.#matchedIds().size === this.board().length) {
+      this.gameWon = !this.gameWon;
+      let clicks: number;
+      this.#scoreService.updateScores(this.user().displayName, clicks, this.timer(), this.deck().name);
+    }
   }
 
-  checkWin() {
-      if (this.correctMatch === this.deck()?.cards?.length) {
-        this.gameWon = !this.gameWon;
-        let clicks: number;
-        this.#sharedService.currentTimesClicked.subscribe(click => clicks = click);
-        this.#scoreService.updateScores(this.user().displayName, clicks, this.timer(), this.deck().name);
-      }
+  #resetBoard() {
+    clearTimeout(this.#unflipTimeout);
+    this.#flippedIds.set([]);
+    this.#lockBoard = false;
   }
 
-  unflipCards() {
-    this.lockBoard = true;
-    setTimeout(() => {
-      this.renderer2.removeClass(this.firstCard, 'flip');
-      this.renderer2.removeClass(this.secondCard, 'flip');
-      this.lockBoard = false;
-      this.resetBoard();
-    }, 1000);
-  }
-
-  resetBoard() {
-    this.hasFlippedCard = false;
-    this.lockBoard = false;
-    this.firstCard = null;
-    this.secondCard = null;
-  }
-
-  shuffle(card) {
-      const randomPos = Math.floor(Math.random() * 12);
-      this.renderer2.removeClass(card.nativeElement, 'flip');
-      this.renderer2.setStyle(card.nativeElement, 'order', `${randomPos}`);
+  #shuffle<T>(items: T[]): T[] {
+    const shuffled = [...items];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }
 }

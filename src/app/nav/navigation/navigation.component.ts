@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {DeckService} from '../../shared/deck.service';
+import {DeckService} from '../../game/playfield/services/deck.service';
 import {GameService} from '../../game/playfield/services/game.service';
 import {AuthService} from '../../core/auth/services/auth.service';
 import {Router, RouterLink} from '@angular/router';
@@ -24,23 +24,21 @@ import {toSignal} from '@angular/core/rxjs-interop';
   ]
 })
 export class NavigationComponent {
-  deckService = inject(DeckService)
-  gameService = inject(GameService)
-  authService = inject(AuthService)
-  #breakpointObserver = inject(BreakpointObserver)
-  #router = inject(Router)
-
-  decks$ = this.deckService.availableDecks
-  _deck = this.deckService.selectedDeck
-  user = toSignal(this.authService.User)
-
+  deckService = inject(DeckService);
+  gameService = inject(GameService);
+  authService = inject(AuthService);
+  decks$ = this.deckService.availableDecks;
+  _deck = this.deckService.selectedDeck;
+  user = toSignal(this.authService.User);
+  #breakpointObserver = inject(BreakpointObserver);
   isHandset$: Observable<boolean> = this.#breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
+  #router = inject(Router);
 
   newGame(e) {
-    const deck = e.currentTarget.innerText.toLowerCase()
+    const deck = e.currentTarget.innerText.toLowerCase();
     console.log(deck);
     this.gameService.newGame(deck);
     this.#router.navigate(['game', deck]);
