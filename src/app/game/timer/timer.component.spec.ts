@@ -1,32 +1,36 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
-
-import { TimerComponent } from './timer.component';
-import { TimerService } from './timer.service';
+import {describe, expect, it} from 'vitest';
+import {TimerComponent} from './timer.component';
+import {render, screen} from '@testing-library/angular';
+import {TimerService} from './timer.service';
+import {signal} from '@angular/core';
+import {waitFor} from '@testing-library/dom';
 
 describe('TimerComponent', () => {
-  let component: TimerComponent;
-  let fixture: ComponentFixture<TimerComponent>;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [TimerComponent],
+  it('should create', async () => {
+    await render(TimerComponent, {
       providers: [
-        { provide: TimerService, useValue: { currentTime: signal('0h - 1m - 5s') } }
+        {provide: TimerService, useValue: {currentTime: signal(0)}}
       ]
-    }).compileComponents();
+    });
+  })
 
-    fixture = TestBed.createComponent(TimerComponent);
-    component = fixture.componentInstance;
+  it('should update the current time', async () => {
+    const currentTime = signal('0h - 0m - 0s');
+
+    const {fixture} = await render(TimerComponent, {
+      providers: [
+        {provide: TimerService, useValue: {currentTime}}
+      ]
+    });
+
+    expect(screen.getByText('0h - 0m - 0s')).toBeTruthy();
+
+    currentTime.set('0h - 0m - 1s');
     fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('picks up the current stopwatch value from TimerService and renders it', () => {
-    expect(component.stopwatch()).toBe('0h - 1m - 5s');
-    expect(fixture.nativeElement.textContent).toContain('0h - 1m - 5s');
-  });
-});
+    await waitFor(() => {
+      expect(screen.getByText('0h - 0m - 1s')).toBeTruthy();
+    });
+    expect(screen.queryByText('0h - 0m - 0s')).toBeNull();
+  })
+})

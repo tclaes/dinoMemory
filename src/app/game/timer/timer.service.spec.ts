@@ -1,6 +1,7 @@
-import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import {discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
-import { TimerService } from './timer.service';
+import {TimerService} from './timer.service';
+import {beforeEach, describe, expect, it} from 'vitest';
 
 describe('TimerService', () => {
   let service: TimerService;
