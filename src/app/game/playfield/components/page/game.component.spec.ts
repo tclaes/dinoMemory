@@ -1,41 +1,29 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NO_ERRORS_SCHEMA, signal} from '@angular/core';
-
+import {describe, expect, it} from 'vitest';
 import {GameComponent} from './game.component';
-import {GameService} from '../../services/game.service';
+import {render} from '@testing-library/angular';
 import {DeckService} from '../../services/deck.service';
-import {createSpyObj, SpyObj} from '../../../../../testing/spy';
+import {Component, signal} from '@angular/core';
+import {ScoreComponent} from '../../../score/score.component';
+import {DeckComponent} from '../deck/deck.component';
 
-describe('GameComponent', () => {
-  let component: GameComponent;
-  let fixture: ComponentFixture<GameComponent>;
-  let gameSrvSpy: SpyObj<GameService>;
+@Component({selector: 'app-score', template: ''})
+class ScoreStubComponent {}
 
-  beforeEach(() => {
-    gameSrvSpy = createSpyObj('GameService', ['newGame']);
-    (gameSrvSpy as any).gameWon = false;
-    const deckSrvFake = {selectedDeck: signal({name: 'dinos', imgURL: 'dinos', cards: ['a', 'b']})};
+@Component({selector: 'app-deck', template: ''})
+class DeckStubComponent {}
 
-    TestBed.configureTestingModule({
-      imports: [GameComponent],
+describe('Game Component', () => {
+  it('should expose the selected deck', async () => {
+    const {fixture} = await render(GameComponent, {
       providers: [
-        {provide: GameService, useValue: gameSrvSpy},
-        {provide: DeckService, useValue: deckSrvFake}
+        {provide: DeckService, useValue: {selectedDeck: signal({name: 'dinos'})}}
+      ],
+      importOverrides: [
+        {replace: ScoreComponent, with: ScoreStubComponent},
+        {replace: DeckComponent, with: DeckStubComponent}
       ]
     });
-    // Child components are out of scope here; render them as unknown elements.
-    TestBed.overrideComponent(GameComponent, {set: {imports: [], schemas: [NO_ERRORS_SCHEMA]}});
 
-    fixture = TestBed.createComponent(GameComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('starts a new game on init', () => {
-    expect(gameSrvSpy.newGame).toHaveBeenCalled();
-  });
-});
+    expect(fixture.componentInstance.deck()).toEqual({name: 'dinos'});
+  })
+})

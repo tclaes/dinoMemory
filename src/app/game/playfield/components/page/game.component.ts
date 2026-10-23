@@ -1,8 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {JsonPipe} from '@angular/common';
-import {GameService} from '../../services/game.service';
+import {Component, inject} from '@angular/core';
 import {DeckService} from '../../services/deck.service';
 import {DeckComponent} from '../deck/deck.component';
+import {ScoreComponent} from '../../../score/score.component';
 
 @Component({
   selector: 'app-game',
@@ -10,16 +9,11 @@ import {DeckComponent} from '../deck/deck.component';
   styleUrls: ['./game.component.scss'],
   imports: [
     DeckComponent,
-    JsonPipe
+    ScoreComponent
   ]
 })
 
-export class GameComponent implements OnInit {
-  gameSrv = inject(GameService);
+export class GameComponent {
   #deckService = inject(DeckService);
   deck = this.#deckService.selectedDeck;
-
-  ngOnInit(): void {
-    this.gameSrv.newGame();
-  }
 }
