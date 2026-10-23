@@ -3,12 +3,12 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {DeckService} from '../../game/playfield/services/deck.service';
-import {GameService} from '../../game/playfield/services/game.service';
 import {AuthService} from '../../core/auth/services/auth.service';
-import {Router, RouterLink} from '@angular/router';
+import {RouterLink} from '@angular/router';
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
 import {AsyncPipe, NgClass} from '@angular/common';
 import {toSignal} from '@angular/core/rxjs-interop';
+import {User} from '@angular/fire/auth';
 
 @Component({
   selector: 'app-navigation',
@@ -24,29 +24,24 @@ import {toSignal} from '@angular/core/rxjs-interop';
   ]
 })
 export class NavigationComponent {
-  deckService = inject(DeckService);
-  gameService = inject(GameService);
   authService = inject(AuthService);
+  deckService = inject(DeckService);
+
   decks$ = this.deckService.availableDecks;
-  _deck = this.deckService.selectedDeck;
-  user = toSignal(this.authService.User);
+  deck = this.deckService.selectedDeck;
+  user = toSignal<User>(this.authService.User);
   #breakpointObserver = inject(BreakpointObserver);
   isHandset$: Observable<boolean> = this.#breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
-  #router = inject(Router);
 
-  newGame(e) {
-    const deck = e.currentTarget.innerText.toLowerCase();
-    console.log(deck);
-    this.gameService.newGame(deck);
-    this.#router.navigate(['game', deck]);
+  selectDeck(e) {
+    this.deckService.selectDeck(e);
   }
 
   logOut() {
     this.authService.logOut();
-    this.#router.navigate(['/login']);
   }
 
 }

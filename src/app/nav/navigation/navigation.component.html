@@ -8,8 +8,8 @@
     <nav class="drawer-nav" aria-label="Choose a card set">
       @for (button of decks$(); track button) {
         <button type="button" class="focusable deck-pill drawer-pill"
-                [attr.aria-pressed]="button.name === _deck?.name"
-                (click)="newGame($event)">
+                [attr.aria-pressed]="button.name === deck?.name"
+                (click)="selectDeck(button.name)">
             {{button.name}}
         </button>
       }
@@ -29,12 +29,12 @@
         </svg>
         Memory!</h1>
       </div>
-      @if (user !== null) {
+      @if (user() !== null) {
         <nav class="deck-nav" aria-label="Choose a card set" [ngClass]="{hidden: (isHandset$ | async)}">
           @for (button of decks$(); track button) {
             <button type="button" class="focusable deck-pill"
-                    [attr.aria-pressed]="button.name === _deck?.name"
-                    (click)="newGame($event)">
+                    [attr.aria-pressed]="button.name === deck?.name"
+                    (click)="selectDeck(button.name)">
                 {{button.name}}
             </button>
           }
@@ -47,7 +47,6 @@
         </div>
       }
     </header>
-    <!-- Add Content Here -->
-    <ng-content></ng-content>
+    <ng-content />
   </mat-sidenav-content>
 </mat-sidenav-container>

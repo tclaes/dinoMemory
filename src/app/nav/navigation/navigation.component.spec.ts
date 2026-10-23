@@ -1,79 +1,83 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NO_ERRORS_SCHEMA, signal} from '@angular/core';
-import {AsyncPipe, NgClass} from '@angular/common';
-import {BreakpointObserver} from '@angular/cdk/layout';
-import {Router} from '@angular/router';
+import {describe, expect, it, vi} from 'vitest';
+import {signal} from '@angular/core';
 import {of} from 'rxjs';
-
+import {render, screen} from '@testing-library/angular';
 import {NavigationComponent} from './navigation.component';
-import {DeckService} from '../../game/playfield/services/deck.service';
-import {GameService} from '../../game/playfield/services/game.service';
-import {SharedService} from '../../game/playfield/services/shared.service';
 import {AuthService} from '../../core/auth/services/auth.service';
-import {mockUser} from '../../../testing/firebase-mocks';
-import {createSpyObj, SpyObj} from '../../../testing/spy';
+import {DeckService} from '../../game/playfield/services/deck.service';
+
+const authService = {
+   User: of(null),
+   logOut: () => {},
+ }
+
+ const deckService = {
+  availableDecks: signal([]),
+   selectedDeck: signal(undefined)}
+
 
 describe('NavigationComponent', () => {
-  let component: NavigationComponent;
-  let fixture: ComponentFixture<NavigationComponent>;
-  let gameSrvSpy: SpyObj<GameService>;
-  let authSrvSpy: SpyObj<AuthService>;
-  let routerSpy: SpyObj<Router>;
-  const decksFixture = [{name: 'dinos'}, {name: 'frameworks'}];
-
-  beforeEach(() => {
-    const deckSrvFake = {
-      availableDecks: signal(decksFixture),
-      selectedDeck: signal(decksFixture[0])
-    };
-
-    gameSrvSpy = createSpyObj('GameService', ['changeDeck', 'newGame']);
-    authSrvSpy = createSpyObj('AuthService', ['logOut']);
-    (authSrvSpy as any).User = of(mockUser);
-    routerSpy = createSpyObj('Router', ['navigate']);
-
-    TestBed.configureTestingModule({
-      imports: [NavigationComponent],
+  it('should create', async () => {
+    await render(NavigationComponent, {
+      routes: [],
       providers: [
-        {provide: BreakpointObserver, useValue: {observe: () => of({matches: false})}},
-        {provide: DeckService, useValue: deckSrvFake},
-        {provide: GameService, useValue: gameSrvSpy},
-        SharedService,
-        {provide: AuthService, useValue: authSrvSpy},
-        {provide: Router, useValue: routerSpy}
+        {provide: AuthService, useValue: authService},
+        {provide: DeckService, useValue: deckService}
       ]
     });
-    // Material sidenav and routerLink are out of scope here; render them as unknown elements/attributes.
-    TestBed.overrideComponent(NavigationComponent, {
-      set: {imports: [NgClass, AsyncPipe], schemas: [NO_ERRORS_SCHEMA]}
+
+    expect(screen.getByRole('heading', {name: /memory!/i})).toBeTruthy();
+  });
+
+  it('should not render the navigation when no user is logged in', async () => {
+    await render(NavigationComponent, {
+      providers: [
+        {provide: AuthService, useValue: authService},
+        {provide: DeckService, useValue: deckService}
+      ]
     });
 
-    fixture = TestBed.createComponent(NavigationComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    expect(screen.queryByRole('navigation')).toBeNull();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it('should render the navigation when a user is logged in', async () => {
+    await render(NavigationComponent, {
+      providers:[
+        {provide: AuthService, useValue: {...authService, User: of({uid: 1})}},
+        {provide: DeckService, useValue: deckService}
+      ]
+    })
 
-  it('exposes the deck list and the current user', () => {
-    expect(component.decks$()).toEqual(decksFixture);
-    expect(component.user()).toEqual(mockUser);
-  });
+    expect(screen.queryByRole('navigation')).toBeTruthy();
+  })
 
-  it('newGame() starts a new game with the clicked deck and navigates to it', () => {
-    const event = {currentTarget: {innerText: 'Dinos'}};
-    component.newGame(event);
+  it('should logout when user clicks logout button', async () => {
+    const logOut = vi.fn();
+    await render(NavigationComponent, {
+      providers:[
+        {provide: AuthService, useValue: {...authService, User: of({uid: 1}), logOut}},
+        {provide: DeckService, useValue: deckService}
+      ]
+    })
 
-    expect(gameSrvSpy.newGame).toHaveBeenCalledWith('dinos');
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['game', 'dinos']);
-  });
+    screen.getByRole('button', {name: /bye!/i}).click();
 
-  it('logOut() logs out and navigates to /login', () => {
-    component.logOut();
+    expect(logOut).toHaveBeenCalled();
+  })
 
-    expect(authSrvSpy.logOut).toHaveBeenCalled();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/login']);
-  });
+  it('should navigate to the game when clicked on a nav deck item', async () => {
+    const selectDeck = vi.fn();
+    await render(NavigationComponent, {
+      routes: [],
+      providers:[
+        {provide: AuthService, useValue: {...authService, User: of({uid: 1})}},
+        {provide: DeckService, useValue: {...deckService, availableDecks: signal([{name: 'dinos'}]), selectDeck}}
+      ]
+    })
+
+    screen.getAllByRole('button', {name: 'dinos'})[0].click();
+
+    expect(selectDeck).toHaveBeenCalled();
+
+  })
 });
