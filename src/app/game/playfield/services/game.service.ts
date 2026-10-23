@@ -1,38 +1,22 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {DeckService} from './deck.service';
-import {ScoreService} from '../../scoreboard/score.service';
-import {TimerService} from '../../timer/timer.service';
 import {AuthService} from '../../../core/auth/services/auth.service';
 import {toSignal} from '@angular/core/rxjs-interop';
-
-export interface BoardCard {
-  id: string;
-  name: string;
-  coverIndex: number;
-}
+import {BoardCard} from '../model/board';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
+  #authService = inject(AuthService);
+  #deckService = inject(DeckService);
 
-  gameWon = false;
-  gameStarted = signal(false);
+  user = toSignal(this.#authService.User);
+  deck = this.#deckService.selectedDeck;
   #flippedIds = signal<readonly string[]>([]);
   flippedIds = this.#flippedIds.asReadonly();
   #matchedIds = signal<ReadonlySet<string>>(new Set());
   matchedIds = this.#matchedIds.asReadonly();
   faceUpIds = computed(() => new Set([...this.#flippedIds(), ...this.#matchedIds()]));
-  #clicked = signal(0);
-  clicked = this.#clicked.asReadonly();
-  #deckService = inject(DeckService);
-  deck = this.#deckService.selectedDeck;
-  #scoreService = inject(ScoreService);
-  #timerService = inject(TimerService);
-  timer = this.#timerService.currentTime;
-  #authService = inject(AuthService);
-  user = toSignal(this.#authService.User);
 
-  // Bumped on every newGame() so the board is rebuilt and reshuffled, also when
-  // restarting with the same deck.
   #generation = signal(0);
   board = computed<BoardCard[]>(() => {
     this.#generation();
@@ -46,31 +30,9 @@ export class GameService {
   #lockBoard = false;
   #unflipTimeout: ReturnType<typeof setTimeout>;
 
-  newGame(deck = 'dinos') {
-    this.gameStarted.set(false);
-    this.gameWon = false;
-    this.#timerService.resetTimer();
-    this.#resetBoard();
-    this.#matchedIds.set(new Set());
-    this.#generation.update(g => g + 1);
-    this.changeDeck(deck);
-  }
-
-  restart() {
-    this.newGame(this.deck().name);
-  }
-
-  changeDeck(deck: string) {
-    this.#deckService.selectDeck(deck);
-  }
-
   flipCard(id: string) {
     if (this.faceUpIds().has(id)) {
       return;
-    }
-    if (!this.gameStarted()) {
-      this.#timerService.startTimer();
-      this.gameStarted.set(true);
     }
     if (this.#lockBoard) {
       return;
@@ -87,22 +49,13 @@ export class GameService {
     const [first, second] = this.#flippedIds().map(id => this.board().find(card => card.id === id));
     if (first.name === second.name) {
       this.#matchedIds.update(matched => new Set([...matched, first.id, second.id]));
-      this.#checkWin();
-      this.#resetBoard();
+      this.#noMatch();
     } else {
-      this.#unflipTimeout = setTimeout(() => this.#resetBoard(), 1000);
+      this.#unflipTimeout = setTimeout(() => this.#noMatch(), 1000);
     }
   }
 
-  #checkWin() {
-    if (this.#matchedIds().size === this.board().length) {
-      this.gameWon = !this.gameWon;
-      let clicks: number;
-      this.#scoreService.updateScores(this.user().displayName, clicks, this.timer(), this.deck().name);
-    }
-  }
-
-  #resetBoard() {
+  #noMatch() {
     clearTimeout(this.#unflipTimeout);
     this.#flippedIds.set([]);
     this.#lockBoard = false;
