@@ -16,6 +16,9 @@ export class GameService {
   #matchedIds = signal<ReadonlySet<string>>(new Set());
   matchedIds = this.#matchedIds.asReadonly();
   faceUpIds = computed(() => new Set([...this.#flippedIds(), ...this.#matchedIds()]));
+  gameWon = computed(() => {
+    return this.matchedIds().size === this.board().length
+  })
 
   #generation = signal(0);
   board = computed<BoardCard[]>(() => {
@@ -49,13 +52,13 @@ export class GameService {
     const [first, second] = this.#flippedIds().map(id => this.board().find(card => card.id === id));
     if (first.name === second.name) {
       this.#matchedIds.update(matched => new Set([...matched, first.id, second.id]));
-      this.#noMatch();
-    } else {
-      this.#unflipTimeout = setTimeout(() => this.#noMatch(), 1000);
+      return this.#unlockBoard();
     }
+
+    this.#unflipTimeout = setTimeout(() => this.#unlockBoard(), 1000);
   }
 
-  #noMatch() {
+  #unlockBoard() {
     clearTimeout(this.#unflipTimeout);
     this.#flippedIds.set([]);
     this.#lockBoard = false;

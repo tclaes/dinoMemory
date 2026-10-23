@@ -54,4 +54,13 @@ describe('Game Service', () => {
 
     expect(service.flippedIds()).toEqual(['rex-a']);
   });
+
+  it('should show a game won message when all pairs are found', () => {
+    service.flipCard('rex-a');
+    service.flipCard('rex-b');
+    service.flipCard('trike-a');
+    service.flipCard('trike-b');
+
+    expect(service.gameWon()).toBeTruthy()
+  })
 });
