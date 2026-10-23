@@ -7,3 +7,7 @@
             [class.matched]="gameService.matchedIds().has(card.id)"
     />
 }
+
+@if(gameService.gameWon()) {
+    <app-scoreboard appGameWon/>
+}
