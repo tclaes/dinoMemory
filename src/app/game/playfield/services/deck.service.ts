@@ -1,6 +1,5 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {filter, switchMap} from 'rxjs/operators';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Deck} from '../model/deck';
 
@@ -18,17 +17,5 @@ export class DeckService {
 
   selectDeck(name: string) {
     this.#selected.set(name);
-  }
-
-  getDataObservable() {
-    return this.http.get(this.decksUrl);
-  }
-
-  setDeckObservable(e) {
-    const data = this.getDataObservable();
-    return data.pipe(
-      switchMap(x => x['deck']),
-      filter(x => x['name'] === e)
-    );
   }
 }

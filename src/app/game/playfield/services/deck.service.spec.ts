@@ -1,85 +1,72 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpTestingController, provideHttpClientTesting,} from '@angular/common/http/testing';
+import {describe, expect, it} from 'vitest';
+import {Component, inject} from '@angular/core';
+import {provideHttpClient} from '@angular/common/http';
+import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
+import {fireEvent, render, screen} from '@testing-library/angular';
 
 import {DeckService} from './deck.service';
-import {provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 
-const fixture = {
+const decks = {
   deck: [
-    {
-      name: "frameworks",
-      imgURL: "frameworks",
-      frontFace: "js-badge",
-      cards: ["angular", "vue"],
-    },
-    {
-      name: "dinos",
-      imgURL: "dinos",
-      frontFace: "velociraptor",
-      cards: ["allosaurus", "stegosaurus"],
-    },
-  ],
+    {name: 'dinos', imgURL: 'dinos', frontFace: 'velociraptor', cards: ['allosaurus', 'ankylosaurus']},
+    {name: 'frameworks', imgURL: 'frameworks', frontFace: 'js-badge', cards: ['angular', 'react']}
+  ]
 };
 
-describe("DeckService", () => {
-  let service: DeckService;
-  let httpMock: HttpTestingController;
+// DeckService is signal-only, so exercise it through a minimal host that renders its state.
+@Component({
+  template: `
+    <p data-testid="selected">{{ deckService.selectedDeck()?.name }}</p>
+    <ul aria-label="available decks">
+      @for (deck of deckService.availableDecks(); track deck.name) {
+        <li>
+          <button type="button" (click)="deckService.selectDeck(deck.name)">{{ deck.name }}</button>
+        </li>
+      }
+    </ul>
+    <ul aria-label="cards">
+      @for (card of deckService.selectedDeck()?.cards; track card) {
+        <li>{{ card }}</li>
+      }
+    </ul>
+  `
+})
+class HostComponent {
+  deckService = inject(DeckService);
+}
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [
-        DeckService,
-        provideHttpClient(withXhr(), withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
-    });
-    service = TestBed.inject(DeckService);
-    httpMock = TestBed.inject(HttpTestingController);
+async function setup() {
+  const view = await render(HostComponent, {
+    providers: [provideHttpClient(), provideHttpClientTesting()]
+  });
+  const http = view.fixture.debugElement.injector.get(HttpTestingController);
+  http.expectOne('../../assets/data.json').flush(decks);
+  view.detectChanges();
+  return view;
+}
 
-    // The decks signal (toSignal) requests the deck list as soon as the service is created.
-    const req = httpMock.expectOne(service.decksUrl);
-    expect(req.request.method).toBe("GET");
-    req.flush(fixture);
+describe('DeckService', () => {
+  it('lists the available decks once loaded', async () => {
+    await setup();
+
+    expect(screen.getByRole('button', {name: 'dinos'})).toBeTruthy();
+    expect(screen.getByRole('button', {name: 'frameworks'})).toBeTruthy();
   });
 
-  afterEach(() => {
-    httpMock.verify();
+  it('selects the dinos deck by default', async () => {
+    await setup();
+
+    expect(screen.getByTestId('selected').textContent).toBe('dinos');
+    expect(screen.getByText('allosaurus')).toBeTruthy();
   });
 
-  it("should be created", () => {
-    expect(service).toBeTruthy();
-  });
+  it('switches the selected deck when selectDeck() is called', async () => {
+    await setup();
 
-  it("availableDecks() exposes the loaded deck list", () => {
-    expect(service.availableDecks()).toEqual(fixture.deck);
-  });
+    fireEvent.click(screen.getByRole('button', {name: 'frameworks'}));
 
-  it("selectedDeck() defaults to the dinos deck", () => {
-    expect(service.selectedDeck()).toEqual(fixture.deck[1]);
-  });
-
-  it("selectDeck() switches the selected deck by name", () => {
-    service.selectDeck("frameworks");
-    expect(service.selectedDeck()).toEqual(fixture.deck[0]);
-  });
-
-  it("getDataObservable() issues a single GET to the decks url", () => {
-    let result: any;
-    service.getDataObservable().subscribe((data) => (result = data));
-
-    const req = httpMock.expectOne(service.decksUrl);
-    req.flush(fixture);
-
-    expect(result).toEqual(fixture);
-  });
-
-  it("setDeckObservable() flattens the deck array and filters it down to the matching name", () => {
-    const emitted: any[] = [];
-    service.setDeckObservable("dinos").subscribe((card) => emitted.push(card));
-
-    httpMock.expectOne(service.decksUrl).flush(fixture);
-
-    expect(emitted).toEqual([fixture.deck[1]]);
+    expect(screen.getByTestId('selected').textContent).toBe('frameworks');
+    expect(screen.getByText('angular')).toBeTruthy();
+    expect(screen.queryByText('allosaurus')).toBeNull();
   });
 });
