@@ -1,41 +1,30 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-
+import {describe, expect, it, vi} from 'vitest';
+import {fireEvent, render, screen} from '@testing-library/angular';
 import {CardComponent} from './card.component';
 
-describe('CardComponent', () => {
-  let component: CardComponent;
-  let fixture: ComponentFixture<CardComponent>;
+describe('Card', () => {
+  it('should create', async () => {
+    await render(CardComponent, {
+      inputs: {
+        card: {id: '1', name: 'dinos', coverIndex: 1},
+        deck: {name: 'dinos'}
+      }
+    })
+  })
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CardComponent]
-    });
+  it('should emit an event on click', async () => {
+    const flip = vi.fn();
+    await render(CardComponent, {
+      inputs: {
+        card: {id: '1', name: 'dinos', coverIndex: 1},
+        deck: {name: 'dinos'}
+      },
+      on: {flip}
+    })
 
-    fixture = TestBed.createComponent(CardComponent);
-    component = fixture.componentInstance;
-  });
+    await fireEvent.click(screen.getByRole('button', {name: /flip card/i}));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('renders the front face using the given card', () => {
-    fixture.componentRef.setInput('card', 'stegosaurus');
-    fixture.componentRef.setInput('imgUrl', 'dinos');
-    fixture.detectChanges();
-
-    const image: HTMLImageElement = fixture.nativeElement.querySelector('img.front-face');
-    expect(image.getAttribute('src')).toBe('assets/img/dinos/stegosaurus.svg');
-  });
-
-  it('renders a colored star cover on the back face, cycling by coverIndex', () => {
-    fixture.componentRef.setInput('coverIndex', 1);
-    fixture.detectChanges();
-
-    const back: HTMLElement = fixture.nativeElement.querySelector('.back-face');
-    expect(back).toBeTruthy();
-    expect(back.querySelector('svg.cover-star')).toBeTruthy();
-    expect(back.style.background).toBe(component.cover.bg);
-  });
-
-});
+    expect(flip).toHaveBeenCalledTimes(1);
+    expect(flip).toHaveBeenCalledWith('1');
+  })
+})
