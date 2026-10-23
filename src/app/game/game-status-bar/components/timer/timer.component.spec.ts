@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import {TimerComponent} from './timer.component';
 import {render, screen} from '@testing-library/angular';
-import {TimerService} from './timer.service';
+import {TimerService} from '../../services/timer.service';
 import {signal} from '@angular/core';
 import {waitFor} from '@testing-library/dom';
 

@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {DeckService} from '../../services/deck.service';
 import {DeckComponent} from '../deck/deck.component';
-import {ScoreComponent} from '../../../score/score.component';
+import {GameStatusBarComponent} from '../../../game-status-bar/components/game-status-bar/game-status-bar.component';
 
 @Component({
   selector: 'app-game',
@@ -9,7 +9,7 @@ import {ScoreComponent} from '../../../score/score.component';
   styleUrls: ['./game.component.scss'],
   imports: [
     DeckComponent,
-    ScoreComponent
+    GameStatusBarComponent
   ]
 })
 

@@ -1,39 +1,54 @@
-import {computed, inject, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, linkedSignal} from '@angular/core';
 import {DeckService} from './deck.service';
 import {AuthService} from '../../../core/auth/services/auth.service';
 import {toSignal} from '@angular/core/rxjs-interop';
+import {GlobalService} from '../../global/services/global.service';
 import {BoardCard} from '../model/board';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
   #authService = inject(AuthService);
   #deckService = inject(DeckService);
+  #globalService = inject(GlobalService);
 
   user = toSignal(this.#authService.User);
   deck = this.#deckService.selectedDeck;
-  #flippedIds = signal<readonly string[]>([]);
+  #flippedIds = linkedSignal<boolean, readonly string[]>({
+    source: this.#globalService.gameStarted$,
+    computation: (started, previous) => started && previous ? previous.value : []
+  });
   flippedIds = this.#flippedIds.asReadonly();
-  #matchedIds = signal<ReadonlySet<string>>(new Set());
+  #matchedIds = linkedSignal<boolean, ReadonlySet<string>>({
+    source: this.#globalService.gameStarted$,
+    computation: (started, previous) => started && previous ? previous.value : new Set()
+  });
   matchedIds = this.#matchedIds.asReadonly();
   faceUpIds = computed(() => new Set([...this.#flippedIds(), ...this.#matchedIds()]));
   gameWon = computed(() => {
     return this.matchedIds().size === this.board().length
   })
 
-  #generation = signal(0);
-  board = computed<BoardCard[]>(() => {
-    this.#generation();
-    const names = this.deck()?.cards ?? [];
-    const pairs = names.flatMap((name, i) => [
-      {id: `${name}-a`, name, coverIndex: i},
-      {id: `${name}-b`, name, coverIndex: i + 1}
-    ]);
-    return this.#shuffle(pairs);
+
+  board = linkedSignal<{started: boolean, deck: readonly string[]}, BoardCard[]>({
+    source: () => ({started: this.#globalService.gameStarted$(), deck: this.deck()?.cards ?? []}),
+    computation: ({started, deck}, previous) => {
+      if (started && previous) {
+        return previous.value;
+      }
+      const pairs = deck.flatMap((name, i) => [
+        {id: `${name}-a`, name, coverIndex: i},
+        {id: `${name}-b`, name, coverIndex: i + 1}
+      ]);
+      return this.#shuffle(pairs);
+    }
   });
   #lockBoard = false;
   #unflipTimeout: ReturnType<typeof setTimeout>;
 
   flipCard(id: string) {
+    if(!this.#globalService.gameStarted$()) {
+      this.#globalService.startGame();
+    }
     if (this.faceUpIds().has(id)) {
       return;
     }

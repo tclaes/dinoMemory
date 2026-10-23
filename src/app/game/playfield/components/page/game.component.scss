@@ -2,11 +2,11 @@
   background: var(--dd-bg);
   container: playfield / inline-size;
   display: grid;
-  grid-template-rows: 100px auto;
+  grid-template-rows: 80px auto;
   justify-content: center;
   min-height: calc(100vh - 76px);
   overflow: hidden;
-  padding: 20px 15px 32px;
+  padding-inline: 16px;
   position: relative;
 
   // A couple of soft decorative circles, matching the chosen "Dino Disco" design.

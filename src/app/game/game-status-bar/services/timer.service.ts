@@ -1,15 +1,31 @@
-import {Injectable, signal} from '@angular/core';
+import {effect, inject, Injectable, linkedSignal} from '@angular/core';
+import {GlobalService} from '../../global/services/global.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
-
-  #timer = signal('0h - 0m - 0s')
+  #globalService = inject(GlobalService);
+  // resets to zero whenever the game starts or stops
+  #timer = linkedSignal({
+    source: this.#globalService.gameStarted$,
+    computation: () => '0h - 0m - 0s',
+  });
   currentTime = this.#timer.asReadonly();
   intervalId: ReturnType<typeof setInterval>;
 
+  constructor() {
+    effect(() => {
+      if (this.#globalService.gameStarted$()) {
+        this.startTimer();
+      } else {
+        this.#stopTimer();
+      }
+    });
+  }
+
    startTimer() {
+     this.#stopTimer();
      let hours = 0;
      let minutes = 0;
      let seconds = 0;

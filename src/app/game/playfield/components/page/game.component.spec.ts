@@ -3,10 +3,10 @@ import {GameComponent} from './game.component';
 import {render} from '@testing-library/angular';
 import {DeckService} from '../../services/deck.service';
 import {Component, signal} from '@angular/core';
-import {ScoreComponent} from '../../../score/score.component';
+import {ScoreComponent} from '../../../game-status-bar/components/game-status-bar/./game-status-bar.component';
 import {DeckComponent} from '../deck/deck.component';
 
-@Component({selector: 'app-score', template: ''})
+@Component({selector: 'app-game-status-bar', template: ''})
 class ScoreStubComponent {}
 
 @Component({selector: 'app-deck', template: ''})

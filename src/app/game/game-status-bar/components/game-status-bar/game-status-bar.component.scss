@@ -1,0 +1,12 @@
+:host {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 16px 20px;
+
+  @media screen and (min-width: 980px) {
+    padding: 16px 48px;
+  }
+}
