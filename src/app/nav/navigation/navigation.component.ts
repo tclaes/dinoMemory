@@ -1,27 +1,13 @@
-import {Component, inject} from '@angular/core';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {DeckService} from '../../game/playfield/services/deck.service';
-import {AuthService} from '../../core/auth/services/auth.service';
-import {RouterLink} from '@angular/router';
-import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
-import {AsyncPipe, NgClass} from '@angular/common';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {User} from '@angular/fire/auth';
+import { Component, inject } from "@angular/core";
+import { DeckService } from "../../game/playfield/services/deck.service";
+import { AuthService } from "../../core/auth/services/auth.service";
+import { RouterLink } from "@angular/router";
 
 @Component({
-  selector: 'app-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss'],
-  imports: [
-    MatSidenavContainer,
-    MatSidenav,
-    NgClass,
-    AsyncPipe,
-    MatSidenavContent,
-    RouterLink
-  ]
+  selector: "app-navigation",
+  templateUrl: "./navigation.component.html",
+  styleUrls: ["./navigation.component.scss"],
+  imports: [RouterLink],
 })
 export class NavigationComponent {
   authService = inject(AuthService);
@@ -29,12 +15,7 @@ export class NavigationComponent {
 
   decks$ = this.deckService.availableDecks;
   deck = this.deckService.selectedDeck;
-  user = toSignal<User>(this.authService.User);
-  #breakpointObserver = inject(BreakpointObserver);
-  isHandset$: Observable<boolean> = this.#breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
+  isLoggedIn = this.authService.isLoggedIn;
 
   selectDeck(e) {
     this.deckService.selectDeck(e);
@@ -43,5 +24,4 @@ export class NavigationComponent {
   logOut() {
     this.authService.logOut();
   }
-
 }
