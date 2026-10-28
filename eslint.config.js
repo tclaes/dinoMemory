@@ -46,7 +46,7 @@ module.exports = tseslint.config(
       'no-underscore-dangle': 'off',
       'valid-typeof': 'error',
       '@angular-eslint/prefer-standalone': 'off',
-      '@angular-eslint/prefer-inject': 'off',
+      '@angular-eslint/prefer-inject': 'error',
       '@angular-eslint/prefer-on-push-component-change-detection': 'off',
     },
   },
