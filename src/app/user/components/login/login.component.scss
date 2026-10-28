@@ -5,27 +5,4 @@
   display: grid;
   min-height: 100dvh;
   place-items: center;
-  position: relative;
-
-  &::before, &::after {
-    background: var(--dd-bg-accent);
-    border-radius: 50%;
-    content: '';
-    position: absolute;
-    z-index: 0;
-  }
-
-  &::before {
-    bottom: -80px;
-    height: 220px;
-    left: -80px;
-    width: 220px;
-  }
-
-  &::after {
-    height: 160px;
-    right: -60px;
-    top: -40px;
-    width: 160px;
-  }
 }

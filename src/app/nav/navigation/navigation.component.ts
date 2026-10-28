@@ -10,18 +10,16 @@ import { RouterLink } from "@angular/router";
   imports: [RouterLink],
 })
 export class NavigationComponent {
-  authService = inject(AuthService);
   deckService = inject(DeckService);
-
   decks$ = this.deckService.availableDecks;
   deck = this.deckService.selectedDeck;
-  isLoggedIn = this.authService.isLoggedIn;
+  #authService = inject(AuthService);
 
   selectDeck(e) {
     this.deckService.selectDeck(e);
   }
 
-  logOut() {
-    this.authService.logOut();
+  async logOut() {
+    await this.#authService.logOut();
   }
 }
