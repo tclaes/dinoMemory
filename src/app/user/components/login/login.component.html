@@ -1,0 +1,87 @@
+<div class="auth-card">
+    <h2 class="auth-title">Sign in</h2>
+    <p class="auth-subtitle">Enter your details to keep playing.</p>
+
+    <form (submit)="onSubmit($event)" class="auth-form">
+        <div class="field">
+            <label class="field-label"
+            >Email:
+                <input
+                        [formField]="loginForm.email"
+                        class="focusable field-input"
+                        type="email"
+                />
+            </label>
+            @if (loginForm.email().touched() && loginForm.email().required()) {
+                @for (error of loginForm.email().errors(); track error) {
+                    <p class="field-error" id="login-email-error" role="alert">
+                        {{ error.message }}
+                    </p>
+                }
+            }
+        </div>
+
+        <div class="field">
+            <label class="field-label" for="login-password">Password:
+                <input
+                        [formField]="loginForm.password"
+                        class="focusable field-input"
+                        id="login-password"
+                        type="password"
+                /></label>
+            @if (loginForm.password().touched() && loginForm.password().invalid()) {
+                @for (error of loginForm.password().errors(); track error) {
+                    <p class="field-error" id="login-password-error" role="alert">
+                        {{ error.message }}
+                    </p>
+                }
+            }
+        </div>
+
+        <div class="auth-actions">
+            <button
+                    [disabled]="!isFormValid()"
+                    class="focusable btn-primary"
+                    type="submit"
+            >
+                Sign in
+            </button>
+            <button
+                    (click)="loginWithGoogle()"
+                    class="focusable btn-google"
+                    type="button"
+            >
+                <svg
+                        aria-hidden="true"
+                        fill="none"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        width="18"
+                >
+                    <path
+                            d="M21 12.2c0-.7-.06-1.4-.18-2H12v3.8h5.05a4.3 4.3 0 0 1-1.87 2.85v2.3h3.02c1.77-1.63 2.8-4.02 2.8-6.95Z"
+                            fill="#4285F4"
+                    />
+                    <path
+                            d="M12 21c2.53 0 4.66-.84 6.2-2.27l-3.02-2.3c-.84.56-1.92.9-3.18.9-2.44 0-4.51-1.65-5.25-3.86H3.63v2.37A9 9 0 0 0 12 21Z"
+                            fill="#34A853"
+                    />
+                    <path
+                            d="M6.75 13.47a5.4 5.4 0 0 1 0-3.44V7.66H3.63a9 9 0 0 0 0 8.18l3.12-2.37Z"
+                            fill="#FBBC05"
+                    />
+                    <path
+                            d="M12 6.18c1.38 0 2.61.47 3.58 1.4l2.68-2.68C16.66 3.3 14.53 2.4 12 2.4a9 9 0 0 0-8.37 5.26l3.12 2.37C7.49 7.83 9.56 6.18 12 6.18Z"
+                            fill="#EA4335"
+                    />
+                </svg>
+                Login with Google
+            </button>
+        </div>
+    </form>
+
+    <p class="auth-footer">
+        Nog geen account?
+        <a class="focusable auth-link" routerLink="/register">Registreren</a>
+    </p>
+</div>
