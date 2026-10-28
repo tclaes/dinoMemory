@@ -45,6 +45,21 @@ describe("LoginComponent", () => {
     expect(loginForm().invalid()).toBeFalsy();
   });
 
+  it("disables the Sign in button until the form is valid", async () => {
+    const { fixture } = await render(LoginComponent, {
+      providers: [{ provide: AuthService, useValue: {} }],
+    });
+    const button = screen.getByRole("button", { name: "Sign in" });
+    expect(button.hasAttribute("disabled")).toBe(true);
+
+    const { loginForm } = fixture.componentInstance;
+    loginForm.email().value.set("dino@test.com");
+    loginForm.password().value.set("dino123");
+    fixture.detectChanges();
+
+    expect(button.hasAttribute("disabled")).toBe(false);
+  });
+
   it("Sign in button delegates to AuthService with the raw form values", async () => {
     const signInWithEmailAndPassword = vi.fn();
     const { fixture } = await render(LoginComponent, {
@@ -62,6 +77,7 @@ describe("LoginComponent", () => {
     loginForm.email().value.set("dino@test.com");
     loginForm.password().value.set("dino123");
     await fixture.whenStable();
+    fixture.detectChanges();
 
     fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
 

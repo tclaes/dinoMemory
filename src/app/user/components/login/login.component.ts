@@ -36,11 +36,7 @@ export class LoginComponent {
       message: "Password minimum of 6 characters",
     });
   });
-  isFormValid = computed(() => {
-    return Object.values(this.loginForm).every(
-      (control) => control.valid?.() ?? true,
-    );
-  });
+  isFormValid = computed(() => this.loginForm().valid());
   #authService = inject(AuthService);
 
   loginError = signal("");

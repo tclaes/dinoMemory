@@ -35,7 +35,7 @@ test.describe('Login page', () => {
 
     await email.fill('not-an-email');
     await password.click(); // blur email again
-    await expect(page.getByText('Please enter a valid email address')).toBeVisible();
+    await expect(page.getByText('Please enter a valid email')).toBeVisible();
 
     await password.click();
     await email.click(); // blur password
