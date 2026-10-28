@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import {
-  authState,
+  user,
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -17,7 +17,7 @@ import {
  * AuthService calls `this.ops.signInWithPopup(...)`, and specs swap in a spy object.
  */
 export interface AuthOps {
-  authState: typeof authState;
+  user: typeof user;
   signInWithPopup: typeof signInWithPopup;
   signInWithEmailAndPassword: typeof signInWithEmailAndPassword;
   createUserWithEmailAndPassword: typeof createUserWithEmailAndPassword;
@@ -29,7 +29,7 @@ export interface AuthOps {
 export const AUTH_OPS = new InjectionToken<AuthOps>('AUTH_OPS', {
   providedIn: 'root',
   factory: () => ({
-    authState,
+    user,
     signInWithPopup,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,

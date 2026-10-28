@@ -3,7 +3,7 @@ import {GameComponent} from './game.component';
 import {render} from '@testing-library/angular';
 import {DeckService} from '../../services/deck.service';
 import {Component, signal} from '@angular/core';
-import {ScoreComponent} from '../../../game-status-bar/components/game-status-bar/./game-status-bar.component';
+import {GameStatusBarComponent} from '../../../game-status-bar/components/game-status-bar/game-status-bar.component';
 import {DeckComponent} from '../deck/deck.component';
 
 @Component({selector: 'app-game-status-bar', template: ''})
@@ -19,7 +19,7 @@ describe('Game Component', () => {
         {provide: DeckService, useValue: {selectedDeck: signal({name: 'dinos'})}}
       ],
       importOverrides: [
-        {replace: ScoreComponent, with: ScoreStubComponent},
+        {replace: GameStatusBarComponent, with: ScoreStubComponent},
         {replace: DeckComponent, with: DeckStubComponent}
       ]
     });

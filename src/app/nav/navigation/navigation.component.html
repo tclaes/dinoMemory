@@ -1,12 +1,20 @@
-@if (isLoggedIn() !== null) {
-    <div class="header-actions">
-        <a aria-label="Your profile" class="focusable icon-btn profile-btn" routerLink="userprofile">
-            <svg aria-hidden="true" fill="none" height="20" viewBox="0 0 24 24" width="20">
-                <circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="2.2"/>
-                <path d="M5 20c1.5-4 4-6 7-6s5.5 2 7 6" stroke="currentColor" stroke-linecap="round"
-                      stroke-width="2.2"/>
-            </svg>
-        </a>
-        <button (click)="logOut()" class="focusable ghost-btn" type="button">Bye!</button>
-    </div>
-}
+<nav aria-label="Choose a card set" class="nav">
+    @for (button of decks$(); track button) {
+        <button (click)="selectDeck($event)"
+                class="focusable deck-pill drawer-pill"
+                type="button">
+            {{ button.name }}
+        </button>
+    }
+</nav>
+
+<div class="header-actions">
+    <a aria-label="Your profile" class="focusable icon-btn profile-btn" routerLink="userprofile">
+        <svg aria-hidden="true" fill="none" height="20" viewBox="0 0 24 24" width="20">
+            <circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M5 20c1.5-4 4-6 7-6s5.5 2 7 6" stroke="currentColor" stroke-linecap="round"
+                  stroke-width="2.2"/>
+        </svg>
+    </a>
+    <button (click)="logOut()" class="focusable ghost-btn" type="button">Bye!</button>
+</div>

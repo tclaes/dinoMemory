@@ -1,54 +1,13 @@
-.sidenav-container {
-  height: 100%;
-}
-
-.sidenav {
-  background: var(--dd-bg-accent);
-  color: var(--white);
-  width: 240px;
-}
-
-.hidden {
-  display: none;
-}
-
-// Header (was mat-toolbar) -------------------------------------------------
-
-.app-header {
-  align-items: center;
-  background: var(--white);
-  border-bottom: 4px solid var(--dd-ink);
+:host {
   display: flex;
-  flex-wrap: wrap;
-  font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
   gap: 16px;
-  padding: 16px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-
-  @media screen and (min-width: 980px) {
-    padding: 16px 48px;
-  }
+  width: 100%;
 }
 
-.brand {
-  align-items: center;
+.nav {
   display: flex;
-  gap: 12px;
-}
-
-.header_logo {
-  color: var(--dd-ink);
-  font-family: 'Fredoka', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  margin: 0;
-
-  &:hover {
-    cursor: pointer;
-  }
+  align-items: center;
+  gap: var(--gap-default);
 }
 
 .icon-btn {
@@ -117,26 +76,4 @@
   display: flex;
   gap: 12px;
   margin-left: auto;
-}
-
-// Drawer (mobile) -----------------------------------------------------------
-
-.drawer-header {
-  color: var(--white);
-  font-family: 'Fredoka', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  padding: 20px;
-}
-
-.drawer-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0 20px 20px;
-}
-
-.drawer-pill {
-  text-align: left;
-  width: 100%;
 }

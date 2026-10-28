@@ -17,7 +17,7 @@ const authService = {
 
 
 describe('NavigationComponent', () => {
-  it('should create', async () => {
+  it('should render the deck navigation', async () => {
     await render(NavigationComponent, {
       routes: [],
       providers: [
@@ -26,30 +26,20 @@ describe('NavigationComponent', () => {
       ]
     });
 
-    expect(screen.getByRole('heading', {name: /memory!/i})).toBeTruthy();
+    expect(screen.getByRole('navigation', {name: /choose a card set/i})).toBeTruthy();
   });
 
-  it('should not render the navigation when no user is logged in', async () => {
+  it('should link to the profile page', async () => {
     await render(NavigationComponent, {
+      routes: [],
       providers: [
         {provide: AuthService, useValue: authService},
         {provide: DeckService, useValue: deckService}
       ]
     });
 
-    expect(screen.queryByRole('navigation')).toBeNull();
+    expect(screen.getByRole('link', {name: /your profile/i})).toBeTruthy();
   });
-
-  it('should render the navigation when a user is logged in', async () => {
-    await render(NavigationComponent, {
-      providers:[
-        {provide: AuthService, useValue: {...authService, User: of({uid: 1})}},
-        {provide: DeckService, useValue: deckService}
-      ]
-    })
-
-    expect(screen.queryByRole('navigation')).toBeTruthy();
-  })
 
   it('should logout when user clicks logout button', async () => {
     const logOut = vi.fn();

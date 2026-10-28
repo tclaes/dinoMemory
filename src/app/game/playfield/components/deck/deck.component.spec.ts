@@ -9,6 +9,7 @@ const gameService = {
   deck: signal({}),
   faceUpIds: signal(new Set()),
   matchedIds: signal(new Set()),
+  gameWon: signal(false),
   flipCard: vi.fn()
 };
 

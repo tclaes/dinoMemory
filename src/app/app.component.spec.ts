@@ -10,7 +10,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [AppComponent]
     });
-    // Navigation and the router outlet are out of scope here; render them as unknown elements.
+    // The router outlet is out of scope here; render it as an unknown element.
     TestBed.overrideComponent(AppComponent, { set: { imports: [], schemas: [NO_ERRORS_SCHEMA] } });
 
     fixture = TestBed.createComponent(AppComponent);
@@ -21,7 +21,7 @@ describe('AppComponent', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('renders the navigation shell', () => {
-    expect(fixture.nativeElement.querySelector('app-navigation')).toBeTruthy();
+  it('renders the router outlet', () => {
+    expect(fixture.nativeElement.querySelector('router-outlet')).toBeTruthy();
   });
 });

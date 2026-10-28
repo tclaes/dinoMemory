@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import {
   debounce,
   email,
@@ -43,16 +43,26 @@ export class LoginComponent {
   });
   #authService = inject(AuthService);
 
+  loginError = signal("");
+
   async loginWithGoogle() {
+    this.loginError.set("");
     try {
-      await this.#authService.doGoogleLogin();
+      await this.#authService.loginWithGoogle();
     } catch {
-      // TODO: Catch error
+      this.loginError.set("Login with Google failed. Please try again.");
     }
   }
 
-  onSubmit(event: Event) {
+  async onSubmit(event: Event) {
     event.preventDefault();
-    this.#authService.signInWithEmailAndPassword(this.loginForm().value());
+    this.loginError.set("");
+    try {
+      await this.#authService.signInWithEmailAndPassword(
+        this.loginForm().value(),
+      );
+    } catch {
+      this.loginError.set("Sign in failed. Check your email and password.");
+    }
   }
 }
