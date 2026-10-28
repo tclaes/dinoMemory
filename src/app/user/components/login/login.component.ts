@@ -42,14 +42,12 @@ export class LoginComponent {
     );
   });
   #authService = inject(AuthService);
-  #router = inject(Router);
 
   async loginWithGoogle() {
     try {
-      // doGoogleLogin() navigates to '/' itself once the popup resolves.
       await this.#authService.doGoogleLogin();
     } catch {
-      // Login failed (or the popup was dismissed); stay on the sign-in page.
+      // TODO: Catch error
     }
   }
 

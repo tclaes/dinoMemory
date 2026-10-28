@@ -71,5 +71,21 @@ describe("LoginComponent", () => {
     });
   });
 
-  it("loginWithGoogle() delegates to AuthService", async () => {});
+  it("loginWithGoogle() delegates to AuthService", async () => {
+    const doGoogleLogin = vi.fn();
+    await render(LoginComponent, {
+      providers: [
+        {
+          provide: AuthService,
+          useValue: {
+            doGoogleLogin,
+          },
+        },
+      ],
+    });
+
+    screen.getByRole("button", { name: "Login with Google" }).click();
+
+    expect(doGoogleLogin).toHaveBeenCalledTimes(1);
+  });
 });
