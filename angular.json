@@ -18,23 +18,16 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "polyfills": [
-              "zone.js"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/manifest.json"
-            ],
+            "polyfills": ["zone.js"],
+            "assets": ["src/assets", "src/favicon.ico", "src/manifest.json"],
             "styles": [
+              "src/styles/spacing.css",
               "src/styles/colors.css",
               "src/styles/styles.scss",
               "src/styles/dino.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/styles"
-              ]
+              "includePaths": ["src/styles"]
             },
             "scripts": [],
             "extractLicenses": false,
@@ -103,27 +96,20 @@
             "buildTarget": "DinoMemory:build",
             "tsConfig": "src/tsconfig.spec.json",
             "runner": "vitest",
-            "setupFiles": [
-              "src/test-setup.ts"
-            ]
+            "setupFiles": ["src/test-setup.ts"]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ],
+    "schematicCollections": ["@angular-eslint/schematics"],
     "analytics": false
   },
   "schematics": {
