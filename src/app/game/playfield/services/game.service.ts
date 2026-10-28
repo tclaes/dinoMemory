@@ -1,17 +1,18 @@
 import {computed, inject, Injectable, linkedSignal} from '@angular/core';
 import {DeckService} from './deck.service';
 import {AuthService} from '../../../core/auth/services/auth.service';
-import {toSignal} from '@angular/core/rxjs-interop';
 import {GlobalService} from '../../global/services/global.service';
 import {BoardCard} from '../model/board';
+import {ClicksService} from '../../game-status-bar/services/clicks.service';
 
 @Injectable({providedIn: 'root'})
 export class GameService {
   #authService = inject(AuthService);
+  #clickService = inject(ClicksService);
   #deckService = inject(DeckService);
   #globalService = inject(GlobalService);
 
-  user = toSignal(this.#authService.User);
+  user = this.#authService.User;
   deck = this.#deckService.selectedDeck;
   #flippedIds = linkedSignal<boolean, readonly string[]>({
     source: this.#globalService.gameStarted$,
@@ -58,6 +59,7 @@ export class GameService {
 
     this.#flippedIds.update(flipped => [...flipped, id]);
     if (this.#flippedIds().length === 2) {
+      this.#clickService.increment()
       this.#lockBoard = true;
       this.#checkForMatch();
     }

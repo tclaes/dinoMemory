@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {GameService} from '../playfield/services/game.service';
 import {Score, ScoreService} from './score.service';
 import {Observable} from 'rxjs';
-import {TimerService} from '../timer/timer.service';
+import {TimerService} from '../game-status-bar/services/timer.service';
 import {
   MatCell,
   MatCellDef,
@@ -22,7 +22,7 @@ import {MatButton} from '@angular/material/button';
   template: `
       <div class="score">
           <h3>Game Won !!!</h3>
-          <p>{{ nrOfClicks() }} clicks</p>
+<!--          <p>{{ nrOfClicks() }} clicks</p>-->
           <p>{{ stopwatch() }}</p>
 
           <div class="scoreboard">
@@ -65,13 +65,13 @@ export class ScoreboardComponent implements OnInit {
   gameService = inject(GameService);
   collection$: Observable<Score[]>;
   displayedColumns: string[] = ['user', 'clicks', 'time'];
-  nrOfClicks = this.gameService.clicked;
+  // nrOfClicks = this.gameService.clicked;
   #scoreService = inject(ScoreService);
   #timerService = inject(TimerService);
   stopwatch = this.#timerService.currentTime;
 
   newGame() {
-    this.gameService.newGame();
+    // this.gameService.newGame();
   }
 
   ngOnInit() {
