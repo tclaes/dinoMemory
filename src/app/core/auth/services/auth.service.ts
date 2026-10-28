@@ -1,4 +1,10 @@
-import { computed, inject, Injectable } from "@angular/core";
+import {
+  computed,
+  inject,
+  Injectable,
+  Injector,
+  runInInjectionContext,
+} from "@angular/core";
 import {
   Auth,
   GoogleAuthProvider,
@@ -13,12 +19,12 @@ import { User } from "../../../user/model/user";
   providedIn: "root",
 })
 export class AuthService {
+  injector = inject(Injector);
   #auth = inject(Auth);
   #ops = inject(AUTH_OPS);
-  user = toSignal<FirebaseUser>(this.#ops.user(this.#auth));
-  isLoggedIn = computed(() => {
-    return this.user()?.uid;
-  });
+  user$ = this.#ops.user(this.#auth);
+  user = toSignal<FirebaseUser>(this.user$);
+  isLoggedIn = computed(() => !!this.user());
   #router = inject(Router);
 
   get User() {
@@ -29,7 +35,9 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     provider.addScope("profile");
     provider.addScope("email");
-    await this.#ops.signInWithPopup(this.#auth, provider);
+    await runInInjectionContext(this.injector, () =>
+      this.#ops.signInWithPopup(this.#auth, provider),
+    );
     await this.#router.navigate(["/"]);
   }
 

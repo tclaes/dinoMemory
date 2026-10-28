@@ -1,5 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
+import { first, map } from "rxjs";
 import { AuthService } from "../services/auth.service";
 
 @Injectable({
@@ -10,6 +11,10 @@ export class AuthGuard implements CanActivate {
   #router = inject(Router);
 
   canActivate() {
-    return this.#auth.isLoggedIn() ? true : this.#router.navigate(["/login"]);
+    // user() is undefined until Firebase resolves the auth state, so wait for the first emission.
+    return this.#auth.user$.pipe(
+      first(),
+      map((user) => (user ? true : this.#router.createUrlTree(["/login"]))),
+    );
   }
 }

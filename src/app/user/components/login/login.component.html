@@ -38,6 +38,10 @@
             }
         </div>
 
+        @if (loginError()) {
+            <p class="field-error" id="login-error" role="alert">{{ loginError() }}</p>
+        }
+
         <div class="auth-actions">
             <button
                     [disabled]="!isFormValid()"
