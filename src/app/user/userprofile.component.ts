@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-import {User} from '@angular/fire/auth';
-import {AuthService} from '../core/auth/services/auth.service';
 import {MatCard} from '@angular/material/card';
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 import {MatFormField, MatInput} from '@angular/material/input';
@@ -21,10 +19,10 @@ import {MatButton} from '@angular/material/button';
 })
 export class UserprofileComponent {
 
-  user: User;
-
-  constructor(private authService: AuthService) {
-    authService.User.subscribe(user => this.user = user);
-  }
+  // user: User;
+  //
+  // constructor(private authService: AuthService) {
+  //   authService.User.subscribe(user => this.user = user);
+  // }
 
 }
