@@ -1,4 +1,4 @@
-import {describe, expect, it, vi} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {fireEvent, render, screen} from '@testing-library/angular';
 import {DeckComponent} from './deck.component';
 import {GameService} from '../../services/game.service';
@@ -14,6 +14,14 @@ const gameService = {
 };
 
 describe('Deck',  () => {
+  beforeEach(() => {
+    // jsdom has no layout engine, so ResizeObserver does not exist
+    vi.stubGlobal('ResizeObserver', class {
+      observe() {}
+      disconnect() {}
+    });
+  });
+
   it('should create', async () => {
     const view = await render(DeckComponent, {
       providers: [

@@ -1,9 +1,7 @@
 :host {
-  --card-count: 0;
   --grid-columns: 4;
   --grid-gap: 8px;
-  --grid-rows: round(up, calc(var(--card-count) / var(--grid-columns)), 1);
-  --max-playfield-width: 1100px;
+  --grid-rows: 4;
 
   align-content: center;
   background: var(--white);
@@ -18,16 +16,15 @@
   justify-content: center;
   padding: var(--padding-default);
   perspective: 1000px;
-  width: min(100cqw, var(--max-playfield-width));
+  width: 100cqw;
   z-index: 1;
 
   @media screen and (min-width: 600px) {
-    --grid-columns: 5;
     --grid-gap: 16px;
   }
 }
 
-/* The deck has a fixed height, so each card is the largest square that fits every row and column. */
+/* The deck component picks the column count that makes the cards as large as possible without overflowing. */
 app-card {
   --card-size: min(
     calc((100cqw - (var(--grid-columns) - 1) * var(--grid-gap)) / var(--grid-columns)),
