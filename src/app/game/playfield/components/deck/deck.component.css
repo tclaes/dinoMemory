@@ -10,13 +10,12 @@
   border-radius: 28px;
   box-shadow: 8px 8px 0 var(--dd-ink);
 
-
   display: grid;
   gap: var(--grid-gap);
-  grid-template-columns: repeat(var(--grid-columns), fit-content(var(--column-width)));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   justify-content: center;
   justify-items: center;
-  padding: 12px;
+  padding: var(--padding-default);
   perspective: 1000px;
   width: min(100cqw, var(--max-playfield-width));
   z-index: 1;
