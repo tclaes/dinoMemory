@@ -16,7 +16,7 @@
   gap: var(--grid-gap);
   grid-template-columns: repeat(var(--grid-columns), auto);
   justify-content: center;
-  padding: 12px;
+  padding: var(--padding-default);
   perspective: 1000px;
   width: min(100cqw, var(--max-playfield-width));
   z-index: 1;

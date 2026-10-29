@@ -6,6 +6,7 @@
   /* Padding */
   --padding-base: 16px;
 
+  --padding-small: calc(var(--gap-default) * 0.8);
   --padding-default: var(--padding-base);
   --padding-l: calc(var(--padding-base) * 1.5);
   --padding-xl: 32px;

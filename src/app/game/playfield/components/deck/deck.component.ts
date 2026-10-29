@@ -1,20 +1,14 @@
-import {Component, inject} from '@angular/core';
-import {GameService} from '../../services/game.service';
-import {CardComponent} from '../cards/card.component';
-import {ScoreboardComponent} from '../../../scoreboard/scoreboard.component';
-import {GameWonDirective} from '../../../../shared/game-won.directive';
+import { Component, inject } from "@angular/core";
+import { GameService } from "../../services/game.service";
+import { CardComponent } from "../cards/card.component";
 
 @Component({
-  selector: 'app-deck',
-  imports: [
-    CardComponent,
-    ScoreboardComponent,
-    GameWonDirective
-  ],
-  templateUrl: './deck.component.html',
-  styleUrl: './deck.component.css',
+  selector: "app-deck",
+  imports: [CardComponent],
+  templateUrl: "./deck.component.html",
+  styleUrl: "./deck.component.css",
   host: {
-    '[style.--card-count]': 'board().length',
+    "[style.--card-count]": "board().length",
   },
 })
 export class DeckComponent {
