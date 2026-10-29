@@ -1,34 +1,19 @@
 :host {
   background: var(--dd-bg);
-  container: playfield / inline-size;
   display: grid;
-  grid-template-rows: 80px auto;
+  grid-template-rows: 80px minmax(0, 1fr);
+  height: 100%;
   justify-content: center;
-  min-height: calc(100vh - 76px);
   overflow: hidden;
-  padding-inline: 16px;
-  position: relative;
+  padding-block-end: 12px;
+  padding-inline: var(--padding-default, 16px);
+}
 
-  // A couple of soft decorative circles, matching the chosen "Dino Disco" design.
-  &::before, &::after {
-    background: var(--dd-bg-accent);
-    border-radius: 50%;
-    content: '';
-    position: absolute;
-    z-index: -1;
-  }
+.deck {
+  min-height: 0;
+  padding-block-end: 8px; // room for the deck's offset box-shadow
+}
 
-  &::before {
-    bottom: -80px;
-    height: 220px;
-    left: -80px;
-    width: 220px;
-  }
-
-  &::after {
-    height: 160px;
-    right: -60px;
-    top: -40px;
-    width: 160px;
-  }
+app-deck {
+  height: 100%;
 }

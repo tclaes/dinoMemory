@@ -1,5 +1,9 @@
 :host {
-  display: block;
+  --_header-height: var(--header-height, 78px);
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+  max-height: 100dvh;
   overflow: hidden;
   position: relative;
 
@@ -34,8 +38,6 @@ header {
   font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
   gap: var(--gap-l);
   padding: var(--padding-default) var(--padding-l);
-  position: sticky;
-  top: 0;
   z-index: 2;
 }
 
@@ -50,4 +52,9 @@ header {
   letter-spacing: -0.3px;
   margin: 0;
   text-decoration: none;
+}
+
+main {
+  container: main / inline-size;
+  height: calc(100dvh - var(--_header-height));
 }

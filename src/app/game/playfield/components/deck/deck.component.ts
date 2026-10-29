@@ -13,6 +13,9 @@ import {GameWonDirective} from '../../../../shared/game-won.directive';
   ],
   templateUrl: './deck.component.html',
   styleUrl: './deck.component.css',
+  host: {
+    '[style.--card-count]': 'board().length',
+  },
 })
 export class DeckComponent {
   gameService = inject(GameService);
