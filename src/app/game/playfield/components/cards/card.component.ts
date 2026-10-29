@@ -12,9 +12,9 @@ const COVERS = [
 @Component({
   selector: "app-card",
   template: `
-    @if (this.deck().imgURL) {
+    @if (deck().imgURL) {
       <img
-        ngSrc="assets/img/{{ imgUrl() }}/{{ card().name }}.svg"
+        ngSrc="assets/img/{{ deck().imgURL }}/{{ card().name }}.svg"
         alt="{{ card().name }}"
         class="front-face"
         width="150"
@@ -61,9 +61,6 @@ export class CardComponent {
   card = input<BoardCard>();
   deck = input.required<Deck>();
 
-  imgUrl = computed(() => {
-    return this.deck().imgURL;
-  });
   cover = computed(() => COVERS[this.card().coverIndex % COVERS.length]);
   flip = output<string>();
 
