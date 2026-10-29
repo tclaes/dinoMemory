@@ -15,7 +15,7 @@ const COVERS = [
     @if (this.deck().imgURL) {
       <img
         ngSrc="assets/img/{{ imgUrl() }}/{{ card().name }}.svg"
-        alt="{{ card() }}"
+        alt="{{ card().name }}"
         class="front-face"
         width="150"
         height="150"
