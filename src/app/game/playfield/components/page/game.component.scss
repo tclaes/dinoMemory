@@ -11,6 +11,6 @@
 
 .deck {
   container: deck / inline-size;
-  width: calc(100vw);
   padding: 0 var(--padding-default) var(--padding-small);
+  width: calc(100vw);
 }
