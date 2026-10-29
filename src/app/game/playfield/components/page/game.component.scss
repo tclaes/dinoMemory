@@ -11,10 +11,6 @@
 
 .deck {
   container: deck / inline-size;
-  min-height: 0;
-  padding-block-end: 8px; // room for the deck's offset box-shadow
-}
-
-app-deck {
-  height: 100%;
+  width: calc(100vw);
+  padding: 0 var(--padding-default) var(--padding-small);
 }

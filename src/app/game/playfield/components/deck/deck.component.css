@@ -11,10 +11,10 @@
   border-radius: 28px;
   box-shadow: 8px 8px 0 var(--dd-ink);
   container: deck / size;
-
   display: grid;
   gap: var(--grid-gap);
   grid-template-columns: repeat(var(--grid-columns), auto);
+  height: 100%;
   justify-content: center;
   padding: var(--padding-default);
   perspective: 1000px;
@@ -30,8 +30,8 @@
 /* The deck has a fixed height, so each card is the largest square that fits every row and column. */
 app-card {
   --card-size: min(
-    calc((100cqw - (var(--grid-columns) - 1) * var(--grid-gap)) / var(--grid-columns)),
-    calc((100cqh - (var(--grid-rows) - 1) * var(--grid-gap)) / var(--grid-rows))
+          calc((100cqw - (var(--grid-columns) - 1) * var(--grid-gap)) / var(--grid-columns)),
+          calc((100cqh - (var(--grid-rows) - 1) * var(--grid-gap)) / var(--grid-rows))
   );
 
   height: var(--card-size);
