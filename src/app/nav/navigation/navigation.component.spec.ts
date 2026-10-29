@@ -67,7 +67,7 @@ describe('NavigationComponent', () => {
 
     screen.getAllByRole('button', {name: 'dinos'})[0].click();
 
-    expect(selectDeck).toHaveBeenCalled();
+    expect(selectDeck).toHaveBeenCalledWith('dinos');
 
   })
 });
