@@ -1,6 +1,6 @@
 <nav aria-label="Choose a card set" class="nav">
     @for (button of decks$(); track button) {
-        <button (click)="selectDeck($event)"
+        <button (click)="selectDeck(button.name)"
                 class="focusable deck-pill drawer-pill"
                 type="button">
             {{ button.name }}
