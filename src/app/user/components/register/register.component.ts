@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import {
   ReactiveFormsModule,
   UntypedFormControl,
@@ -26,7 +26,7 @@ export class RegisterComponent {
     ]),
   });
 
-  constructor(private authService: AuthService) {}
+  private authService = inject(AuthService);
 
   get f() {
     return this.registerForm.controls;
