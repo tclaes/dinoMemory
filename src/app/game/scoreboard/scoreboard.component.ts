@@ -2,8 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {GameService} from '../playfield/services/game.service';
 import {Score, ScoreService} from './score.service';
 import {Observable} from 'rxjs';
-import {SharedService} from '../../shared/shared.service';
-import {TimerService} from '../timer/timer.service';
+import {TimerService} from '../game-status-bar/services/timer.service';
 import {
   MatCell,
   MatCellDef,
@@ -17,14 +16,13 @@ import {
   MatTable
 } from '@angular/material/table';
 import {MatButton} from '@angular/material/button';
-import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-scoreboard',
   template: `
       <div class="score">
           <h3>Game Won !!!</h3>
-          <p>{{ nrOfClicks() }} clicks</p>
+<!--          <p>{{ nrOfClicks() }} clicks</p>-->
           <p>{{ stopwatch() }}</p>
 
           <div class="scoreboard">
@@ -64,24 +62,20 @@ import {toSignal} from '@angular/core/rxjs-interop';
   ]
 })
 export class ScoreboardComponent implements OnInit {
-  gameService = inject(GameService)
-
-  #scoreService = inject(ScoreService)
-  #sharedService = inject(SharedService)
-  #timerService = inject(TimerService)
-
-  nrOfClicks = toSignal(this.#sharedService.currentTimesClicked)
-  stopwatch = this.#timerService.currentTime
-  standardDeck = this.#sharedService.standardDeck
-
+  gameService = inject(GameService);
   collection$: Observable<Score[]>;
   displayedColumns: string[] = ['user', 'clicks', 'time'];
+  // nrOfClicks = this.gameService.clicked;
+  #scoreService = inject(ScoreService);
+  #timerService = inject(TimerService);
+  stopwatch = this.#timerService.currentTime;
 
   newGame() {
-    this.gameService.newGame();
+    // this.gameService.newGame();
   }
 
   ngOnInit() {
-    this.collection$ = this.#scoreService.loadScores(this.standardDeck().name);
+    console.log('Scores need to be fixed');
+    // this.collection$ = this.#scoreService.loadScores(this.gameService.deck);
   }
 }

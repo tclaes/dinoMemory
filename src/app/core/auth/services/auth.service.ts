@@ -1,80 +1,66 @@
-import {Inject, Injectable} from '@angular/core';
-import {Auth, GoogleAuthProvider, User as FirebaseUser} from '@angular/fire/auth';
-import {User} from '../../../user/register/register.component';
-import {Observable} from 'rxjs';
-import {Router} from '@angular/router';
-import {AUTH_OPS, AuthOps} from '../auth-ops';
+import {
+  computed,
+  inject,
+  Injectable,
+  Injector,
+  runInInjectionContext,
+} from "@angular/core";
+import {
+  Auth,
+  GoogleAuthProvider,
+  User as FirebaseUser,
+} from "@angular/fire/auth";
+import { Router } from "@angular/router";
+import { AUTH_OPS } from "../auth-ops";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { User } from "../../../user/model/user";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
-  authState: Observable<FirebaseUser>;
-  user: FirebaseUser = null;
-
-  constructor(
-    private auth: Auth,
-    @Inject(AUTH_OPS) private ops: AuthOps,
-    private router: Router
-    ) {
-    this.authState = this.ops.authState(this.auth);
-    this.authState
-    .subscribe(user => this.user = user);
-  }
+  injector = inject(Injector);
+  #auth = inject(Auth);
+  #ops = inject(AUTH_OPS);
+  user$ = this.#ops.user(this.#auth);
+  user = toSignal<FirebaseUser>(this.user$);
+  isLoggedIn = computed(() => !!this.user());
+  #router = inject(Router);
 
   get User() {
-    return this.authState;
+    return this.user;
   }
 
-  doGoogleLogin() {
+  async loginWithGoogle() {
     const provider = new GoogleAuthProvider();
-    provider.addScope('profile');
-    provider.addScope('email');
-    return this.ops
-      .signInWithPopup(this.auth, provider)
-      .then(res => {
-        this.user = res.user;
-        this.router.navigate(['/']);
-        return res;
-      });
+    provider.addScope("profile");
+    provider.addScope("email");
+    await runInInjectionContext(this.injector, () =>
+      this.#ops.signInWithPopup(this.#auth, provider),
+    );
+    await this.#router.navigate(["/"]);
   }
 
-  doEmailLogin(user) {
-    return this.ops
-      .signInWithEmailAndPassword(this.auth, user.name, user.email)
-      .then(res => {
-        this.user = res.user;
-        this.updateUserInfo();
-        return res;
-      });
+  async signInWithEmailAndPassword({ email, password }) {
+    await this.#ops.signInWithEmailAndPassword(this.#auth, email, password);
+    await this.#router.navigate(["/"]);
   }
 
   tryRegister(user: User) {
-    this.ops
-      .createUserWithEmailAndPassword(this.auth, user.email, user.password)
-      .then(userCredential => {
-        this.ops.updateProfile(userCredential.user, {
+    this.#ops
+      .createUserWithEmailAndPassword(this.#auth, user.email, user.password)
+      .then((userCredential) => {
+        this.#ops.updateProfile(userCredential.user, {
           displayName: user.name,
-          photoURL: ''
+          photoURL: "",
         });
         console.log(userCredential.user.displayName);
-        this.user = userCredential.user;
       })
-      .catch(err => console.log('Something went wrong', err.message)
-      );
+      .catch((err) => console.log("Something went wrong", err.message));
   }
 
-  updateUserInfo() {
-    console.log(`Username: ${this.user.displayName}`);
-    this.ops
-      .updateCurrentUser(this.auth, this.user);
+  async logOut() {
+    await this.#ops.signOut(this.#auth);
+    await this.#router.navigate(["/"]);
   }
-
-  logOut() {
-    this.ops.signOut(this.auth)
-      .then(() => {
-        this.router.navigate(['/']);
-      });
-  }
-
 }

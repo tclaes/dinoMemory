@@ -1,12 +1,10 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {NavigationComponent} from './nav/navigation/navigation.component';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
-    selector: 'app-main',
-    templateUrl: './app.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [RouterOutlet, NavigationComponent]
+  selector: "app-main",
+  templateUrl: "./app.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [RouterOutlet],
 })
-
 export class AppComponent {}

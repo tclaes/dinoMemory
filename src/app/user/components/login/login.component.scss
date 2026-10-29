@@ -1,0 +1,8 @@
+@use '../../auth-form';
+
+:host {
+  background: var(--dd-bg);
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+}

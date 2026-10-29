@@ -1,0 +1,29 @@
+import {describe, expect, it} from 'vitest';
+import {GameComponent} from './game.component';
+import {render} from '@testing-library/angular';
+import {DeckService} from '../../services/deck.service';
+import {Component, signal} from '@angular/core';
+import {GameStatusBarComponent} from '../../../game-status-bar/components/game-status-bar/game-status-bar.component';
+import {DeckComponent} from '../deck/deck.component';
+
+@Component({selector: 'app-game-status-bar', template: ''})
+class ScoreStubComponent {}
+
+@Component({selector: 'app-deck', template: ''})
+class DeckStubComponent {}
+
+describe('Game Component', () => {
+  it('should expose the selected deck', async () => {
+    const {fixture} = await render(GameComponent, {
+      providers: [
+        {provide: DeckService, useValue: {selectedDeck: signal({name: 'dinos'})}}
+      ],
+      importOverrides: [
+        {replace: GameStatusBarComponent, with: ScoreStubComponent},
+        {replace: DeckComponent, with: DeckStubComponent}
+      ]
+    });
+
+    expect(fixture.componentInstance.deck()).toEqual({name: 'dinos'});
+  })
+})

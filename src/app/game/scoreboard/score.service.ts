@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { FIRESTORE_OPS, FirestoreOps } from './firestore-ops';
@@ -17,12 +17,8 @@ export class ScoreService {
 
   collection$: Observable<Score[]>;
 
-  constructor(
-    private firestore: Firestore,
-    @Inject(FIRESTORE_OPS) private ops: FirestoreOps
-  ) {
-
-  }
+  private firestore = inject(Firestore);
+  private ops: FirestoreOps = inject(FIRESTORE_OPS);
 
   loadScores(deck) {
     const scoresRef = this.ops.collection(this.firestore, 'scores');

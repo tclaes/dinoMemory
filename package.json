@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "main": "scripts.js",
   "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --configuration production",
+    "test": "ng test",
+    "test:ci": "ng test --no-watch --coverage",
+    "lint": "ng lint",
+    "lint:styles": "stylelint \"src/**/*.{css,scss}\"",
+    "e2e": "playwright test"
+  },
   "dependencies": {
     "@angular/animations": "^22.2.3",
     "@angular/cdk": "^22.2.3",
@@ -17,6 +27,7 @@
     "@angular/router": "^22.2.3",
     "@angular/service-worker": "^22.2.3",
     "firebase": "^12.18.0",
+    "prettier": "^3.9.10",
     "rxjs": "~7.8.2",
     "tslib": "^2.0.0",
     "zone.js": "^0.16.3"
@@ -29,6 +40,8 @@
     "@angular/compiler-cli": "^22.2.3",
     "@angular/language-service": "^22.2.3",
     "@playwright/test": "^1.62.1",
+    "@testing-library/angular": "^19.6.0",
+    "@testing-library/dom": "^10.4.2",
     "@types/node": "^24.19.2",
     "@vitest/coverage-v8": "^5.0.5",
     "angular-eslint": "22.6.0",
@@ -51,16 +64,6 @@
       "@angular/platform-browser": "$@angular/platform-browser",
       "@angular/platform-browser-dynamic": "$@angular/platform-browser-dynamic"
     }
-  },
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --configuration production",
-    "test": "ng test",
-    "test:ci": "ng test --no-watch --coverage",
-    "lint": "ng lint",
-    "lint:styles": "stylelint \"src/**/*.{css,scss}\"",
-    "e2e": "playwright test"
   },
   "repository": {
     "type": "git",

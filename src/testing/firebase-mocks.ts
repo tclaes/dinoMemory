@@ -1,5 +1,5 @@
-import { BehaviorSubject, of } from 'rxjs';
-import { createSpyObj } from './spy';
+import { BehaviorSubject, of } from "rxjs";
+import { createSpyObj } from "./spy";
 
 /**
  * Reusable Firebase test doubles. Never import provideFirebaseApp/initializeApp in specs —
@@ -9,24 +9,51 @@ import { createSpyObj } from './spy';
  */
 
 export const mockUser: any = {
-  uid: 'test-uid',
-  displayName: 'Test User',
-  email: 'test@example.com'
+  uid: "test-uid",
+  displayName: "Test User",
+  email: "test@example.com",
+};
+
+export const mockSignedInUser: any = {
+  uid: "signed-in-uid",
+  displayName: "Signed In User",
+  email: "signed-in@example.com",
 };
 
 export function createMockAuthOps(initialUser: any = mockUser) {
-  const authStateSubject = new BehaviorSubject<any>(initialUser);
-  const ops = createSpyObj('AuthOps', [
-    'authState', 'signInWithPopup', 'signInWithEmailAndPassword',
-    'createUserWithEmailAndPassword', 'updateCurrentUser', 'signOut', 'updateProfile'
+  const userSubject = new BehaviorSubject<any>(initialUser);
+  const ops = createSpyObj("AuthOps", [
+    "user",
+    "signInWithPopup",
+    "signInWithEmailAndPassword",
+    "createUserWithEmailAndPassword",
+    "updateCurrentUser",
+    "signOut",
+    "updateProfile",
   ]);
-  ops.authState.mockReturnValue(authStateSubject.asObservable());
-  return { ops, authStateSubject };
+  ops.user.mockReturnValue(userSubject.asObservable());
+  // Like Firebase: notify user() subscribers of the signed-in user, then resolve with a UserCredential.
+  ops.signInWithEmailAndPassword.mockImplementation(
+    async (_auth: unknown, email: string) => {
+      const user = { ...mockSignedInUser, email };
+      userSubject.next(user);
+      return { user, providerId: null, operationType: "signIn" };
+    },
+  );
+  return { ops, userSubject };
 }
 
 export function createMockFirestoreOps(scores: any[] = []) {
-  const ops = createSpyObj('FirestoreOps', [
-    'collection', 'query', 'where', 'orderBy', 'startAt', 'endAt', 'limit', 'collectionData', 'addDoc'
+  const ops = createSpyObj("FirestoreOps", [
+    "collection",
+    "query",
+    "where",
+    "orderBy",
+    "startAt",
+    "endAt",
+    "limit",
+    "collectionData",
+    "addDoc",
   ]);
   ops.collectionData.mockReturnValue(of(scores));
   return ops;

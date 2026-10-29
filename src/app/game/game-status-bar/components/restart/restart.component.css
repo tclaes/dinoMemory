@@ -1,0 +1,16 @@
+button {
+  align-items: center;
+  all: unset;
+  background: var(--dd-pink);
+  border: 2px solid var(--dd-ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--dd-ink);
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  gap: 10px;
+  padding: 13px 24px;
+}

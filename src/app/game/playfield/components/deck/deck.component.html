@@ -1,0 +1,9 @@
+@for (card of board(); track card.id; ) {
+    <app-card
+            (flip)="flipCard($event)"
+            [card]="card"
+            [class.flip]="gameService.faceUpIds().has(card.id)"
+            [class.matched]="gameService.matchedIds().has(card.id)"
+            [deck]="deck()"
+    />
+}

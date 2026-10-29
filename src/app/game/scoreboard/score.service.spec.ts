@@ -1,10 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-import { Firestore } from '@angular/fire/firestore';
+import {TestBed} from '@angular/core/testing';
+import {Firestore} from '@angular/fire/firestore';
 
-import { ScoreService } from './score.service';
-import { FIRESTORE_OPS } from './firestore-ops';
-import { createMockFirestoreOps } from '../../../testing/firebase-mocks';
-import { SpyObj } from '../../../testing/spy';
+import {ScoreService} from './score.service';
+import {FIRESTORE_OPS} from './firestore-ops';
+import {createMockFirestoreOps} from '../../../testing/firebase-mocks';
+import {SpyObj} from '../../../testing/spy';
+import {beforeEach, describe, it} from 'vitest';
 
 describe('ScoreService', () => {
   let service: ScoreService;
@@ -46,7 +47,7 @@ describe('ScoreService', () => {
     expect(result).toEqual([{ user: 'Rex', deck: 'dinos', clicks: 8, time: '0h - 0m - 30s' }]);
   });
 
-  it('updateScores() reloads the collection and adds a new score with the right shape', () => {
+  it('updateScores() reloads the collection and adds a new game-status-bar with the right shape', () => {
     service.updateScores('Rex', 12, '0h - 0m - 45s', 'dinos');
 
     expect(opsSpy.addDoc).toHaveBeenCalledWith('scores-ref', {

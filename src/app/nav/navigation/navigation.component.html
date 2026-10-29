@@ -1,53 +1,20 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="false"
-               [ngClass]="{hidden: (isHandset$ | async) === false}"
-               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-               [mode]="(isHandset$ | async) ? 'over' : 'side'"
-               [opened]="(isHandset$ | async) === false">
-    <div class="drawer-header">Memory!</div>
-    <nav class="drawer-nav" aria-label="Choose a card set">
-      @for (button of decks$(); track button) {
-        <button type="button" class="focusable deck-pill drawer-pill"
-                [attr.aria-pressed]="button.name === _deck?.name"
-                (click)="newGame($event)">
-            {{button.name}}
+<nav aria-label="Choose a card set" class="nav">
+    @for (button of decks$(); track button) {
+        <button (click)="selectDeck(button.name)"
+                class="focusable deck-pill drawer-pill"
+                type="button">
+            {{ button.name }}
         </button>
-      }
-    </nav>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <header class="app-header">
-      @if (isHandset$ | async) {
-        <button type="button" aria-label="Toggle menu" class="focusable icon-btn" (click)="drawer.toggle()">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
-        </button>
-      }
-      <div class="brand">
-          <h1 routerLink="/" class="header_logo">
-        <svg width="32" height="32" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-          <path d="M24 4l6 12 13 2-9.5 9 2.2 13L24 34l-11.7 6.2 2.2-13L5 18l13-2z" fill="var(--dd-yellow)" stroke="var(--dd-ink)" stroke-width="3" stroke-linejoin="round"/>
+    }
+</nav>
+
+<div class="header-actions">
+    <a aria-label="Your profile" class="focusable icon-btn profile-btn" routerLink="userprofile">
+        <svg aria-hidden="true" fill="none" height="20" viewBox="0 0 24 24" width="20">
+            <circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M5 20c1.5-4 4-6 7-6s5.5 2 7 6" stroke="currentColor" stroke-linecap="round"
+                  stroke-width="2.2"/>
         </svg>
-        Memory!</h1>
-      </div>
-      @if (user !== null) {
-        <nav class="deck-nav" aria-label="Choose a card set" [ngClass]="{hidden: (isHandset$ | async)}">
-          @for (button of decks$(); track button) {
-            <button type="button" class="focusable deck-pill"
-                    [attr.aria-pressed]="button.name === _deck?.name"
-                    (click)="newGame($event)">
-                {{button.name}}
-            </button>
-          }
-        </nav>
-        <div class="header-actions">
-          <a routerLink="userprofile" class="focusable icon-btn profile-btn" aria-label="Your profile">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="2.2"/><path d="M5 20c1.5-4 4-6 7-6s5.5 2 7 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-          </a>
-          <button type="button" class="focusable ghost-btn" (click)="logOut()">Bye!</button>
-        </div>
-      }
-    </header>
-    <!-- Add Content Here -->
-    <ng-content></ng-content>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    </a>
+    <button (click)="logOut()" class="focusable ghost-btn" type="button">Bye!</button>
+</div>
