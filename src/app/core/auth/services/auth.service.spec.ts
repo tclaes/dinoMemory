@@ -124,4 +124,12 @@ describe("AuthService", () => {
 
     expect(routerSpy.navigate).toHaveBeenCalledWith(["/"]);
   });
+
+  it("signs out and navigates to the login page", async () => {
+    await service.logOut();
+
+    expect(authOps.signOut).toHaveBeenCalledWith(fakeAuth);
+    // "/" is a no-op when the user is already on "/", so the guard would never re-run.
+    expect(routerSpy.navigate).toHaveBeenCalledWith(["/login"]);
+  });
 });
