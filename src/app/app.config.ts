@@ -3,7 +3,7 @@ import {provideRouter} from '@angular/router';
 import {provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 import {provideServiceWorker} from '@angular/service-worker';
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
-import {getAuth, provideAuth} from '@angular/fire/auth';
+import {connectAuthEmulator, getAuth, provideAuth} from '@angular/fire/auth';
 import {enableIndexedDbPersistence, getFirestore, provideFirestore} from '@angular/fire/firestore';
 
 import {environment} from '../environments/environment';
@@ -18,7 +18,13 @@ export const appConfig: ApplicationConfig = {
       enabled: environment.production,
     }),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideAuth(() => getAuth()),
+    provideAuth(() => {
+      const auth = getAuth();
+      if (environment.authEmulatorUrl) {
+        connectAuthEmulator(auth, environment.authEmulatorUrl, {disableWarnings: true});
+      }
+      return auth;
+    }),
     provideFirestore(() => {
       const firestore = getFirestore();
       enableIndexedDbPersistence(firestore);
