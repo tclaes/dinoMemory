@@ -11,6 +11,8 @@
 
 .deck {
   container: deck / inline-size;
+  display: flex;
+  justify-content: center;
   padding: 0 var(--padding-default) var(--padding-small);
   width: calc(100vw);
 }
