@@ -25,3 +25,31 @@ jobs:
         with:
           name: coverage-report
           path: coverage/
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+
+      # The Firebase Auth emulator needs a recent JDK.
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      # Playwright starts the Auth emulator and the e2e dev server itself (see playwright.config.ts).
+      - run: npm run e2e
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-test-results
+          path: test-results/
