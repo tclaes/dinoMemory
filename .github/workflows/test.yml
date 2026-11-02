@@ -35,7 +35,7 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      # The Firebase Auth emulator needs a recent JDK.
+      # The Firebase Auth and Firestore emulators need a recent JDK.
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -45,7 +45,7 @@ jobs:
 
       - run: npx playwright install --with-deps chromium
 
-      # Playwright starts the Auth emulator and the e2e dev server itself (see playwright.config.ts).
+      # Playwright starts the Auth and Firestore emulators and the e2e dev server itself (see playwright.config.ts).
       - run: npm run e2e
 
       - uses: actions/upload-artifact@v7

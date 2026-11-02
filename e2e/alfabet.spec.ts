@@ -74,4 +74,27 @@ test.describe('Alfabet deck', () => {
     await expect(page.locator('app-card.matched')).toHaveCount(0);
   });
 
+  test('shows the scoreboard with the saved score after winning, and starts a new game', async ({ page }) => {
+    const count = await letterCards(page).count();
+    for (let i = 0; i < count; i++) {
+      const letterCard = letterCards(page).nth(i);
+      const letter = await letterCard.getByRole('img').getAttribute('aria-label');
+      const wordCard = wordCards(page).filter({ has: page.getByRole('img', { name: WORD_FOR_LETTER[letter!] }) });
+      await flip(letterCard);
+      await flip(wordCard);
+      await expect(wordCard).toHaveClass(/matched/);
+    }
+
+    const scoreboard = page.locator('app-scoreboard');
+    await expect(scoreboard).toBeVisible();
+    await expect(scoreboard).toContainText('8 tries');
+    await expect(scoreboard.getByRole('cell', { name: 'Player' })).toHaveCount(1);
+
+    await scoreboard.getByRole('button', { name: 'New game?' }).click();
+
+    await expect(scoreboard).toHaveCount(0);
+    await expect(page.locator('app-card.matched')).toHaveCount(0);
+    await expect(page.locator('app-card.flip')).toHaveCount(0);
+  });
+
 });

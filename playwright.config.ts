@@ -10,10 +10,12 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: 'npx firebase-tools emulators:start --only auth --project dinomemory-10d97',
+      command: 'npx firebase-tools emulators:start --only auth,firestore --project dinomemory-10d97',
       url: 'http://127.0.0.1:9099',
       reuseExistingServer: !process.env['CI'],
       timeout: 120 * 1000,
+      // SIGTERM lets firebase-tools stop its emulators; the default SIGKILL leaves the Java ones running.
+      gracefulShutdown: { signal: 'SIGTERM', timeout: 10 * 1000 },
     },
     {
       command: 'npm start -- --configuration e2e --port 4300',
