@@ -9,7 +9,8 @@ import {DeckService} from './deck.service';
 const decks = {
   deck: [
     {name: 'dinos', imgURL: 'dinos', frontFace: 'velociraptor', cards: ['allosaurus', 'ankylosaurus']},
-    {name: 'frameworks', imgURL: 'frameworks', frontFace: 'js-badge', cards: ['angular', 'react']}
+    {name: 'frameworks', imgURL: 'frameworks', frontFace: 'js-badge', cards: ['angular', 'react']},
+    {name: 'alfabet', pairsPerGame: 8, maxPhase: 1, pairs: [{key: 'b', letter: 'b', word: 'bal', emoji: '⚽', phase: 1}]}
   ]
 };
 
@@ -24,6 +25,7 @@ const decks = {
         </li>
       }
     </ul>
+    <p data-testid="pair-count">{{ deckService.selectedDeck()?.pairs?.length }}</p>
     <ul aria-label="cards">
       @for (card of deckService.selectedDeck()?.cards; track card) {
         <li>{{ card }}</li>
@@ -68,5 +70,14 @@ describe('DeckService', () => {
     expect(screen.getByTestId('selected').textContent).toBe('frameworks');
     expect(screen.getByText('angular')).toBeTruthy();
     expect(screen.queryByText('allosaurus')).toBeNull();
+  });
+
+  it('lists the alfabet deck and selects it with its pairs', async () => {
+    await setup();
+
+    fireEvent.click(screen.getByRole('button', {name: 'alfabet'}));
+
+    expect(screen.getByTestId('selected').textContent).toBe('alfabet');
+    expect(screen.getByTestId('pair-count').textContent).toBe('1');
   });
 });

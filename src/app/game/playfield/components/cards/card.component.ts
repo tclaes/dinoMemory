@@ -12,14 +12,31 @@ const COVERS = [
 @Component({
   selector: "app-card",
   template: `
-    @if (deck().imgURL) {
-      <img
-        ngSrc="assets/img/{{ deck().imgURL }}/{{ card().name }}.svg"
-        alt="{{ card().name }}"
-        class="front-face"
-        width="150"
-        height="150"
-      />
+    @switch (card().face?.kind ?? "image") {
+      @case ("letter") {
+        <div class="front-face letter-face" [attr.aria-label]="card().name" role="img">
+          {{ card().name }}
+        </div>
+      }
+      @case ("word") {
+        <div class="front-face word-face" [attr.aria-label]="card().name" role="img">
+          <span class="word-emoji" aria-hidden="true">{{ wordFace()?.emoji }}</span>
+          <span class="word-text" aria-hidden="true">
+            {{ wordParts().before }}<mark>{{ wordParts().mark }}</mark>{{ wordParts().after }}
+          </span>
+        </div>
+      }
+      @default {
+        @if (deck().imgURL) {
+          <img
+            ngSrc="assets/img/{{ deck().imgURL }}/{{ card().name }}.svg"
+            alt="{{ card().name }}"
+            class="front-face"
+            width="150"
+            height="150"
+          />
+        }
+      }
     }
     <button
       class="back-face"
@@ -63,6 +80,28 @@ export class CardComponent {
 
   cover = computed(() => COVERS[this.card().coverIndex % COVERS.length]);
   flip = output<string>();
+
+  wordFace = computed(() => {
+    const face = this.card().face;
+    return face?.kind === "word" ? face : undefined;
+  });
+
+  wordParts = computed(() => {
+    const face = this.wordFace();
+    if (!face) {
+      return { before: "", mark: "", after: "" };
+    }
+    const index = face.highlight ? face.text.indexOf(face.highlight) : -1;
+    if (index < 0) {
+      return { before: face.text, mark: "", after: "" };
+    }
+    const end = index + face.highlight.length;
+    return {
+      before: face.text.slice(0, index),
+      mark: face.text.slice(index, end),
+      after: face.text.slice(end),
+    };
+  });
 
   flipCard() {
     this.flip.emit(this.card().id);

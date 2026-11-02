@@ -1,22 +1,23 @@
-{"deck":
-  [{
-    "name": "frameworks",
-    "imgURL": "frameworks",
-    "frontFace": "js-badge",
-    "cards": [
+{
+  "deck": [
+    {
+      "name": "frameworks",
+      "imgURL": "frameworks",
+      "frontFace": "js-badge",
+      "cards": [
         "angular",
         "aurelia",
         "backbone",
         "ember",
         "react",
         "vue"
-    ]
-  },
-  {
-    "name": "dinos",
-    "imgURL": "dinos",
-    "frontFace": "velociraptor",
-    "cards": [
+      ]
+    },
+    {
+      "name": "dinos",
+      "imgURL": "dinos",
+      "frontFace": "velociraptor",
+      "cards": [
         "allosaurus",
         "ankylosaurus",
         "brachiosaurus",
@@ -26,10 +27,277 @@
         "stegosaurus",
         "lambeosaurus",
         "iguanodon"
-    ]
-  }
-]
+      ]
+    },
+    {
+      "name": "alfabet",
+      "pairsPerGame": 8,
+      "maxPhase": 1,
+      "pairs": [
+        {
+          "key": "i",
+          "letter": "i",
+          "word": "inkt",
+          "emoji": "🖋️",
+          "phase": 1
+        },
+        {
+          "key": "k",
+          "letter": "k",
+          "word": "kat",
+          "emoji": "🐱",
+          "phase": 1
+        },
+        {
+          "key": "m",
+          "letter": "m",
+          "word": "maan",
+          "emoji": "🌙",
+          "phase": 1
+        },
+        {
+          "key": "s",
+          "letter": "s",
+          "word": "sok",
+          "emoji": "🧦",
+          "phase": 1
+        },
+        {
+          "key": "p",
+          "letter": "p",
+          "word": "pen",
+          "emoji": "🖊️",
+          "phase": 1
+        },
+        {
+          "key": "aa",
+          "letter": "aa",
+          "word": "aap",
+          "emoji": "🐵",
+          "phase": 1
+        },
+        {
+          "key": "r",
+          "letter": "r",
+          "word": "raket",
+          "emoji": "🚀",
+          "phase": 1
+        },
+        {
+          "key": "e",
+          "letter": "e",
+          "word": "emmer",
+          "emoji": "🪣",
+          "phase": 1
+        },
+        {
+          "key": "v",
+          "letter": "v",
+          "word": "vis",
+          "emoji": "🐟",
+          "phase": 1
+        },
+        {
+          "key": "n",
+          "letter": "n",
+          "word": "neus",
+          "emoji": "👃",
+          "phase": 2
+        },
+        {
+          "key": "t",
+          "letter": "t",
+          "word": "tomaat",
+          "emoji": "🍅",
+          "phase": 2
+        },
+        {
+          "key": "b",
+          "letter": "b",
+          "word": "bal",
+          "emoji": "⚽",
+          "phase": 2
+        },
+        {
+          "key": "ee",
+          "letter": "ee",
+          "word": "eend",
+          "emoji": "🦆",
+          "phase": 2
+        },
+        {
+          "key": "oo",
+          "letter": "oo",
+          "word": "oor",
+          "emoji": "👂",
+          "phase": 2
+        },
+        {
+          "key": "d",
+          "letter": "d",
+          "word": "deur",
+          "emoji": "🚪",
+          "phase": 2
+        },
+        {
+          "key": "oe",
+          "letter": "oe",
+          "word": "oester",
+          "emoji": "🦪",
+          "phase": 2
+        },
+        {
+          "key": "z",
+          "letter": "z",
+          "word": "zon",
+          "emoji": "☀️",
+          "phase": 2
+        },
+        {
+          "key": "ij",
+          "letter": "ij",
+          "word": "ijs",
+          "emoji": "🍦",
+          "phase": 2
+        },
+        {
+          "key": "h",
+          "letter": "h",
+          "word": "huis",
+          "emoji": "🏠",
+          "phase": 2
+        },
+        {
+          "key": "l",
+          "letter": "l",
+          "word": "lamp",
+          "emoji": "💡",
+          "phase": 3
+        },
+        {
+          "key": "ie",
+          "letter": "ie",
+          "word": "vlieg",
+          "emoji": "🪰",
+          "phase": 3,
+          "highlight": "ie"
+        },
+        {
+          "key": "eu",
+          "letter": "eu",
+          "word": "euro",
+          "emoji": "💶",
+          "phase": 3
+        },
+        {
+          "key": "ou",
+          "letter": "ou",
+          "word": "goud",
+          "emoji": "🥇",
+          "phase": 3,
+          "highlight": "ou"
+        },
+        {
+          "key": "uu",
+          "letter": "uu",
+          "word": "uur",
+          "emoji": "⏰",
+          "phase": 3
+        },
+        {
+          "key": "ui",
+          "letter": "ui",
+          "word": "ui",
+          "emoji": "🧅",
+          "phase": 3
+        },
+        {
+          "key": "o",
+          "letter": "o",
+          "word": "olifant",
+          "emoji": "🐘",
+          "phase": 3
+        },
+        {
+          "key": "u",
+          "letter": "u",
+          "word": "uil",
+          "emoji": "🦉",
+          "phase": 3
+        },
+        {
+          "key": "a",
+          "letter": "a",
+          "word": "appel",
+          "emoji": "🍎",
+          "phase": 3
+        },
+        {
+          "key": "g",
+          "letter": "g",
+          "word": "geit",
+          "emoji": "🐐",
+          "phase": 3
+        },
+        {
+          "key": "j",
+          "letter": "j",
+          "word": "jas",
+          "emoji": "🧥",
+          "phase": 3
+        },
+        {
+          "key": "w",
+          "letter": "w",
+          "word": "wolk",
+          "emoji": "☁️",
+          "phase": 3
+        },
+        {
+          "key": "f",
+          "letter": "f",
+          "word": "fiets",
+          "emoji": "🚲",
+          "phase": 3
+        },
+        {
+          "key": "au",
+          "letter": "au",
+          "word": "auto",
+          "emoji": "🚗",
+          "phase": 3
+        },
+        {
+          "key": "ei",
+          "letter": "ei",
+          "word": "ei",
+          "emoji": "🥚",
+          "phase": 3
+        },
+        {
+          "key": "sch",
+          "letter": "sch",
+          "word": "schaap",
+          "emoji": "🐑",
+          "phase": 3
+        },
+        {
+          "key": "ng",
+          "letter": "ng",
+          "word": "ring",
+          "emoji": "💍",
+          "phase": 3,
+          "highlight": "ng"
+        },
+        {
+          "key": "nk",
+          "letter": "nk",
+          "word": "bank",
+          "emoji": "🏦",
+          "phase": 3,
+          "highlight": "nk"
+        }
+      ]
+    }
+  ]
 }
-
-
-

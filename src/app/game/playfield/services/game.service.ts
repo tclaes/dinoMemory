@@ -3,6 +3,7 @@ import {DeckService} from './deck.service';
 import {AuthService} from '../../../core/auth/services/auth.service';
 import {GlobalService} from '../../global/services/global.service';
 import {BoardCard} from '../model/board';
+import {Deck} from '../model/deck';
 import {ClicksService} from '../../game-status-bar/services/clicks.service';
 
 @Injectable({providedIn: 'root'})
@@ -30,17 +31,13 @@ export class GameService {
   })
 
 
-  board = linkedSignal<{started: boolean, deck: readonly string[]}, BoardCard[]>({
-    source: () => ({started: this.#globalService.gameStarted$(), deck: this.deck()?.cards ?? []}),
+  board = linkedSignal<{started: boolean, deck: Deck | undefined}, BoardCard[]>({
+    source: () => ({started: this.#globalService.gameStarted$(), deck: this.deck()}),
     computation: ({started, deck}, previous) => {
       if (started && previous) {
         return previous.value;
       }
-      const pairs = deck.flatMap((name, i) => [
-        {id: `${name}-a`, name, coverIndex: i},
-        {id: `${name}-b`, name, coverIndex: i + 1}
-      ]);
-      return this.#shuffle(pairs);
+      return this.#shuffle(deck?.pairs ? this.#buildPairedCards(deck) : this.#buildIdenticalCards(deck));
     }
   });
   #lockBoard = false;
@@ -65,9 +62,31 @@ export class GameService {
     }
   }
 
+  #buildIdenticalCards(deck: Deck | undefined): BoardCard[] {
+    return (deck?.cards ?? []).flatMap((name, i) => [
+      {id: `${name}-a`, name, coverIndex: i},
+      {id: `${name}-b`, name, coverIndex: i + 1}
+    ]);
+  }
+
+  #buildPairedCards(deck: Deck): BoardCard[] {
+    const available = deck.pairs.filter(pair => pair.phase <= (deck.maxPhase ?? Infinity));
+    const chosen = this.#shuffle(available).slice(0, deck.pairsPerGame ?? available.length);
+    return chosen.flatMap((pair, i): BoardCard[] => [
+      {
+        id: `${pair.key}-letter`, name: pair.letter, pairKey: pair.key, coverIndex: i,
+        face: {kind: 'letter', text: pair.letter}
+      },
+      {
+        id: `${pair.key}-word`, name: pair.word, pairKey: pair.key, coverIndex: i + 1,
+        face: {kind: 'word', text: pair.word, emoji: pair.emoji, highlight: pair.highlight}
+      }
+    ]);
+  }
+
   #checkForMatch() {
     const [first, second] = this.#flippedIds().map(id => this.board().find(card => card.id === id));
-    if (first.name === second.name) {
+    if ((first.pairKey ?? first.name) === (second.pairKey ?? second.name)) {
       this.#matchedIds.update(matched => new Set([...matched, first.id, second.id]));
       return this.#unlockBoard();
     }
