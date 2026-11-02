@@ -1,11 +1,13 @@
 import {effect, inject, Injectable, linkedSignal} from '@angular/core';
 import {GlobalService} from '../../global/services/global.service';
+import {GameService} from '../../playfield/services/game.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
   #globalService = inject(GlobalService);
+  #gameService = inject(GameService);
   // resets to zero whenever the game starts or stops
   #timer = linkedSignal({
     source: this.#globalService.gameStarted$,
@@ -16,7 +18,7 @@ export class TimerService {
 
   constructor() {
     effect(() => {
-      if (this.#globalService.gameStarted$()) {
+      if (this.#globalService.gameStarted$() && !this.#gameService.gameWon()) {
         this.startTimer();
       } else {
         this.#stopTimer();

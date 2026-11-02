@@ -5,6 +5,7 @@ import {of} from 'rxjs';
 import {GameService} from './game.service';
 import {AuthService} from '../../../core/auth/services/auth.service';
 import {DeckService} from './deck.service';
+import {GlobalService} from '../../global/services/global.service';
 
 const pairs = (count: number, phase = 1) => Array.from({length: count}, (_, i) => ({
   key: `k${phase}-${i}`, letter: `l${phase}-${i}`, word: `w${phase}-${i}`, emoji: '*', phase
@@ -152,4 +153,30 @@ describe('Game Service', () => {
 
     expect(service.gameWon()).toBeTruthy()
   })
+
+  it('is not won while the board is empty', () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        {provide: AuthService, useValue: {User: of(null)}},
+        {provide: DeckService, useValue: {selectedDeck: signal(undefined)}}
+      ]
+    });
+    const empty = TestBed.inject(GameService);
+
+    expect(empty.board()).toHaveLength(0);
+    expect(empty.gameWon()).toBe(false);
+  });
+
+  it('remembers a saved score until the game stops', () => {
+    const global = TestBed.inject(GlobalService);
+    service.flipCard('rex-a');
+    expect(service.scoreSaved()).toBe(false);
+
+    service.markScoreSaved();
+    expect(service.scoreSaved()).toBe(true);
+
+    global.stopGame();
+    expect(service.scoreSaved()).toBe(false);
+  });
 });

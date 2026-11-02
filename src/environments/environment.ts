@@ -6,6 +6,7 @@
 export const environment = {
   production: false,
   authEmulatorUrl: undefined as string | undefined,
+  firestoreEmulator: undefined as { host: string; port: number } | undefined,
   firebaseConfig: {
     apiKey: 'AIzaSyAFkSuqDHHr0pNtXm2oJnY1WBNDwJNjwiQ',
     authDomain: 'dinomemory-10d97.firebaseapp.com',

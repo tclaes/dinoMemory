@@ -2,15 +2,19 @@ import {TestBed} from '@angular/core/testing';
 
 import {TimerService} from './timer.service';
 import {GlobalService} from '../../global/services/global.service';
+import {signal} from '@angular/core';
+import {GameService} from '../../playfield/services/game.service';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 
 describe('TimerService', () => {
   let service: TimerService;
   let globalService: GlobalService;
+  const gameWon = signal(false);
 
   beforeEach(() => {
     vi.useFakeTimers();
-    TestBed.configureTestingModule({});
+    gameWon.set(false);
+    TestBed.configureTestingModule({providers: [{provide: GameService, useValue: {gameWon}}]});
     service = TestBed.inject(TimerService);
     globalService = TestBed.inject(GlobalService);
     TestBed.tick();
@@ -85,5 +89,18 @@ describe('TimerService', () => {
     expect(service.currentTime()).toBe('0h - 0m - 0s');
     vi.advanceTimersByTime(1000);
     expect(service.currentTime()).toBe('0h - 0m - 1s');
+  });
+
+  it('should freeze the time when the game is won', () => {
+    globalService.startGame();
+    TestBed.tick();
+    vi.advanceTimersByTime(2000);
+
+    gameWon.set(true);
+    TestBed.tick();
+    vi.advanceTimersByTime(3000);
+
+    expect(service.currentTime()).toBe('0h - 0m - 2s');
+    expect(vi.getTimerCount()).toBe(0);
   });
 });
