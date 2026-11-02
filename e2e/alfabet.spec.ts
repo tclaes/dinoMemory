@@ -8,14 +8,17 @@ const WORD_FOR_LETTER: Record<string, string> = {
 };
 
 test.describe('Alfabet deck', () => {
+  // Unique per test run, so the scoreboard assertion is independent of scores left in a reused emulator.
+  let playerName: string;
 
   test.beforeEach(async ({ page, request }) => {
     const email = `player-${Date.now()}-${Math.random().toString(36).slice(2)}@example.com`;
     const password = 'secret123';
+    playerName = `Player ${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
     const signUp = await request.post(
       `${AUTH_EMULATOR}/identitytoolkit.googleapis.com/v1/accounts:signUp?key=fake-key`,
-      { data: { email, password, displayName: 'Player' } },
+      { data: { email, password, displayName: playerName } },
     );
     expect(signUp.ok()).toBe(true);
 
@@ -88,7 +91,7 @@ test.describe('Alfabet deck', () => {
     const scoreboard = page.locator('app-scoreboard');
     await expect(scoreboard).toBeVisible();
     await expect(scoreboard).toContainText('8 tries');
-    await expect(scoreboard.getByRole('cell', { name: 'Player' })).toHaveCount(1);
+    await expect(scoreboard.getByRole('cell', { name: playerName })).toHaveCount(1);
 
     await scoreboard.getByRole('button', { name: 'New game?' }).click();
 

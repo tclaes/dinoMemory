@@ -81,8 +81,9 @@ export class ScoreboardComponent implements OnInit {
   ngOnInit() {
     const deck = this.gameService.deck()?.name;
     const user = this.gameService.user();
-    if (user) {
+    if (user && !this.gameService.scoreSaved()) {
       this.#scoreService.updateScores(user.displayName, this.nrOfClicks(), this.stopwatch(), deck);
+      this.gameService.markScoreSaved();
     }
     this.collection$ = this.#scoreService.loadScores(deck);
   }

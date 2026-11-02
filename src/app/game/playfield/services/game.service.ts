@@ -26,6 +26,12 @@ export class GameService {
   });
   matchedIds = this.#matchedIds.asReadonly();
   faceUpIds = computed(() => new Set([...this.#flippedIds(), ...this.#matchedIds()]));
+  // Whether the score of the current game was saved; resets when the game stops.
+  #scoreSaved = linkedSignal<boolean, boolean>({
+    source: this.#globalService.gameStarted$,
+    computation: (started, previous) => started && previous ? previous.value : false
+  });
+  scoreSaved = this.#scoreSaved.asReadonly();
   gameWon = computed(() => {
     return this.board().length > 0 && this.matchedIds().size === this.board().length
   })
@@ -42,6 +48,10 @@ export class GameService {
   });
   #lockBoard = false;
   #unflipTimeout: ReturnType<typeof setTimeout>;
+
+  markScoreSaved() {
+    this.#scoreSaved.set(true);
+  }
 
   flipCard(id: string) {
     if(!this.#globalService.gameStarted$()) {
