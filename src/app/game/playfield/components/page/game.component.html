@@ -4,3 +4,6 @@
 <section class="deck">
     <app-deck/>
 </section>
+@if (gameService.gameWon()) {
+    <app-scoreboard/>
+}

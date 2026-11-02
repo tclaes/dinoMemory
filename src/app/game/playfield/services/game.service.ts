@@ -27,7 +27,7 @@ export class GameService {
   matchedIds = this.#matchedIds.asReadonly();
   faceUpIds = computed(() => new Set([...this.#flippedIds(), ...this.#matchedIds()]));
   gameWon = computed(() => {
-    return this.matchedIds().size === this.board().length
+    return this.board().length > 0 && this.matchedIds().size === this.board().length
   })
 
 

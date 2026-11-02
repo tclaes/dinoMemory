@@ -152,4 +152,18 @@ describe('Game Service', () => {
 
     expect(service.gameWon()).toBeTruthy()
   })
+
+  it('is not won while the board is empty', () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        {provide: AuthService, useValue: {User: of(null)}},
+        {provide: DeckService, useValue: {selectedDeck: signal(undefined)}}
+      ]
+    });
+    const empty = TestBed.inject(GameService);
+
+    expect(empty.board()).toHaveLength(0);
+    expect(empty.gameWon()).toBe(false);
+  });
 });

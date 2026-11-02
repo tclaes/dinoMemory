@@ -2,6 +2,8 @@ import {Component, inject, OnInit} from '@angular/core';
 import {GameService} from '../playfield/services/game.service';
 import {Score, ScoreService} from './score.service';
 import {Observable} from 'rxjs';
+import {ClicksService} from '../game-status-bar/services/clicks.service';
+import {GlobalService} from '../global/services/global.service';
 import {TimerService} from '../game-status-bar/services/timer.service';
 import {
   MatCell,
@@ -22,7 +24,7 @@ import {MatButton} from '@angular/material/button';
   template: `
       <div class="score">
           <h3>Game Won !!!</h3>
-<!--          <p>{{ nrOfClicks() }} clicks</p>-->
+<p>{{ nrOfClicks() }} tries</p>
           <p>{{ stopwatch() }}</p>
 
           <div class="scoreboard">
@@ -65,17 +67,23 @@ export class ScoreboardComponent implements OnInit {
   gameService = inject(GameService);
   collection$: Observable<Score[]>;
   displayedColumns: string[] = ['user', 'clicks', 'time'];
-  // nrOfClicks = this.gameService.clicked;
+  #clicksService = inject(ClicksService);
+  #globalService = inject(GlobalService);
+  nrOfClicks = this.#clicksService.countedClicks;
   #scoreService = inject(ScoreService);
   #timerService = inject(TimerService);
   stopwatch = this.#timerService.currentTime;
 
   newGame() {
-    // this.gameService.newGame();
+    this.#globalService.stopGame();
   }
 
   ngOnInit() {
-    console.log('Scores need to be fixed');
-    // this.collection$ = this.#scoreService.loadScores(this.gameService.deck);
+    const deck = this.gameService.deck()?.name;
+    const user = this.gameService.user();
+    if (user) {
+      this.#scoreService.updateScores(user.displayName, this.nrOfClicks(), this.stopwatch(), deck);
+    }
+    this.collection$ = this.#scoreService.loadScores(deck);
   }
 }
