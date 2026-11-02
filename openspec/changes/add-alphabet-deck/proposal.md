@@ -2,37 +2,37 @@
 
 ## Why
 
-De zoon van de eigenaar leert het alfabet in het 1ste leerjaar (Vlaanderen). Het memory-spel is een leuke manier om letters en klanken te oefenen, maar de bestaande decks (dinos, frameworks) bestaan enkel uit identieke kaartparen. Om letters aan klanken te koppelen is een paar nodig dat uit twee verschillende kaarten bestaat: de letter en een woord dat die klank bevat.
+The owner's son is learning the alphabet in first grade (Flanders). The memory game is a fun way to practise letters and sounds, but the existing decks (dinos, frameworks) only consist of pairs of identical cards. Linking letters to sounds needs a pair made of two different cards: the letter and a word that contains that sound.
 
 ## What Changes
 
-- Nieuw deck **alfabet** met letters en klanken uit het 1ste leerjaar: klinkers, medeklinkers en tweetekenklanken (aa, ee, oo, uu, ie, oe, eu, ui, ou, au, ei, ij, sch, ng, nk).
-- Elk paar bestaat uit een **letterkaart** (de letter of klank in grote, duidelijke tekst) en een **woordkaart** (afbeelding van een woord dat de klank bevat, met het woord eronder; staat de klank niet vooraan, dan worden die letters gemarkeerd).
-- Het spel kan nu paren van **verschillende** kaarten matchen; twee letterkaarten of twee woordkaarten vormen nooit een paar.
-- Paren zijn ingedeeld in **fases** (volgens de leesmethode Veilig leren lezen); een deck kan het spel beperken tot een hoogste fase, zodat enkel letters voorkomen die het kind al kent. De draft volgt de kim-versie; de definitieve versie van de school is nog onbekend.
-- Een deck kan het aantal paren per spel beperken, zodat het bord speelbaar blijft voor een kind (bv. 8 willekeurige paren uit het volledige alfabet).
-- Bestaande decks (dinos, frameworks) blijven ongewijzigd werken.
+- New deck **alfabet** with first-grade letters and sounds: vowels, consonants and two-letter sounds (aa, ee, oo, uu, ie, oe, eu, ui, ou, au, ei, ij, sch, ng, nk).
+- Each pair consists of a **letter card** (the letter or sound in large, clear text) and a **word card** (a picture of a word containing the sound, with the word written below it; if the sound is not at the start of the word, those letters are highlighted).
+- The game can now match pairs of **different** cards; two letter cards or two word cards never form a pair.
+- Pairs are grouped into **phases** (following the Veilig leren lezen reading method); a deck can limit the game to a highest phase, so only letters the child already knows appear. The draft follows the kim version; the school's actual version is still unknown.
+- A deck can limit the number of pairs per game, so the board stays playable for a child (e.g. 8 random pairs from the full alphabet).
+- Existing decks (dinos, frameworks) keep working unchanged.
 
 ## Capabilities
 
 ### New Capabilities
-- `alphabet-deck`: Inhoud en weergave van het alfabet-deck: welke letters/klanken, welke woorden, en hoe letter- en woordkaarten eruitzien.
-- `card-matching`: Regels waarmee twee omgedraaide kaarten een paar vormen, inclusief paren van verschillende kaarten en een maximum aantal paren per spel.
+- `alphabet-deck`: Content and presentation of the alphabet deck: which letters/sounds, which words, and what letter and word cards look like.
+- `card-matching`: Rules for when two face-up cards form a pair, including pairs of different cards and a maximum number of pairs per game.
 
 ### Modified Capabilities
-<!-- Geen: er bestaan nog geen specs in openspec/specs/. -->
+<!-- None: there are no specs in openspec/specs/ yet. -->
 
 ## Impact
 
-- `src/assets/data.json`: nieuw deck, nieuw (optioneel) veld voor paren en `pairsPerGame`.
-- `src/app/game/playfield/model/deck.ts` en `model/board.ts`: uitgebreid met paardefinitie, paarsleutel en kaartweergave.
-- `src/app/game/playfield/services/game.service.ts`: bordopbouw en matchcontrole.
-- `src/app/game/playfield/components/cards/card.component.*`: tekst- en woordkaart naast de bestaande afbeeldingskaart.
-- Unit tests voor `game.service`, `card.component`, `deck.service`; mogelijk een e2e-test.
-- Geen nieuwe dependencies. Geen backend- of Firestore-wijzigingen.
+- `src/assets/data.json`: new deck, new optional field for pairs and `pairsPerGame`.
+- `src/app/game/playfield/model/deck.ts` and `model/board.ts`: extended with pair definition, pair key and card face.
+- `src/app/game/playfield/services/game.service.ts`: board building and match check.
+- `src/app/game/playfield/components/cards/card.component.*`: letter and word cards next to the existing image card.
+- Unit tests for `game.service`, `card.component`, `deck.service`; possibly an e2e test.
+- No new dependencies. No backend or Firestore changes.
 
-## Aannames
+## Assumptions
 
-- Woordafbeeldingen zijn emoji (geen nieuwe SVG-assets nodig); het woord staat eronder zodat het kind ook leest.
-- De woordenlijst is een draft: de versie van Veilig leren lezen en de kernwoorden zijn onbekend. De ouder levert die later aan; vervangen kan in `data.json` zonder codewijziging.
-- Uitspraak/audio valt buiten scope.
+- Word pictures are emoji (no new SVG assets needed); the word is written below so the child also reads.
+- The word list is a draft: the version of Veilig leren lezen and its key words are unknown. The parent will supply them later; replacing them in `data.json` needs no code change.
+- Pronunciation/audio is out of scope.

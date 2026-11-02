@@ -2,56 +2,56 @@
 
 ## Context
 
-Zie proposal.md voor motivatie. Huidige situatie:
+See proposal.md for motivation. Current state:
 
-- `Deck` (`model/deck.ts`) heeft `cards: string[]`; `GameService.board` maakt per naam twee `BoardCard`s (`{id, name, coverIndex}`) en `#checkForMatch` vergelijkt `first.name === second.name`.
-- `CardComponent` toont altijd `assets/img/{imgURL}/{name}.svg` als voorkant.
-- Decks komen uit `src/assets/data.json` via `DeckService`; de navigatie toont alle decks.
+- `Deck` (`model/deck.ts`) has `cards: string[]`; `GameService.board` creates two `BoardCard`s per name (`{id, name, coverIndex}`) and `#checkForMatch` compares `first.name === second.name`.
+- `CardComponent` always shows `assets/img/{imgURL}/{name}.svg` as its front.
+- Decks come from `src/assets/data.json` via `DeckService`; the navigation shows all decks.
 
 ## Goals / Non-Goals
 
 **Goals:**
-- Paren van twee verschillende kaarten ondersteunen zonder de bestaande decks te wijzigen.
-- Alfabet-deck volledig data-gedreven (JSON), zonder nieuwe afbeeldingsbestanden.
+- Support pairs of two different cards without changing the existing decks.
+- Alphabet deck fully data-driven (JSON), without new image files.
 
 **Non-Goals:**
-- Audio/uitspraak, voortgangsregistratie per letter, moeilijkheidsgraden of leesmethode-fasering.
+- Audio/pronunciation, progress tracking per letter, difficulty levels or reading-method phasing beyond a fixed setting.
 
 ## Decisions
 
-**1. Optioneel `pairs`-veld op `Deck` naast `cards`.**
-`pairs?: { key: string; letter: string; word: string; emoji: string; phase: number; highlight?: string }[]`, `pairsPerGame?: number` en `maxPhase?: number`. Als `pairs` bestaat, bouwt het bord daaruit; anders blijft `cards` het oude gedrag. Alternatief: `cards` veralgemenen naar objecten voor alle decks — breekt bestaande data en tests zonder meerwaarde.
+**1. Optional `pairs` field on `Deck` next to `cards`.**
+`pairs?: { key: string; letter: string; word: string; emoji: string; phase: number; highlight?: string }[]`, `pairsPerGame?: number` and `maxPhase?: number`. If `pairs` exists the board is built from it; otherwise `cards` keeps the old behaviour. Alternative: generalise `cards` to objects for all decks — breaks existing data and tests for no gain.
 
-**2. `BoardCard` krijgt `pairKey` en `face`.**
-`BoardCard = { id, name, coverIndex, pairKey, face: { kind: 'image' } | { kind: 'letter', text } | { kind: 'word', emoji, text } }`. Voor bestaande decks is `pairKey = name` en `face.kind = 'image'`. `#checkForMatch` vergelijkt `pairKey` en eist `first.id !== second.id`. Omdat letter en woord van één paar dezelfde `pairKey` delen en elk paar maar één van elk heeft, kunnen twee letterkaarten of twee woordkaarten nooit matchen. Alternatief: aparte matchfunctie per deck-type — meer code voor hetzelfde resultaat.
+**2. `BoardCard` gets `pairKey` and `face`.**
+`BoardCard = { id, name, coverIndex, pairKey, face: { kind: 'image' } | { kind: 'letter', text } | { kind: 'word', emoji, text } }`. For existing decks `pairKey = name` and `face.kind = 'image'`. `#checkForMatch` compares `pairKey` and requires `first.id !== second.id`. Because the letter and word of one pair share the same `pairKey` and each pair has only one of each, two letter cards or two word cards can never match. Alternative: a separate match function per deck type — more code for the same result.
 
-**3. Emoji als woordafbeelding.**
-Geen 30+ nieuwe SVG's nodig; `font-size` schaalt mee op mobiel. Nadeel: weergave verschilt per OS. Alternatief: SVG-set (bv. OpenMoji) toevoegen — meer werk, later mogelijk zonder datamodelwijziging (`emoji` → `image`).
+**3. Emoji as the word picture.**
+No need for 30+ new SVGs; `font-size` scales on mobile. Downside: rendering differs per OS. Alternative: add an SVG set (e.g. OpenMoji) — more work, and possible later without a data model change (`emoji` → `image`).
 
-**4. `pairsPerGame` met willekeurige selectie bij bordopbouw.**
-Selectie gebeurt in dezelfde `linkedSignal`-berekening als de shuffle, dus blijft stabiel tijdens een lopend spel (bestaande `started && previous`-regel). Standaard 8 paren (16 kaarten) voor het alfabet-deck. Alternatief: meerdere kleine decks — meer navigatie, kind kiest dan zelf moeilijkere letters niet.
+**4. `pairsPerGame` with random selection when building the board.**
+Selection happens in the same `linkedSignal` computation as the shuffle, so it stays stable during a running game (existing `started && previous` rule). Default 8 pairs (16 cards) for the alphabet deck. Alternative: several small decks — more navigation, and the child would not pick harder letters themselves.
 
-**5. Weergave in `CardComponent`.**
-`@switch` op `card().face.kind`: afbeelding (bestaand), letter (grote tekst, `aria-label` = letter), woord (emoji + woord). Hergebruikt `.front-face`-styling voor de flip. `alt`/aria-labels in het Nederlands.
+**5. Rendering in `CardComponent`.**
+`@switch` on `card().face.kind`: image (existing), letter (large text, `aria-label` = letter), word (emoji + word). Reuses the `.front-face` styling for the flip. `alt`/aria labels are in Dutch.
 
-**6. Woordenlijst (DRAFT, in afwachting van de schoolmethode).**
-Zijn school gebruikt Veilig leren lezen, maar de versie (maan, zoem of kim) is onbekend. De fasering volgt de kim-versie waar die gevonden werd; de woorden zijn eigen voorstellen, geen bevestigde kernwoorden uit het boek. Fase 2 (kern 2) is niet geverifieerd en fase 3 heeft een onbekende volgorde.
-- Fase 1 (start + kern 1): i inkt, k kat, m maan, s sok, p pen, aa aap, r raket, e emmer, v vis
-- Fase 2 (kern 2 en 3): n neus, t tomaat, b bal, ee eend, oo oor, d deur, oe oester, z zon, ij ijs, h huis
-- Fase 3 (rest, volgorde onbekend): l lamp, ie vlieg, eu euro, ou goud, uu uur, ui ui, o olifant, u uil, a appel, g geit, j jas, w wolk, f fiets, au auto, ei ei, sch schaap, ng ring, nk bank
-Q, x, y en c ontbreken bewust: ze komen in het 1ste leerjaar zelden aan bod. De lijst wordt vervangen zodra de juiste versie en kernwoorden bekend zijn (zie Open Questions).
+**6. Word list (DRAFT, pending the school's method).**
+His school uses Veilig leren lezen, but the version (maan, zoem or kim) is unknown. The phasing follows the kim version where it was found; the words are my own proposals, not confirmed key words from the book. Phase 2 (kern 2) is unverified and phase 3 has an unknown order.
+- Phase 1 (start + kern 1): i inkt, k kat, m maan, s sok, p pen, aa aap, r raket, e emmer, v vis
+- Phase 2 (kern 2 and 3): n neus, t tomaat, b bal, ee eend, oo oor, d deur, oe oester, z zon, ij ijs, h huis
+- Phase 3 (rest, order unknown): l lamp, ie vlieg, eu euro, ou goud, uu uur, ui ui, o olifant, u uil, a appel, g geit, j jas, w wolk, f fiets, au auto, ei ei, sch schaap, ng ring, nk bank
+Q, x, y and c are left out on purpose: they are rarely taught in first grade. The list is replaced once the right version and key words are known (see Open Questions).
 
-**7. Fases en markering van de klank.**
-Elk paar heeft een `phase`; `maxPhase` op het deck bepaalt tot welke fase er gespeeld wordt (standaard alle). Bij het bouwen van het bord worden eerst de paren tot `maxPhase` gefilterd en daarna `pairsPerGame` willekeurig gekozen. Zo kan de ouder de fase verhogen naarmate de zoon nieuwe letters leert, en past een andere methode-versie in `data.json` zonder codewijziging. Voor klanken zonder goed woord dat ermee begint (ie, ou, eu, ng, nk) staat de klank in het woord; `highlight` markeert die letters op de woordkaart (bv. vl**ie**g). Alternatief: enkel woorden die met de klank beginnen — dwingt tot slecht tekenbare woorden.
+**7. Phases and highlighting the sound.**
+Each pair has a `phase`; `maxPhase` on the deck determines up to which phase is played (default: all). When building the board, pairs are first filtered to `maxPhase` and then `pairsPerGame` are picked at random. This lets the parent raise the phase as the son learns new letters, and another method version fits in `data.json` without code changes. For sounds without a good word that starts with them (ie, ou, eu, ng, nk) the sound is inside the word; `highlight` marks those letters on the word card (e.g. vl**ie**g). Alternative: only words that start with the sound — forces hard-to-draw words.
 
 ## Risks / Trade-offs
 
-- [Emoji bestaan niet voor elk woord, of zien er anders uit] → woorden kiezen met eenduidige emoji; woord staat altijd onder de afbeelding.
-- [Woorden zijn niet de kernwoorden uit zijn leesboek] → fases en woorden zijn data; vervangen in `data.json` zodra de versie bekend is.
-- [Fase-instelling vraagt een manier om `maxPhase` te kiezen] → eerst vaste waarde in `data.json`; een keuzeknop in de UI valt buiten scope.
-- [Tweede kaartsoort verhoogt kans op regressie in bestaande decks] → bestaande `game.service`/`card.component`-tests blijven ongewijzigd groen als vangnet.
-- [16 kaarten met grote letters op kleine schermen] → bestaande grid met `--card-count`; visueel controleren op mobiel.
+- [Emoji do not exist for every word, or look different] → choose words with unambiguous emoji; the word is always shown below the picture.
+- [Words are not the key words from his reading book] → phases and words are data; replace them in `data.json` once the version is known.
+- [Setting `maxPhase` needs a way to choose it] → start with a fixed value in `data.json`; a selector in the UI is out of scope.
+- [A second card kind raises the risk of regressions in existing decks] → existing `game.service`/`card.component` tests stay unchanged and green as a safety net.
+- [16 cards with large letters on small screens] → existing grid with `--card-count`; check visually on mobile.
 
 ## Open Questions
 
-- Welke versie van Veilig leren lezen de school gebruikt, en de bijhorende kernen en kernwoorden. Invullen in `data.json` kan zonder spec- of taakwijziging.
+- Which version of Veilig leren lezen the school uses, and its matching kernen and key words. Filling them in `data.json` needs no spec or task change.
