@@ -1,55 +1,55 @@
 ## ADDED Requirements
 
-### Requirement: Alfabet-deck beschikbaar
-Het systeem SHALL een deck "alfabet" aanbieden naast de bestaande decks, selecteerbaar via dezelfde navigatie.
+### Requirement: Alphabet deck available
+The system SHALL offer a deck named "alfabet" alongside the existing decks, selectable through the same navigation.
 
-#### Scenario: Deck zichtbaar in navigatie
-- **WHEN** de decks geladen zijn
-- **THEN** staat "alfabet" in de lijst van beschikbare decks
+#### Scenario: Deck visible in navigation
+- **WHEN** the decks have loaded
+- **THEN** "alfabet" is in the list of available decks
 
-#### Scenario: Deck selecteren
-- **WHEN** de gebruiker "alfabet" kiest
-- **THEN** toont het bord de kaarten van het alfabet-deck
+#### Scenario: Selecting the deck
+- **WHEN** the user chooses "alfabet"
+- **THEN** the board shows the cards of the alphabet deck
 
-### Requirement: Inhoud volgens leerstof 1ste leerjaar
-Het alfabet-deck SHALL paren bevatten voor de letters en klanken uit het 1ste leerjaar, waaronder de tweetekenklanken aa, ee, oo, uu, ie, oe, eu, ui, ou, au, ei, ij, sch, ng en nk. Elk paar SHALL een eigen woord hebben dat de letter of klank bevat.
+### Requirement: Content follows the first-grade curriculum
+The alphabet deck SHALL contain pairs for the letters and sounds taught in the first grade, including the two-letter sounds aa, ee, oo, uu, ie, oe, eu, ui, ou, au, ei, ij, sch, ng and nk. Each pair SHALL have its own word that contains the letter or sound.
 
-#### Scenario: Geen dubbele letters
-- **WHEN** het deck wordt geladen
-- **THEN** komt elke letter of klank hoogstens één keer voor als paar
+#### Scenario: No duplicate letters
+- **WHEN** the deck is loaded
+- **THEN** each letter or sound appears as a pair at most once
 
-#### Scenario: Woord bevat de klank
-- **WHEN** een paar wordt bekeken
-- **THEN** bevat het woord van de woordkaart de letter of klank van de letterkaart
+#### Scenario: Word contains the sound
+- **WHEN** a pair is inspected
+- **THEN** the word on the word card contains the letter or sound of the letter card
 
-### Requirement: Markering van de klank in het woord
-Als de klank niet aan het begin van het woord staat, SHALL het paar aangeven welke letters in het woord bij de klank horen, en SHALL de woordkaart die letters zichtbaar markeren.
+### Requirement: Sound highlighted in the word
+When the sound is not at the start of the word, the pair SHALL specify which letters in the word belong to the sound, and the word card SHALL visibly highlight those letters.
 
-#### Scenario: Klank midden in het woord
-- **WHEN** het paar "ie" met het woord "vlieg" een woordkaart toont
-- **THEN** zijn de letters "ie" in "vlieg" zichtbaar gemarkeerd
+#### Scenario: Sound in the middle of a word
+- **WHEN** the pair "ie" with the word "vlieg" shows a word card
+- **THEN** the letters "ie" in "vlieg" are visibly highlighted
 
-### Requirement: Fases
-Elk paar SHALL tot een fase behoren, en het deck MAY een hoogste fase opgeven. Het systeem SHALL enkel paren uit fases tot en met die hoogste fase gebruiken. Zonder opgegeven fase worden alle paren gebruikt.
+### Requirement: Phases
+Each pair SHALL belong to a phase, and the deck MAY specify a highest phase. The system SHALL only use pairs from phases up to and including that highest phase. Without a specified highest phase, all pairs are used.
 
-#### Scenario: Beperkt tot een fase
-- **WHEN** de hoogste fase 1 is en een nieuw spel start
-- **THEN** komen enkel paren uit fase 1 op het bord
+#### Scenario: Limited to a phase
+- **WHEN** the highest phase is 1 and a new game starts
+- **THEN** only pairs from phase 1 appear on the board
 
-#### Scenario: Geen hoogste fase
-- **WHEN** het deck geen hoogste fase opgeeft
-- **THEN** komen alle paren in aanmerking
+#### Scenario: No highest phase
+- **WHEN** the deck does not specify a highest phase
+- **THEN** all pairs are eligible
 
-### Requirement: Letterkaart
-De letterkaart SHALL de letter of klank in kleine letters tonen in groot, goed leesbaar lettertype.
+### Requirement: Letter card
+The letter card SHALL show the letter or sound in lowercase, in a large, easily readable typeface.
 
-#### Scenario: Letter getoond
-- **WHEN** een letterkaart omgedraaid is
-- **THEN** is de letter of klank zichtbaar als tekst en heeft de kaart een toegankelijke naam met die letter
+#### Scenario: Letter shown
+- **WHEN** a letter card is face up
+- **THEN** the letter or sound is visible as text and the card has an accessible name containing that letter
 
-### Requirement: Woordkaart
-De woordkaart SHALL een afbeelding van het woord tonen met het woord eronder geschreven.
+### Requirement: Word card
+The word card SHALL show a picture of the word with the word written below it.
 
-#### Scenario: Woord getoond
-- **WHEN** een woordkaart omgedraaid is
-- **THEN** zijn de afbeelding en het woord zichtbaar
+#### Scenario: Word shown
+- **WHEN** a word card is face up
+- **THEN** the picture and the word are visible

@@ -1,34 +1,34 @@
 ## ADDED Requirements
 
-### Requirement: Paren van verschillende kaarten
-Het systeem SHALL twee omgedraaide kaarten als paar beschouwen wanneer ze dezelfde paarsleutel hebben en verschillende kaartkanten (zijden) van het paar zijn. Voor decks zonder gedefinieerde paren SHALL het paar bestaan uit twee identieke kaarten, zoals voorheen.
+### Requirement: Pairs of different cards
+The system SHALL treat two face-up cards as a pair when they have the same pair key and are different sides of that pair. For decks without defined pairs, a pair SHALL consist of two identical cards, as before.
 
-#### Scenario: Letter en bijhorend woord
-- **WHEN** de letterkaart "b" en de woordkaart "bal" omgedraaid zijn
-- **THEN** blijven beide kaarten omgedraaid en tellen ze als gevonden paar
+#### Scenario: Letter and its word
+- **WHEN** the letter card "b" and the word card "bal" are face up
+- **THEN** both cards stay face up and count as a found pair
 
-#### Scenario: Letter en verkeerd woord
-- **WHEN** de letterkaart "b" en de woordkaart "kat" omgedraaid zijn
-- **THEN** worden beide kaarten na korte tijd teruggedraaid
+#### Scenario: Letter and wrong word
+- **WHEN** the letter card "b" and the word card "kat" are face up
+- **THEN** both cards are turned face down again after a short delay
 
-#### Scenario: Bestaand deck ongewijzigd
-- **WHEN** in het dinos-deck twee kaarten met dezelfde dino omgedraaid zijn
-- **THEN** vormen ze een paar
+#### Scenario: Existing deck unchanged
+- **WHEN** two cards showing the same dinosaur are face up in the dinos deck
+- **THEN** they form a pair
 
-### Requirement: Eén kaart per kant
-Voor decks met gedefinieerde paren SHALL het bord per paar precies één letterkaart en één woordkaart bevatten.
+### Requirement: One card per side
+For decks with defined pairs, the board SHALL contain exactly one letter card and one word card per pair.
 
-#### Scenario: Bord opgebouwd
-- **WHEN** een spel start met het alfabet-deck en 8 paren
-- **THEN** bevat het bord 16 kaarten: 8 letterkaarten en 8 woordkaarten, in willekeurige volgorde
+#### Scenario: Board built
+- **WHEN** a game starts with the alphabet deck and 8 pairs
+- **THEN** the board has 16 cards: 8 letter cards and 8 word cards, in random order
 
-### Requirement: Maximum aantal paren per spel
-Een deck MAY een maximum aantal paren per spel opgeven. Het systeem SHALL dan bij elk nieuw spel dat aantal paren willekeurig uit het deck kiezen. Zonder maximum worden alle paren gebruikt.
+### Requirement: Maximum number of pairs per game
+A deck MAY specify a maximum number of pairs per game. The system SHALL then pick that many pairs at random from the deck for each new game. Without a maximum, all pairs are used.
 
-#### Scenario: Subset gekozen
-- **WHEN** het alfabet-deck meer paren heeft dan het maximum en een nieuw spel start
-- **THEN** bevat het bord enkel het maximum aantal paren, zonder dubbels
+#### Scenario: Subset chosen
+- **WHEN** the alphabet deck has more pairs than the maximum and a new game starts
+- **THEN** the board contains only the maximum number of pairs, without duplicates
 
-#### Scenario: Bord blijft stabiel tijdens spel
-- **WHEN** een spel bezig is
-- **THEN** verandert de samenstelling van het bord niet
+#### Scenario: Board stable during a game
+- **WHEN** a game is in progress
+- **THEN** the composition of the board does not change
