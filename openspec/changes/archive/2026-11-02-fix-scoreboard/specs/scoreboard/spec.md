@@ -1,3 +1,6 @@
+## Purpose
+Defines what happens when a memory game is won: the result screen with tries and time, saving the winning score, the per-deck top 10, and starting a new game from the result screen.
+
 ## ADDED Requirements
 
 ### Requirement: Scoreboard shown when the game is won
