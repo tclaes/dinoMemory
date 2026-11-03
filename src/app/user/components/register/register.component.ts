@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from "@angular/core";
 import {
   ReactiveFormsModule,
   UntypedFormControl,
@@ -32,13 +37,38 @@ export class RegisterComponent {
     return this.registerForm.controls;
   }
 
-  register() {
+  registerError = signal("");
+  submitting = signal(false);
+
+  async register() {
+    if (this.registerForm.invalid || this.submitting()) {
+      return;
+    }
     const user: User = {
       name: this.registerForm.value.name,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
     };
 
-    this.authService.tryRegister(user);
+    this.registerError.set("");
+    this.submitting.set(true);
+    try {
+      await this.authService.tryRegister(user);
+    } catch (err) {
+      this.registerError.set(this.messageFor(err));
+    } finally {
+      this.submitting.set(false);
+    }
+  }
+
+  private messageFor(err: unknown): string {
+    switch ((err as { code?: string })?.code) {
+      case "auth/email-already-in-use":
+        return "This email is already in use.";
+      case "auth/weak-password":
+        return "This password is too weak. Use at least 6 characters.";
+      default:
+        return "Registration failed. Please try again.";
+    }
   }
 }
