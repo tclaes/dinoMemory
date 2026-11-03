@@ -32,12 +32,17 @@ The system SHALL require a name, a valid email address and a password of at leas
 - **THEN** the message "Min password length is 6" is shown
 
 ### Requirement: Successful registration
-The system SHALL create the account, store the entered name as the display name, sign the new user in and navigate to the game page.
+The system SHALL create the account, sign the new user in and navigate to the game page. The system SHALL try to store the entered name as the display name; this is best effort, so a failure to save the name SHALL NOT turn a created account into a registration error.
 
 #### Scenario: Valid registration
 - **WHEN** a visitor submits a name, an unused email and a password of at least 6 characters
 - **THEN** the account is created with the entered name as display name
 - **AND** the visitor is on the game page, signed in
+
+#### Scenario: Display name cannot be saved
+- **WHEN** the account is created but saving the display name fails
+- **THEN** the visitor is still signed in and on the game page
+- **AND** no registration error is shown
 
 ### Requirement: Registration failure feedback
 The system SHALL show a visible error on the register form when registration fails and SHALL keep the visitor on the form with the entered values.
