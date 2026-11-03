@@ -1,37 +1,5 @@
 // Shared "Dino Disco" auth card styling for the login and register pages.
 
-.auth-page {
-  align-items: center;
-  background: var(--dd-bg);
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  padding: 32px 16px;
-  position: relative;
-
-  &::before, &::after {
-    background: var(--dd-bg-accent);
-    border-radius: 50%;
-    content: '';
-    position: absolute;
-    z-index: 0;
-  }
-
-  &::before {
-    bottom: -80px;
-    height: 220px;
-    left: -80px;
-    width: 220px;
-  }
-
-  &::after {
-    height: 160px;
-    right: -60px;
-    top: -40px;
-    width: 160px;
-  }
-}
-
 .auth-card {
   background: var(--white);
   border: 5px solid var(--dd-ink);

@@ -46,17 +46,24 @@ export class AuthService {
     await this.#router.navigate(["/"]);
   }
 
-  tryRegister(user: User) {
-    this.#ops
-      .createUserWithEmailAndPassword(this.#auth, user.email, user.password)
-      .then((userCredential) => {
-        this.#ops.updateProfile(userCredential.user, {
-          displayName: user.name,
-          photoURL: "",
-        });
-        console.log(userCredential.user.displayName);
-      })
-      .catch((err) => console.log("Something went wrong", err.message));
+  async tryRegister(user: User) {
+    const { user: created } =
+      await this.#ops.createUserWithEmailAndPassword(
+        this.#auth,
+        user.email,
+        user.password,
+      );
+    // The account exists and the user is signed in at this point, so a failing
+    // profile update must not surface as a registration error.
+    try {
+      await this.#ops.updateProfile(created, {
+        displayName: user.name,
+        photoURL: "",
+      });
+    } catch {
+      // Display name stays unset; the player can still play.
+    }
+    await this.#router.navigate(["/"]);
   }
 
   async logOut() {

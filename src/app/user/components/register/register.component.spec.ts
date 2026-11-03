@@ -5,7 +5,7 @@ import { provideRouter } from "@angular/router";
 import { RegisterComponent } from "./register.component";
 import { AuthService } from "../../../core/auth/services/auth.service";
 import { createSpyObj, SpyObj } from "../../../../testing/spy";
-import { beforeEach, describe, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 describe("RegisterComponent", () => {
   let component: RegisterComponent;
@@ -59,18 +59,88 @@ describe("RegisterComponent", () => {
     expect(component.registerForm.valid).toBe(true);
   });
 
-  it("register() delegates to AuthService.tryRegister with the raw form values", () => {
+  it("register() delegates to AuthService.tryRegister with the raw form values", async () => {
     component.registerForm.controls.name.setValue("Player One");
     component.registerForm.controls.email.setValue("player@example.com");
     component.registerForm.controls.password.setValue("secret1");
     fixture.detectChanges(false);
 
-    component.register();
+    await component.register();
 
     expect(authSpy.tryRegister).toHaveBeenCalledWith({
       name: "Player One",
       email: "player@example.com",
       password: "secret1",
+    });
+  });
+
+  describe("submitting", () => {
+    const fillValidForm = () => {
+      component.registerForm.setValue({
+        name: "Player One",
+        email: "player@example.com",
+        password: "secret1",
+      });
+      fixture.detectChanges(false);
+    };
+    const errorText = () =>
+      fixture.nativeElement.querySelector("#register-error")?.textContent?.trim();
+    const button = () =>
+      fixture.nativeElement.querySelector("button[type=submit]") as HTMLButtonElement;
+
+    it("shows no error after a successful registration", async () => {
+      authSpy.tryRegister.mockResolvedValue(undefined);
+      fillValidForm();
+
+      await component.register();
+      fixture.detectChanges();
+
+      expect(errorText()).toBeUndefined();
+    });
+
+    it.each([
+      ["auth/email-already-in-use", "This email is already in use."],
+      ["auth/weak-password", "This password is too weak. Use at least 6 characters."],
+      ["auth/network-request-failed", "Registration failed. Please try again."],
+    ])("shows a message for %s and enables the button again", async (code, message) => {
+      authSpy.tryRegister.mockRejectedValue(Object.assign(new Error("x"), { code }));
+      fillValidForm();
+
+      await component.register();
+      fixture.detectChanges();
+
+      expect(errorText()).toBe(message);
+      expect(button().disabled).toBe(false);
+    });
+
+    it("disables the button and ignores a second submit while in flight", async () => {
+      let finish!: () => void;
+      authSpy.tryRegister.mockReturnValue(new Promise<void>((r) => (finish = r)));
+      fillValidForm();
+
+      const first = component.register();
+      void component.register();
+      fixture.detectChanges();
+
+      expect(button().disabled).toBe(true);
+      expect(authSpy.tryRegister).toHaveBeenCalledTimes(1);
+
+      finish();
+      await first;
+      fixture.detectChanges();
+      expect(button().disabled).toBe(false);
+    });
+
+    it("clears a previous error when submitting again", async () => {
+      authSpy.tryRegister.mockRejectedValueOnce(new Error("x"));
+      fillValidForm();
+      await component.register();
+
+      authSpy.tryRegister.mockResolvedValue(undefined);
+      await component.register();
+      fixture.detectChanges();
+
+      expect(errorText()).toBeUndefined();
     });
   });
 });

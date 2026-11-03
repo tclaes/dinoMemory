@@ -125,6 +125,69 @@ describe("AuthService", () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(["/"]);
   });
 
+  describe("tryRegister", () => {
+    const newUser = {
+      name: "Player One",
+      email: "new@test.com",
+      password: "secret123",
+    };
+    const created = { uid: "new-uid" };
+
+    beforeEach(() => {
+      authOps.createUserWithEmailAndPassword.mockResolvedValue({
+        user: created,
+      });
+      authOps.updateProfile.mockResolvedValue(undefined);
+    });
+
+    it("creates the account, sets the display name and then navigates home", async () => {
+      const calls: string[] = [];
+      authOps.createUserWithEmailAndPassword.mockImplementation(async () => {
+        calls.push("create");
+        return { user: created };
+      });
+      authOps.updateProfile.mockImplementation(async () => {
+        calls.push("profile");
+      });
+      routerSpy.navigate.mockImplementation(async () => {
+        calls.push("navigate");
+        return true;
+      });
+
+      await service.tryRegister(newUser);
+
+      expect(authOps.createUserWithEmailAndPassword).toHaveBeenCalledWith(
+        fakeAuth,
+        "new@test.com",
+        "secret123",
+      );
+      expect(authOps.updateProfile).toHaveBeenCalledWith(created, {
+        displayName: "Player One",
+        photoURL: "",
+      });
+      expect(calls).toEqual(["create", "profile", "navigate"]);
+    });
+
+    it("rethrows when the account cannot be created and does not navigate", async () => {
+      authOps.createUserWithEmailAndPassword.mockRejectedValue(
+        Object.assign(new Error("in use"), {
+          code: "auth/email-already-in-use",
+        }),
+      );
+
+      await expect(service.tryRegister(newUser)).rejects.toThrow("in use");
+      expect(authOps.updateProfile).not.toHaveBeenCalled();
+      expect(routerSpy.navigate).not.toHaveBeenCalled();
+    });
+
+    it("still navigates when only the display name update fails", async () => {
+      authOps.updateProfile.mockRejectedValue(new Error("profile"));
+
+      await expect(service.tryRegister(newUser)).resolves.toBeUndefined();
+      expect(routerSpy.navigate).toHaveBeenCalledWith(["/"]);
+    });
+  });
+
   it("signs out and navigates to the login page", async () => {
     await service.logOut();
 
