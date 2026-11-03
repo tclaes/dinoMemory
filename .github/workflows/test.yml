@@ -16,6 +16,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run lint
+
       - run: npm run lint:styles
 
       - run: npx ng test --no-watch --coverage
