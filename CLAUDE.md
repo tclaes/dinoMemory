@@ -1,6 +1,6 @@
 # Dino Memory Game
 
-- create a new branch for new feature
+- create a new branch for new feature, named `<type>/<kebab-name>` with type `feature`, `fix`, `chore` or `ci`
 
 ## Where things live (`src/app/`)
 
