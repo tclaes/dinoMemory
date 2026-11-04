@@ -1,54 +1,48 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   signal,
 } from "@angular/core";
-import {
-  ReactiveFormsModule,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
+import { form, FormField, required } from "@angular/forms/signals";
 import { RouterLink } from "@angular/router";
 import { AuthService } from "../../../core/auth/services/auth.service";
+import { applyCredentialRules } from "../../auth-schema";
 import { User } from "../../model/user";
+
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+}
 
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
   styleUrls: ["./register.component.scss"],
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [RouterLink, FormField],
 })
 export class RegisterComponent {
-  registerForm = new UntypedFormGroup({
-    name: new UntypedFormControl("", Validators.required),
-    email: new UntypedFormControl("", [Validators.required, Validators.email]),
-    password: new UntypedFormControl("", [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
+  registerModel = signal<RegisterData>({ name: "", email: "", password: "" });
+  registerForm = form(this.registerModel, (schemaPath) => {
+    required(schemaPath.name, { message: "Name is required" });
+    applyCredentialRules(schemaPath.email, schemaPath.password);
   });
+  isFormValid = computed(() => this.registerForm().valid());
 
   private authService = inject(AuthService);
-
-  get f() {
-    return this.registerForm.controls;
-  }
 
   registerError = signal("");
   submitting = signal(false);
 
   async register() {
-    if (this.registerForm.invalid || this.submitting()) {
+    if (!this.isFormValid() || this.submitting()) {
       return;
     }
-    const user: User = {
-      name: this.registerForm.value.name,
-      email: this.registerForm.value.email,
-      password: this.registerForm.value.password,
-    };
+    const { name, email, password } = this.registerForm().value();
+    const user: User = { name, email, password };
 
     this.registerError.set("");
     this.submitting.set(true);

@@ -34,36 +34,65 @@ describe("RegisterComponent", () => {
     expect(component).toBeTruthy();
   });
 
+  const fill = (values: { name?: string; email?: string; password?: string }) => {
+    const { registerForm } = component;
+    if (values.name !== undefined) registerForm.name().value.set(values.name);
+    if (values.email !== undefined) registerForm.email().value.set(values.email);
+    if (values.password !== undefined) registerForm.password().value.set(values.password);
+    fixture.detectChanges(false);
+  };
+
   it("is invalid when the form is empty", () => {
-    expect(component.registerForm.valid).toBe(false);
-    expect(component.f.name.errors.required).toBeTruthy();
-    expect(component.f.email.errors.required).toBeTruthy();
-    expect(component.f.password.errors.required).toBeTruthy();
+    const { registerForm } = component;
+    expect(registerForm().invalid()).toBe(true);
+    expect(registerForm.name().errors()[0].message).toBe("Name is required");
+    expect(registerForm.email().errors()[0].message).toBe("Email is required");
+    expect(registerForm.password().errors()[0].message).toBe("Password is required");
   });
 
-  it("flags a malformed email address and a too-short password", () => {
-    component.registerForm.controls.email.setValue("not-an-email");
-    component.registerForm.controls.password.setValue("abc");
-    fixture.detectChanges(false);
+  it("uses the same messages as the login form for a malformed email and a short password", () => {
+    fill({ email: "not-an-email", password: "abc" });
 
-    expect(component.f.email.errors.email).toBeTruthy();
-    expect(component.f.password.errors.minlength).toBeTruthy();
+    expect(component.registerForm.email().errors()[0].message).toBe(
+      "Please enter a valid email",
+    );
+    expect(component.registerForm.password().errors()[0].message).toBe(
+      "Password minimum of 6 characters",
+    );
   });
 
   it("is valid with a name, a proper email and a password of at least 6 characters", () => {
-    component.registerForm.controls.name.setValue("Player One");
-    component.registerForm.controls.email.setValue("player@example.com");
-    component.registerForm.controls.password.setValue("secret1");
-    fixture.detectChanges(false);
+    fill({ name: "Player One", email: "player@example.com", password: "secret1" });
 
-    expect(component.registerForm.valid).toBe(true);
+    expect(component.registerForm().valid()).toBe(true);
   });
 
-  it("register() delegates to AuthService.tryRegister with the raw form values", async () => {
-    component.registerForm.controls.name.setValue("Player One");
-    component.registerForm.controls.email.setValue("player@example.com");
-    component.registerForm.controls.password.setValue("secret1");
+  it("marks a touched invalid field and links it to its error message", () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector("#register-email");
+    expect(input.getAttribute("aria-invalid")).toBe("false");
+    expect(input.getAttribute("aria-describedby")).toBeNull();
+
+    fill({ email: "not-an-email" });
+    input.dispatchEvent(new Event("blur"));
     fixture.detectChanges(false);
+
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+    expect(input.getAttribute("aria-describedby")).toBe("register-email-error");
+    const error = fixture.nativeElement.querySelector("#register-email-error");
+    expect(error.getAttribute("role")).toBe("alert");
+    expect(error.textContent.trim()).toBe("Please enter a valid email");
+  });
+
+  it("labels every field so it can be found by its label text", () => {
+    for (const key of ["name", "email", "password"]) {
+      const label = fixture.nativeElement.querySelector(`label[for="register-${key}"]`);
+      expect(label).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(`#register-${key}`)).toBeTruthy();
+    }
+  });
+
+  it("register() delegates to AuthService.tryRegister with the form values", async () => {
+    fill({ name: "Player One", email: "player@example.com", password: "secret1" });
 
     await component.register();
 
@@ -74,14 +103,17 @@ describe("RegisterComponent", () => {
     });
   });
 
+  it("does not call AuthService.tryRegister while the form is invalid", async () => {
+    fill({ name: "Player One", email: "nope", password: "secret1" });
+
+    await component.register();
+
+    expect(authSpy.tryRegister).not.toHaveBeenCalled();
+  });
+
   describe("submitting", () => {
     const fillValidForm = () => {
-      component.registerForm.setValue({
-        name: "Player One",
-        email: "player@example.com",
-        password: "secret1",
-      });
-      fixture.detectChanges(false);
+      fill({ name: "Player One", email: "player@example.com", password: "secret1" });
     };
     const errorText = () =>
       fixture.nativeElement.querySelector("#register-error")?.textContent?.trim();

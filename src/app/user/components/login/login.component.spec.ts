@@ -104,4 +104,36 @@ describe("LoginComponent", () => {
 
     expect(loginWithGoogle).toHaveBeenCalledTimes(1);
   });
+
+  it("labels the fields and links an invalid touched field to its error", async () => {
+    const { fixture, container } = await render(LoginComponent, {
+      providers: [{ provide: AuthService, useValue: {} }],
+    });
+    expect(container.querySelector('label[for="login-email"]')?.textContent?.trim()).toBe("Email");
+    expect(container.querySelector('label[for="login-password"]')?.textContent?.trim()).toBe("Password");
+
+    const input = container.querySelector("#login-email") as HTMLInputElement;
+    expect(input.getAttribute("aria-invalid")).toBe("false");
+
+    fixture.componentInstance.loginForm.email().value.set("dino");
+    fireEvent.blur(input);
+    fixture.detectChanges();
+
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+    expect(input.getAttribute("aria-describedby")).toBe("login-email-error");
+    expect(container.querySelector("#login-email-error")?.textContent?.trim()).toBe(
+      "Please enter a valid email",
+    );
+  });
+
+  it("links to the register page with English copy", async () => {
+    const { container } = await render(LoginComponent, {
+      providers: [{ provide: AuthService, useValue: {} }],
+    });
+
+    const footer = container.querySelector(".auth-footer") as HTMLElement;
+    expect(footer.textContent).toContain("Don't have an account?");
+    const link = screen.getByRole("link", { name: "Register" });
+    expect(link.getAttribute("href")).toBe("/register");
+  });
 });

@@ -4,37 +4,38 @@
 
     <form (submit)="onSubmit($event)" class="auth-form">
         <div class="field">
-            <label class="field-label"
-            >Email:
-                <input
-                        [formField]="loginForm.email"
-                        class="focusable field-input"
-                        type="email"
-                />
-            </label>
-            @if (loginForm.email().touched() && loginForm.email().required()) {
-                @for (error of loginForm.email().errors(); track error) {
-                    <p class="field-error" id="login-email-error" role="alert">
-                        {{ error.message }}
-                    </p>
-                }
+            <label class="field-label" for="login-email">Email</label>
+            <input
+                    id="login-email"
+                    [formField]="loginForm.email"
+                    class="focusable field-input"
+                    type="email"
+                    autocomplete="email"
+                    [attr.aria-invalid]="loginForm.email().touched() && loginForm.email().invalid()"
+                    [attr.aria-describedby]="loginForm.email().touched() && loginForm.email().invalid() ? 'login-email-error' : null"
+            />
+            @if (loginForm.email().touched() && loginForm.email().invalid()) {
+                <p class="field-error" id="login-email-error" role="alert">
+                    {{ loginForm.email().errors()[0].message }}
+                </p>
             }
         </div>
 
         <div class="field">
-            <label class="field-label" for="login-password">Password:
-                <input
-                        [formField]="loginForm.password"
-                        class="focusable field-input"
-                        id="login-password"
-                        type="password"
-                /></label>
+            <label class="field-label" for="login-password">Password</label>
+            <input
+                    id="login-password"
+                    [formField]="loginForm.password"
+                    class="focusable field-input"
+                    type="password"
+                    autocomplete="current-password"
+                    [attr.aria-invalid]="loginForm.password().touched() && loginForm.password().invalid()"
+                    [attr.aria-describedby]="loginForm.password().touched() && loginForm.password().invalid() ? 'login-password-error' : null"
+            />
             @if (loginForm.password().touched() && loginForm.password().invalid()) {
-                @for (error of loginForm.password().errors(); track error) {
-                    <p class="field-error" id="login-password-error" role="alert">
-                        {{ error.message }}
-                    </p>
-                }
+                <p class="field-error" id="login-password-error" role="alert">
+                    {{ loginForm.password().errors()[0].message }}
+                </p>
             }
         </div>
 
@@ -85,7 +86,7 @@
     </form>
 
     <p class="auth-footer">
-        Nog geen account?
-        <a class="focusable auth-link" routerLink="/register">Registreren</a>
+        Don't have an account?
+        <a class="focusable auth-link" routerLink="/register">Register</a>
     </p>
 </div>
