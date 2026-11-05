@@ -36,6 +36,13 @@ The login and register forms SHALL apply the same rules and show the same messag
 - **WHEN** the user leaves the password field with fewer than 6 characters on either form
 - **THEN** both forms show "Password minimum of 6 characters"
 
+### Requirement: Submit uses what the user just typed
+The login and register forms SHALL submit the email address as it currently appears in the input, even when the user submits before the email input's debounce has applied the edit.
+
+#### Scenario: Submit right after typing
+- **WHEN** the user types a new email address and submits within the debounce window
+- **THEN** the form submits the new address, not the previous one
+
 ### Requirement: Interface text is English
 All visible text on the login and register forms, including the footer links between them, SHALL be in English.
 

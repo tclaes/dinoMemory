@@ -2,7 +2,7 @@
 
 ## Context
 
-See proposal.md for motivation. Observed state (before `fix-register-screen` lands):
+See proposal.md for motivation. Observed state before this change:
 
 - Login: `form()` from `@angular/forms/signals` with a schema (`required`, `email`, `minLength` plus messages), `[formField]` bindings, `<label>` wrapping the input, errors rendered from `errors()`. No `aria-invalid`/`aria-describedby`; the email label has no `for`.
 - Register: `UntypedFormGroup` with `Validators`, `formControlName`, separate `<label for>` + input, `aria-invalid` + `aria-describedby`, hardcoded messages in the template.
@@ -26,6 +26,7 @@ See proposal.md for motivation. Observed state (before `fix-register-screen` lan
 3. **Field markup follows register's pattern**: `<label for>` + sibling input with an id, `[attr.aria-invalid]` and `[attr.aria-describedby]` tied to the error `<p role="alert" id>`. It is the more accessible pattern and the existing login e2e uses `getByLabel`, which keeps working. Drop the trailing colons in login labels so the label text is identical on both forms.
 4. **Footer copy**: "Don't have an account? Register" on login; register's footer is unchanged.
 5. **Name validation** stays register-only (`required`, message "Name is required").
+6. **Submit applies a pending email edit.** The email field is debounced (500 ms), so submitting right after typing would read a stale model value. Both submit handlers call `markAsTouched()` on the email field before reading the form value, which applies the pending edit. Alternative: remove the debounce; rejected because it is existing login behavior.
 
 ## Risks / Trade-offs
 

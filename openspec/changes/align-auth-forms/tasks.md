@@ -13,6 +13,8 @@
 - [x] 3.1 Migrate `RegisterComponent` from `UntypedFormGroup` to `form()` with the shared schema plus `required(name)`; keep `registerError` and `submitting` behavior. Verify with the rewritten `register.component.spec.ts` (empty form invalid, invalid email and short password show the unified messages, valid form enables the button, submit calls `tryRegister` with name, email and password).
 - [x] 3.2 Update the register template to `[formField]` bindings with messages taken from `errors()`. Verify with a template test that no hardcoded message text remains and the register e2e still passes.
 
+- [x] 3.3 Make both submit handlers apply a debounced email edit that is still pending (call `markAsTouched()` on the email field before reading the value). Verify with the login and register unit tests that submit right after typing sends the new address.
+
 ## 4. Field markup and copy
 
 - [x] 4.1 Update the login template to `<label for>` + input with ids, `aria-invalid` and `aria-describedby` linked to the error element; drop the colons from the labels. Verify with login unit tests asserting `aria-invalid` and `aria-describedby`, and `getByLabel('Email')` still resolving to one input in e2e.

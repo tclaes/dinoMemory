@@ -22,5 +22,5 @@ The login and register screens do the same job but are built differently: login 
 
 - `src/app/user/components/register/` and `src/app/user/components/login/` (templates, components, specs)
 - `e2e/login.spec.ts` and the new `e2e/register.spec.ts` (selectors and texts)
-- **Depends on `fix-register-screen`**: that change introduces the `registerError`/`submitting` signals, the awaited `AuthService.tryRegister` and the register layout. Merge it first, then rebase this branch.
+- **Built on `fix-register-screen` (merged)**: that change introduced the `registerError`/`submitting` signals, the awaited `AuthService.tryRegister` and the register layout.
 - Out of scope: new auth features (Google sign-up, email verification, password rules), changes to the visual design, translating the UI to Dutch.
