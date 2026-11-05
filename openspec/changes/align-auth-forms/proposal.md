@@ -16,7 +16,7 @@ The login and register screens do the same job but are built differently: login 
 - `auth-forms`: shared behavior of the login and register forms: field labelling, error association, validation messaging and UI language.
 
 ### Modified Capabilities
-<!-- None: no existing spec covers auth forms. -->
+- `user-registration`: the validation messages for an invalid email and a short password now match the login form.
 
 ## Impact
 
