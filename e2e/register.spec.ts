@@ -39,8 +39,8 @@ test.describe('Register page', () => {
     await page.getByLabel('Email').fill('not-an-email');
     await page.getByLabel('Password').fill('abc');
     await page.getByLabel('Name').click();
-    await expect(page.getByText('Please enter a valid email address')).toBeVisible();
-    await expect(page.getByText('Min password length is 6')).toBeVisible();
+    await expect(page.getByText('Please enter a valid email')).toBeVisible();
+    await expect(page.getByText('Password minimum of 6 characters')).toBeVisible();
     await expect(register).toBeDisabled();
 
     await page.getByLabel('Email').fill(uniqueEmail());

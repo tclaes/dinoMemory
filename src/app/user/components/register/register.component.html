@@ -2,56 +2,54 @@
   <h1 class="auth-title">Create an account</h1>
   <p class="auth-subtitle">Sign up to save your scores.</p>
 
-  <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+  <form class="auth-form" (submit)="$event.preventDefault(); register()" novalidate>
     <div class="field">
+      @let nameInvalid = registerForm.name().touched() && registerForm.name().invalid();
       <label for="register-name" class="field-label">Name</label>
       <input
         id="register-name"
         class="focusable field-input"
         type="text"
-        formControlName="name"
-        required
+        [formField]="registerForm.name"
         autocomplete="name"
-        [attr.aria-invalid]="f['name'].invalid && f['name'].touched"
-        [attr.aria-describedby]="(f['name'].invalid && f['name'].touched) ? 'register-name-error' : null">
-      @if (f['name'].touched && f['name'].errors?.required) {
-        <p class="field-error" id="register-name-error" role="alert">Name is required</p>
+        [attr.aria-invalid]="nameInvalid"
+        [attr.aria-describedby]="nameInvalid ? 'register-name-error' : null">
+      @if (nameInvalid) {
+        <p class="field-error" id="register-name-error" role="alert">{{ registerForm.name().errors()[0].message }}</p>
       }
     </div>
 
     <div class="field">
+
+      @let emailInvalid = registerForm.email().touched() && registerForm.email().invalid();
       <label for="register-email" class="field-label">Email</label>
       <input
         id="register-email"
         class="focusable field-input"
         type="email"
-        formControlName="email"
-        required
+        [formField]="registerForm.email"
         autocomplete="email"
-        [attr.aria-invalid]="f['email'].invalid && f['email'].touched"
-        [attr.aria-describedby]="(f['email'].invalid && f['email'].touched) ? 'register-email-error' : null">
-      @if (f['email'].touched && f['email'].errors?.required) {
-        <p class="field-error" id="register-email-error" role="alert">Email is required</p>
-      } @else if (f['email'].touched && f['email'].errors?.email) {
-        <p class="field-error" id="register-email-error" role="alert">Please enter a valid email address</p>
+        [attr.aria-invalid]="emailInvalid"
+        [attr.aria-describedby]="emailInvalid ? 'register-email-error' : null">
+      @if (emailInvalid) {
+        <p class="field-error" id="register-email-error" role="alert">{{ registerForm.email().errors()[0].message }}</p>
       }
     </div>
 
     <div class="field">
+
+      @let passwordInvalid = registerForm.password().touched() && registerForm.password().invalid();
       <label for="register-password" class="field-label">Password</label>
       <input
         id="register-password"
         class="focusable field-input"
         type="password"
-        formControlName="password"
-        required
+        [formField]="registerForm.password"
         autocomplete="new-password"
-        [attr.aria-invalid]="f['password'].invalid && f['password'].touched"
-        [attr.aria-describedby]="(f['password'].invalid && f['password'].touched) ? 'register-password-error' : null">
-      @if (f['password'].touched && f['password'].errors?.required) {
-        <p class="field-error" id="register-password-error" role="alert">Password is required</p>
-      } @else if (f['password'].touched && f['password'].errors?.minlength) {
-        <p class="field-error" id="register-password-error" role="alert">Min password length is 6</p>
+        [attr.aria-invalid]="passwordInvalid"
+        [attr.aria-describedby]="passwordInvalid ? 'register-password-error' : null">
+      @if (passwordInvalid) {
+        <p class="field-error" id="register-password-error" role="alert">{{ registerForm.password().errors()[0].message }}</p>
       }
     </div>
 
@@ -60,7 +58,7 @@
     }
 
     <div class="auth-actions">
-      <button type="submit" class="focusable btn-primary" [disabled]="!registerForm.valid || submitting()">Register</button>
+      <button type="submit" class="focusable btn-primary" [disabled]="!isFormValid() || submitting()">Register</button>
     </div>
   </form>
 

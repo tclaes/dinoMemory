@@ -1,15 +1,8 @@
 import { Component, computed, inject, signal } from "@angular/core";
-import { ReactiveFormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
-import {
-  debounce,
-  email,
-  form,
-  FormField,
-  minLength,
-  required,
-} from "@angular/forms/signals";
+import { form, FormField } from "@angular/forms/signals";
 import { AuthService } from "../../../core/auth/services/auth.service";
+import { applyCredentialRules } from "../../auth-schema";
 
 interface LoginData {
   email: string;
@@ -20,7 +13,7 @@ interface LoginData {
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
-  imports: [ReactiveFormsModule, RouterLink, FormField],
+  imports: [RouterLink, FormField],
 })
 export class LoginComponent {
   loginModel = signal<LoginData>({
@@ -28,13 +21,7 @@ export class LoginComponent {
     password: "",
   });
   loginForm = form(this.loginModel, (schemaPath) => {
-    debounce(schemaPath.email, 500);
-    required(schemaPath.email, { message: "Email is required" });
-    email(schemaPath.email, { message: "Please enter a valid email" });
-    required(schemaPath.password, { message: "Password is required" });
-    minLength(schemaPath.password, 6, {
-      message: "Password minimum of 6 characters",
-    });
+    applyCredentialRules(schemaPath.email, schemaPath.password);
   });
   isFormValid = computed(() => this.loginForm().valid());
   #authService = inject(AuthService);
@@ -52,6 +39,11 @@ export class LoginComponent {
 
   async onSubmit(event: Event) {
     event.preventDefault();
+    // Applies an email edit that is still waiting on the input debounce.
+    this.loginForm.email().markAsTouched();
+    if (!this.isFormValid()) {
+      return;
+    }
     this.loginError.set("");
     try {
       await this.#authService.signInWithEmailAndPassword(
