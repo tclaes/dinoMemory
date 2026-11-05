@@ -4,6 +4,9 @@ import { LoginComponent } from "./login.component";
 import { fireEvent, render, screen } from "@testing-library/angular";
 import { AuthService } from "../../../core/auth/services/auth.service";
 
+// Placeholder only; AuthService is mocked in every test.
+const TEST_PASSWORD = "placeholder-password";
+
 describe("LoginComponent", () => {
   it("should create", () => {
     render(LoginComponent, {
@@ -40,7 +43,7 @@ describe("LoginComponent", () => {
 
     const { loginForm } = fixture.componentInstance;
     loginForm.email().value.set("dino@test.com");
-    loginForm.password().value.set("dino123");
+    loginForm.password().value.set(TEST_PASSWORD);
 
     expect(loginForm().invalid()).toBeFalsy();
   });
@@ -54,7 +57,7 @@ describe("LoginComponent", () => {
 
     const { loginForm } = fixture.componentInstance;
     loginForm.email().value.set("dino@test.com");
-    loginForm.password().value.set("dino123");
+    loginForm.password().value.set(TEST_PASSWORD);
     fixture.detectChanges();
 
     expect(button.hasAttribute("disabled")).toBe(false);
@@ -75,7 +78,7 @@ describe("LoginComponent", () => {
 
     const { loginForm } = fixture.componentInstance;
     loginForm.email().value.set("dino@test.com");
-    loginForm.password().value.set("dino123");
+    loginForm.password().value.set(TEST_PASSWORD);
     await fixture.whenStable();
     fixture.detectChanges();
 
@@ -83,7 +86,7 @@ describe("LoginComponent", () => {
 
     expect(signInWithEmailAndPassword).toHaveBeenCalledWith({
       email: "dino@test.com",
-      password: "dino123",
+      password: TEST_PASSWORD,
     });
   });
 
@@ -146,7 +149,7 @@ describe("LoginComponent", () => {
     });
     const { loginForm } = fixture.componentInstance;
     loginForm.email().value.set("old@test.com");
-    loginForm.password().value.set("dino123");
+    loginForm.password().value.set(TEST_PASSWORD);
 
     // Typing goes through the 500 ms debounce, so the model still holds the old address.
     const input = container.querySelector("#login-email") as HTMLInputElement;
@@ -156,7 +159,27 @@ describe("LoginComponent", () => {
 
     expect(signInWithEmailAndPassword).toHaveBeenCalledWith({
       email: "new@test.com",
-      password: "dino123",
+      password: TEST_PASSWORD,
     });
+  });
+
+  it("does not sign in with an invalid email that was typed just before submitting", async () => {
+    const signInWithEmailAndPassword = vi.fn();
+    const { fixture, container } = await render(LoginComponent, {
+      providers: [
+        { provide: AuthService, useValue: { signInWithEmailAndPassword } },
+      ],
+    });
+    const { loginForm } = fixture.componentInstance;
+    loginForm.email().value.set("old@test.com");
+    loginForm.password().value.set(TEST_PASSWORD);
+
+    // The model still holds the valid old address until the debounce applies the edit.
+    const input = container.querySelector("#login-email") as HTMLInputElement;
+    input.value = "not-an-email";
+    input.dispatchEvent(new Event("input"));
+    await fixture.componentInstance.onSubmit(new Event("submit"));
+
+    expect(signInWithEmailAndPassword).not.toHaveBeenCalled();
   });
 });

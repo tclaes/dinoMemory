@@ -41,6 +41,9 @@ export class LoginComponent {
     event.preventDefault();
     // Applies an email edit that is still waiting on the input debounce.
     this.loginForm.email().markAsTouched();
+    if (!this.isFormValid()) {
+      return;
+    }
     this.loginError.set("");
     try {
       await this.#authService.signInWithEmailAndPassword(
