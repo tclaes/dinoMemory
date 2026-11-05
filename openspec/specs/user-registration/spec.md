@@ -25,11 +25,11 @@ The system SHALL require a name, a valid email address and a password of at leas
 
 #### Scenario: Invalid email
 - **WHEN** the visitor leaves the email field with "not-an-email"
-- **THEN** the message "Please enter a valid email address" is shown
+- **THEN** the message "Please enter a valid email" is shown
 
 #### Scenario: Short password
 - **WHEN** the visitor leaves the password field with fewer than 6 characters
-- **THEN** the message "Min password length is 6" is shown
+- **THEN** the message "Password minimum of 6 characters" is shown
 
 ### Requirement: Successful registration
 The system SHALL create the account, sign the new user in and navigate to the game page. The system SHALL try to store the entered name as the display name; this is best effort, so a failure to save the name SHALL NOT turn a created account into a registration error.
