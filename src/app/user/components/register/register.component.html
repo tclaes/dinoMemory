@@ -4,6 +4,7 @@
 
   <form class="auth-form" (submit)="$event.preventDefault(); register()" novalidate>
     <div class="field">
+      @let nameInvalid = registerForm.name().touched() && registerForm.name().invalid();
       <label for="register-name" class="field-label">Name</label>
       <input
         id="register-name"
@@ -11,14 +12,16 @@
         type="text"
         [formField]="registerForm.name"
         autocomplete="name"
-        [attr.aria-invalid]="registerForm.name().touched() && registerForm.name().invalid()"
-        [attr.aria-describedby]="registerForm.name().touched() && registerForm.name().invalid() ? 'register-name-error' : null">
-      @if (registerForm.name().touched() && registerForm.name().invalid()) {
+        [attr.aria-invalid]="nameInvalid"
+        [attr.aria-describedby]="nameInvalid ? 'register-name-error' : null">
+      @if (nameInvalid) {
         <p class="field-error" id="register-name-error" role="alert">{{ registerForm.name().errors()[0].message }}</p>
       }
     </div>
 
     <div class="field">
+
+      @let emailInvalid = registerForm.email().touched() && registerForm.email().invalid();
       <label for="register-email" class="field-label">Email</label>
       <input
         id="register-email"
@@ -26,14 +29,16 @@
         type="email"
         [formField]="registerForm.email"
         autocomplete="email"
-        [attr.aria-invalid]="registerForm.email().touched() && registerForm.email().invalid()"
-        [attr.aria-describedby]="registerForm.email().touched() && registerForm.email().invalid() ? 'register-email-error' : null">
-      @if (registerForm.email().touched() && registerForm.email().invalid()) {
+        [attr.aria-invalid]="emailInvalid"
+        [attr.aria-describedby]="emailInvalid ? 'register-email-error' : null">
+      @if (emailInvalid) {
         <p class="field-error" id="register-email-error" role="alert">{{ registerForm.email().errors()[0].message }}</p>
       }
     </div>
 
     <div class="field">
+
+      @let passwordInvalid = registerForm.password().touched() && registerForm.password().invalid();
       <label for="register-password" class="field-label">Password</label>
       <input
         id="register-password"
@@ -41,9 +46,9 @@
         type="password"
         [formField]="registerForm.password"
         autocomplete="new-password"
-        [attr.aria-invalid]="registerForm.password().touched() && registerForm.password().invalid()"
-        [attr.aria-describedby]="registerForm.password().touched() && registerForm.password().invalid() ? 'register-password-error' : null">
-      @if (registerForm.password().touched() && registerForm.password().invalid()) {
+        [attr.aria-invalid]="passwordInvalid"
+        [attr.aria-describedby]="passwordInvalid ? 'register-password-error' : null">
+      @if (passwordInvalid) {
         <p class="field-error" id="register-password-error" role="alert">{{ registerForm.password().errors()[0].message }}</p>
       }
     </div>

@@ -4,6 +4,7 @@
 
     <form (submit)="onSubmit($event)" class="auth-form">
         <div class="field">
+            @let emailInvalid = loginForm.email().touched() && loginForm.email().invalid();
             <label class="field-label" for="login-email">Email</label>
             <input
                     id="login-email"
@@ -11,10 +12,10 @@
                     class="focusable field-input"
                     type="email"
                     autocomplete="email"
-                    [attr.aria-invalid]="loginForm.email().touched() && loginForm.email().invalid()"
-                    [attr.aria-describedby]="loginForm.email().touched() && loginForm.email().invalid() ? 'login-email-error' : null"
+                    [attr.aria-invalid]="emailInvalid"
+                    [attr.aria-describedby]="emailInvalid ? 'login-email-error' : null"
             />
-            @if (loginForm.email().touched() && loginForm.email().invalid()) {
+            @if (emailInvalid) {
                 <p class="field-error" id="login-email-error" role="alert">
                     {{ loginForm.email().errors()[0].message }}
                 </p>
@@ -22,6 +23,7 @@
         </div>
 
         <div class="field">
+            @let passwordInvalid = loginForm.password().touched() && loginForm.password().invalid();
             <label class="field-label" for="login-password">Password</label>
             <input
                     id="login-password"
@@ -29,10 +31,10 @@
                     class="focusable field-input"
                     type="password"
                     autocomplete="current-password"
-                    [attr.aria-invalid]="loginForm.password().touched() && loginForm.password().invalid()"
-                    [attr.aria-describedby]="loginForm.password().touched() && loginForm.password().invalid() ? 'login-password-error' : null"
+                    [attr.aria-invalid]="passwordInvalid"
+                    [attr.aria-describedby]="passwordInvalid ? 'login-password-error' : null"
             />
-            @if (loginForm.password().touched() && loginForm.password().invalid()) {
+            @if (passwordInvalid) {
                 <p class="field-error" id="login-password-error" role="alert">
                     {{ loginForm.password().errors()[0].message }}
                 </p>

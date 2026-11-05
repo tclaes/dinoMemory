@@ -1,5 +1,4 @@
 import { Component, computed, inject, signal } from "@angular/core";
-import { ReactiveFormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { form, FormField } from "@angular/forms/signals";
 import { AuthService } from "../../../core/auth/services/auth.service";
@@ -14,7 +13,7 @@ interface LoginData {
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
-  imports: [ReactiveFormsModule, RouterLink, FormField],
+  imports: [RouterLink, FormField],
 })
 export class LoginComponent {
   loginModel = signal<LoginData>({
