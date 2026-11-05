@@ -38,6 +38,8 @@ export class RegisterComponent {
   submitting = signal(false);
 
   async register() {
+    // Applies an email edit that is still waiting on the input debounce.
+    this.registerForm.email().markAsTouched();
     if (!this.isFormValid() || this.submitting()) {
       return;
     }

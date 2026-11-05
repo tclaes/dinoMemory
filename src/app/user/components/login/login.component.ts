@@ -40,6 +40,8 @@ export class LoginComponent {
 
   async onSubmit(event: Event) {
     event.preventDefault();
+    // Applies an email edit that is still waiting on the input debounce.
+    this.loginForm.email().markAsTouched();
     this.loginError.set("");
     try {
       await this.#authService.signInWithEmailAndPassword(

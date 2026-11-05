@@ -111,6 +111,24 @@ describe("RegisterComponent", () => {
     expect(authSpy.tryRegister).not.toHaveBeenCalled();
   });
 
+  it("submits the email that was just typed, even before the input debounce has applied it", async () => {
+    fill({ name: "Player One", email: "old@example.com", password: "secret1" });
+    const input: HTMLInputElement = fixture.nativeElement.querySelector("#register-email");
+
+    // Typing goes through the 500 ms debounce, so the model still holds the old address.
+    input.value = "new@example.com";
+    input.dispatchEvent(new Event("input"));
+    expect(component.registerForm.email().value()).toBe("old@example.com");
+
+    await component.register();
+
+    expect(authSpy.tryRegister).toHaveBeenCalledWith({
+      name: "Player One",
+      email: "new@example.com",
+      password: "secret1",
+    });
+  });
+
   describe("submitting", () => {
     const fillValidForm = () => {
       fill({ name: "Player One", email: "player@example.com", password: "secret1" });

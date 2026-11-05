@@ -136,4 +136,27 @@ describe("LoginComponent", () => {
     const link = screen.getByRole("link", { name: "Register" });
     expect(link.getAttribute("href")).toBe("/register");
   });
+
+  it("signs in with the email that was just typed, even before the input debounce has applied it", async () => {
+    const signInWithEmailAndPassword = vi.fn();
+    const { fixture, container } = await render(LoginComponent, {
+      providers: [
+        { provide: AuthService, useValue: { signInWithEmailAndPassword } },
+      ],
+    });
+    const { loginForm } = fixture.componentInstance;
+    loginForm.email().value.set("old@test.com");
+    loginForm.password().value.set("dino123");
+
+    // Typing goes through the 500 ms debounce, so the model still holds the old address.
+    const input = container.querySelector("#login-email") as HTMLInputElement;
+    input.value = "new@test.com";
+    input.dispatchEvent(new Event("input"));
+    await fixture.componentInstance.onSubmit(new Event("submit"));
+
+    expect(signInWithEmailAndPassword).toHaveBeenCalledWith({
+      email: "new@test.com",
+      password: "dino123",
+    });
+  });
 });
