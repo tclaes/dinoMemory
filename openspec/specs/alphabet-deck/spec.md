@@ -35,7 +35,7 @@ When the sound is not at the start of the word, the pair SHALL specify which let
 - **THEN** the letters "ie" in "vlieg" are visibly highlighted
 
 ### Requirement: Phases
-Each pair SHALL belong to a phase, and the deck MAY specify a highest phase. The system SHALL only use pairs from phases up to and including that highest phase. Without a specified highest phase, all pairs are used.
+Each pair SHALL belong to a phase, and the deck MAY specify a highest phase. The system SHALL only treat pairs from phases up to and including that highest phase as eligible for a game. Without a specified highest phase, all pairs are eligible. The maximum number of pairs per game, if any, is applied to the eligible pairs only.
 
 #### Scenario: Limited to a phase
 - **WHEN** the highest phase is 1 and a new game starts

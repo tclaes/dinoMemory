@@ -28,11 +28,19 @@ For decks with defined pairs, the board SHALL contain exactly one letter card an
 - **THEN** the board has 16 cards: 8 letter cards and 8 word cards, in random order
 
 ### Requirement: Maximum number of pairs per game
-A deck MAY specify a maximum number of pairs per game. The system SHALL then pick that many pairs at random from the deck for each new game. Without a maximum, all pairs are used.
+A deck MAY specify a maximum number of pairs per game. The system SHALL then pick that many pairs at random from the eligible pairs of the deck for each new game; the eligible pairs are those left after any phase limit has been applied. Without a maximum, all eligible pairs are used.
 
 #### Scenario: Subset chosen
 - **WHEN** the alphabet deck has more pairs than the maximum and a new game starts
 - **THEN** the board contains only the maximum number of pairs, without duplicates
+
+#### Scenario: Phase limit and maximum together
+- **WHEN** a highest phase leaves more eligible pairs than the maximum and a new game starts
+- **THEN** the board contains the maximum number of pairs, all from the eligible phases
+
+#### Scenario: Fewer eligible pairs than the maximum
+- **WHEN** a highest phase leaves fewer eligible pairs than the maximum and a new game starts
+- **THEN** the board contains all eligible pairs
 
 #### Scenario: Board stable during a game
 - **WHEN** a game is in progress
