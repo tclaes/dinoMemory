@@ -4,6 +4,9 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
   reporter: 'list',
+  globalSetup: './e2e/global-setup.ts',
+  // A retry in CI records a trace (trace: 'on-first-retry') and reports the test as flaky instead of failing the run.
+  retries: process.env['CI'] ? 1 : 0,
   use: {
     baseURL: 'http://localhost:4300',
     trace: 'on-first-retry',
@@ -11,7 +14,8 @@ export default defineConfig({
   webServer: [
     {
       command: 'npx firebase-tools emulators:start --only auth,firestore --project dinomemory-10d97',
-      // Firestore is the last emulator to come up; if only Auth is running this is not reused and the start fails loudly.
+      // Firestore comes up before Auth, so this only detects a running emulator; e2e/global-setup.ts waits for Auth too.
+      // If only Auth is running this is not reused and the start fails loudly.
       url: 'http://127.0.0.1:8080',
       reuseExistingServer: !process.env['CI'],
       timeout: 120 * 1000,
