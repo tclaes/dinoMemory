@@ -2,6 +2,7 @@
   --_header-height: var(--header-height, 78px);
 
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   max-height: 100dvh;
   overflow: hidden;

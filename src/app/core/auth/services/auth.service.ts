@@ -15,6 +15,13 @@ import { AUTH_OPS } from "../auth-ops";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { User } from "../../../user/model/user";
 
+export class WrongPasswordError extends Error {
+  constructor() {
+    super("Current password is incorrect");
+    this.name = "WrongPasswordError";
+  }
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -64,6 +71,44 @@ export class AuthService {
       // Display name stays unset; the player can still play.
     }
     await this.#router.navigate(["/"]);
+  }
+
+  hasPasswordProvider = computed(
+    () =>
+      this.user()?.providerData?.some((p) => p.providerId === "password") ??
+      false,
+  );
+
+  async updateDisplayName(name: string) {
+    const current = this.user();
+    if (!current) {
+      throw new Error("Not signed in");
+    }
+    await this.#ops.updateProfile(current, { displayName: name });
+  }
+
+  /**
+   * Reauthenticates with the current password, then sets the new one.
+   * Throws WrongPasswordError when the current password is incorrect.
+   */
+  async changePassword(currentPassword: string, newPassword: string) {
+    const current = this.user();
+    if (!current?.email) {
+      throw new Error("Not signed in with an email account");
+    }
+    try {
+      await this.#ops.reauthenticateWithCredential(
+        current,
+        this.#ops.emailCredential(current.email, currentPassword),
+      );
+    } catch (err) {
+      const code = (err as { code?: string })?.code;
+      if (code === "auth/wrong-password" || code === "auth/invalid-credential") {
+        throw new WrongPasswordError();
+      }
+      throw err;
+    }
+    await this.#ops.updatePassword(current, newPassword);
   }
 
   async logOut() {

@@ -38,7 +38,7 @@ describe('NavigationComponent', () => {
       ]
     });
 
-    expect(screen.getByRole('link', {name: /your profile/i})).toBeTruthy();
+    expect(screen.getByRole('link', {name: /your profile/i}).getAttribute('href')).toBe('/user');
   });
 
   it('should logout when user clicks logout button', async () => {

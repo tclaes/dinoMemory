@@ -6,6 +6,9 @@ import {
   createUserWithEmailAndPassword,
   updateCurrentUser,
   updateProfile,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
   signOut
 } from '@angular/fire/auth';
 
@@ -23,6 +26,9 @@ export interface AuthOps {
   createUserWithEmailAndPassword: typeof createUserWithEmailAndPassword;
   updateCurrentUser: typeof updateCurrentUser;
   updateProfile: typeof updateProfile;
+  updatePassword: typeof updatePassword;
+  reauthenticateWithCredential: typeof reauthenticateWithCredential;
+  emailCredential: typeof EmailAuthProvider.credential;
   signOut: typeof signOut;
 }
 
@@ -35,6 +41,9 @@ export const AUTH_OPS = new InjectionToken<AuthOps>('AUTH_OPS', {
     createUserWithEmailAndPassword,
     updateCurrentUser,
     updateProfile,
+    updatePassword,
+    reauthenticateWithCredential,
+    emailCredential: EmailAuthProvider.credential,
     signOut
   })
 });

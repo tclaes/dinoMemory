@@ -1,22 +1,30 @@
-.back {
-    background: var(--board-bg-color);
-    display: flex;
-    justify-content: center;
+@use 'auth-form';
+
+:host {
+  box-sizing: border-box;
+  display: grid;
+  // <main> has a fixed height and the layout hides overflow, so scroll here.
+  height: 100%;
+  overflow-y: auto;
+  padding: 32px 16px;
+  place-items: start center;
 }
 
-.img-circle {
-  border-radius: 50%;
+.profile-email {
+  overflow-wrap: anywhere;
 }
 
-.right {
-  text-align: left;
+.profile-section-title {
+  color: var(--dd-ink);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 32px 0 16px;
 }
 
-.upload_pic {
-  display: flex;
-  flex-direction: column;
-}
-
-.credentials {
-  min-width: 600px;
+.field-success {
+  color: var(--dd-ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
 }
