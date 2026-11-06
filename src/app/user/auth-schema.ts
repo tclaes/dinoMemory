@@ -19,6 +19,11 @@ export function applyCredentialRules(
   debounce(emailPath, 500);
   required(emailPath, { message: "Email is required" });
   email(emailPath, { message: "Please enter a valid email" });
+  applyPasswordRules(passwordPath);
+}
+
+/** The required and minimum-length rule for a (new) password field. */
+export function applyPasswordRules(passwordPath: SchemaPath<string>) {
   required(passwordPath, { message: "Password is required" });
   minLength(passwordPath, MIN_PASSWORD_LENGTH, {
     message: `Password minimum of ${MIN_PASSWORD_LENGTH} characters`,

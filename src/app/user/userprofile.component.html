@@ -1,31 +1,81 @@
-<!--<div class="back mb-1">-->
-<!--    <h1>Welkom {{user?.displayName}}</h1>-->
-<!--</div>-->
-<!--@if(user){-->
-<!--  <form class="card">-->
-<!--      <mat-card class="m-1">-->
-<!--        <mat-grid-list cols="3" rows="2" rowHeight="200px">-->
-<!--          <mat-grid-tile class="right">-->
-<!--            <img src="{{user.photoURL}}" alt="Photo from current user" width="200px" class="img-circle">-->
-<!--          </mat-grid-tile>-->
-<!--          <mat-grid-tile colspan="2">-->
-<!--            <div class="credentials column flex-start">-->
-<!--              <mat-form-field >-->
-<!--                <input matInput type="text" placeholder="Name" value="{{user.displayName}}" >-->
-<!--              </mat-form-field>-->
-<!--              <mat-form-field>-->
-<!--                  <input matInput type="text" placeholder="Email" value="{{user.email}}" >-->
-<!--              </mat-form-field>-->
-<!--            </div>-->
-<!--          </mat-grid-tile>-->
-<!--          <mat-grid-tile>-->
-<!--              <div class="upload_pic">-->
-<!--                <input type="file" placeholder="Upload photo" accept=".png,.jpg,.jpeg" class="mb-1">-->
-<!--                <button mat-flat-button color="primary">Upload</button>-->
-<!--              </div>-->
-<!--            </mat-grid-tile>-->
-<!--        </mat-grid-list>-->
-<!--      </mat-card>-->
-<!--  </form>-->
-<!--}-->
+<div class="auth-card profile-card">
+  <h1 class="auth-title">Your profile</h1>
+  <p class="auth-subtitle">Signed in as <strong class="profile-email">{{ email() }}</strong></p>
 
+  <form class="auth-form" (submit)="$event.preventDefault(); saveName()" novalidate>
+    <div class="field">
+      @let nameInvalid = nameForm.name().touched() && nameForm.name().invalid();
+      <label for="profile-name" class="field-label">Name</label>
+      <input
+        id="profile-name"
+        class="focusable field-input"
+        type="text"
+        [formField]="nameForm.name"
+        autocomplete="name"
+        [attr.aria-invalid]="nameInvalid"
+        [attr.aria-describedby]="nameInvalid ? 'profile-name-error' : null">
+      @if (nameInvalid) {
+        <p class="field-error" id="profile-name-error" role="alert">{{ nameForm.name().errors()[0].message }}</p>
+      }
+    </div>
+
+    @if (nameError()) {
+      <p class="field-error" role="alert">{{ nameError() }}</p>
+    }
+    @if (nameSuccess()) {
+      <p class="field-success" role="status">{{ nameSuccess() }}</p>
+    }
+
+    <div class="auth-actions">
+      <button type="submit" class="focusable btn-primary" [disabled]="nameForm().invalid() || nameSaving()">Save name</button>
+    </div>
+  </form>
+
+  @if (hasPassword()) {
+    <h2 class="profile-section-title">Change password</h2>
+    <form class="auth-form" (submit)="$event.preventDefault(); savePassword()" novalidate>
+      <div class="field">
+        @let currentInvalid = passwordForm.currentPassword().touched() && passwordForm.currentPassword().invalid();
+        <label for="profile-current-password" class="field-label">Current password</label>
+        <input
+          id="profile-current-password"
+          class="focusable field-input"
+          type="password"
+          [formField]="passwordForm.currentPassword"
+          autocomplete="current-password"
+          [attr.aria-invalid]="currentInvalid"
+          [attr.aria-describedby]="currentInvalid ? 'profile-current-password-error' : null">
+        @if (currentInvalid) {
+          <p class="field-error" id="profile-current-password-error" role="alert">{{ passwordForm.currentPassword().errors()[0].message }}</p>
+        }
+      </div>
+
+      <div class="field">
+        @let newInvalid = passwordForm.newPassword().touched() && passwordForm.newPassword().invalid();
+        <label for="profile-new-password" class="field-label">New password</label>
+        <input
+          id="profile-new-password"
+          class="focusable field-input"
+          type="password"
+          [formField]="passwordForm.newPassword"
+          autocomplete="new-password"
+          [attr.aria-invalid]="newInvalid"
+          [attr.aria-describedby]="newInvalid ? 'profile-new-password-error' : null">
+        @if (newInvalid) {
+          <p class="field-error" id="profile-new-password-error" role="alert">{{ passwordForm.newPassword().errors()[0].message }}</p>
+        }
+      </div>
+
+      @if (passwordError()) {
+        <p class="field-error" role="alert">{{ passwordError() }}</p>
+      }
+      @if (passwordSuccess()) {
+        <p class="field-success" role="status">{{ passwordSuccess() }}</p>
+      }
+
+      <div class="auth-actions">
+        <button type="submit" class="focusable btn-primary" [disabled]="passwordForm().invalid() || passwordSaving()">Change password</button>
+      </div>
+    </form>
+  }
+</div>

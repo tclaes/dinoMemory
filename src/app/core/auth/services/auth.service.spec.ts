@@ -1,7 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { Auth } from "@angular/fire/auth";
 import { Router } from "@angular/router";
-import { AuthService } from "./auth.service";
+import { AuthService, WrongPasswordError } from "./auth.service";
 import { AUTH_OPS } from "../auth-ops";
 import {
   createMockAuthOps,
@@ -14,12 +14,14 @@ import { beforeEach, describe, expect, it } from "vitest";
 describe("AuthService", () => {
   let service: AuthService;
   let authOps: SpyObj<any>;
+  let userSubject: { next(user: any): void };
   let routerSpy: SpyObj<Router>;
   const fakeAuth = {};
 
   beforeEach(() => {
     const mocks = createMockAuthOps();
     authOps = mocks.ops;
+    userSubject = mocks.userSubject;
     routerSpy = createSpyObj("Router", ["navigate"]);
 
     TestBed.configureTestingModule({
@@ -185,6 +187,116 @@ describe("AuthService", () => {
 
       await expect(service.tryRegister(newUser)).resolves.toBeUndefined();
       expect(routerSpy.navigate).toHaveBeenCalledWith(["/"]);
+    });
+  });
+
+  describe("updateDisplayName", () => {
+    it("updates the profile of the current user", async () => {
+      authOps.updateProfile.mockResolvedValue(undefined);
+
+      await service.updateDisplayName("Dino Fan");
+
+      expect(authOps.updateProfile).toHaveBeenCalledWith(mockUser, {
+        displayName: "Dino Fan",
+      });
+    });
+
+    it("rethrows when the update fails", async () => {
+      authOps.updateProfile.mockRejectedValue(new Error("offline"));
+
+      await expect(service.updateDisplayName("Dino Fan")).rejects.toThrow(
+        "offline",
+      );
+    });
+  });
+
+  describe("changePassword", () => {
+    const credential = { providerId: "password" };
+
+    beforeEach(() => {
+      authOps.emailCredential.mockReturnValue(credential);
+      authOps.reauthenticateWithCredential.mockResolvedValue(undefined);
+      authOps.updatePassword.mockResolvedValue(undefined);
+    });
+
+    it("reauthenticates with the current password before updating", async () => {
+      const calls: string[] = [];
+      authOps.reauthenticateWithCredential.mockImplementation(async () => {
+        calls.push("reauth");
+      });
+      authOps.updatePassword.mockImplementation(async () => {
+        calls.push("update");
+      });
+
+      await service.changePassword("old-pass", "new-pass");
+
+      expect(authOps.emailCredential).toHaveBeenCalledWith(
+        "test@example.com",
+        "old-pass",
+      );
+      expect(authOps.reauthenticateWithCredential).toHaveBeenCalledWith(
+        mockUser,
+        credential,
+      );
+      expect(authOps.updatePassword).toHaveBeenCalledWith(mockUser, "new-pass");
+      expect(calls).toEqual(["reauth", "update"]);
+    });
+
+    it.each(["auth/wrong-password", "auth/invalid-credential"])(
+      "surfaces %s as a wrong password and does not update",
+      async (code) => {
+        authOps.reauthenticateWithCredential.mockRejectedValue(
+          Object.assign(new Error("bad"), { code }),
+        );
+
+        await expect(
+          service.changePassword("old-pass", "new-pass"),
+        ).rejects.toBeInstanceOf(WrongPasswordError);
+        expect(authOps.updatePassword).not.toHaveBeenCalled();
+      },
+    );
+
+    it("rethrows any other reauthentication error unchanged", async () => {
+      const failure = Object.assign(new Error("slow down"), {
+        code: "auth/too-many-requests",
+      });
+      authOps.reauthenticateWithCredential.mockRejectedValue(failure);
+
+      await expect(service.changePassword("old-pass", "new-pass")).rejects.toBe(
+        failure,
+      );
+      expect(authOps.updatePassword).not.toHaveBeenCalled();
+    });
+
+    it("rethrows when the password update fails", async () => {
+      authOps.updatePassword.mockRejectedValue(new Error("offline"));
+
+      await expect(service.changePassword("old-pass", "new-pass")).rejects.toThrow(
+        "offline",
+      );
+    });
+  });
+
+  describe("hasPasswordProvider", () => {
+    const withProviders = (...ids: string[]) =>
+      userSubject.next({
+        ...mockUser,
+        providerData: ids.map((providerId) => ({ providerId })),
+      });
+
+    it("is true for a password-only account", () => {
+      withProviders("password");
+      expect(service.hasPasswordProvider()).toBe(true);
+    });
+
+    it("is false for a Google-only account", () => {
+      withProviders("google.com");
+      expect(service.hasPasswordProvider()).toBe(false);
+    });
+
+    it("is true for an account linked to both", () => {
+      withProviders("google.com", "password");
+      expect(service.hasPasswordProvider()).toBe(true);
     });
   });
 

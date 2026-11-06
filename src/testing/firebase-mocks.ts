@@ -30,6 +30,9 @@ export function createMockAuthOps(initialUser: any = mockUser) {
     "updateCurrentUser",
     "signOut",
     "updateProfile",
+    "updatePassword",
+    "reauthenticateWithCredential",
+    "emailCredential",
   ]);
   ops.user.mockReturnValue(userSubject.asObservable());
   // Like Firebase: notify user() subscribers of the signed-in user, then resolve with a UserCredential.
