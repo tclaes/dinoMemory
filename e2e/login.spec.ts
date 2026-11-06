@@ -56,8 +56,12 @@ test.describe('Login page', () => {
     const popup = await popupPromise;
     await popup.close();
 
-    // Give the rejected sign-in promise's catch handler a chance to run.
-    await page.waitForTimeout(500);
+    await expect.poll(() => popup.isClosed()).toBe(true);
+
+    // Firebase does not always reject the sign-in when the popup is closed, so there is no
+    // outcome to wait for; observing that nothing navigates needs a short settle. It runs in
+    // the page, so it does not depend on Playwright's own timer round trip.
+    await page.evaluate(() => new Promise<void>((resolve) => setTimeout(resolve, 500)));
 
     await expect(page).toHaveURL(/\/login$/);
   });
