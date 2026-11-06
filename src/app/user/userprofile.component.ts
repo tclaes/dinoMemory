@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -18,7 +17,6 @@ import { applyPasswordRules } from "./auth-schema";
   selector: "app-user",
   templateUrl: "./userprofile.component.html",
   styleUrls: ["./userprofile.component.scss"],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormField],
 })
 export class UserprofileComponent {
