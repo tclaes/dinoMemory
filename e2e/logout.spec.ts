@@ -42,4 +42,23 @@ test.describe('Logout', () => {
     await expect(page).toHaveURL(/\/login$/);
   });
 
+  test('signing out from the profile page shows the login page', async ({ page }) => {
+    await page.getByRole('link', { name: 'Your profile' }).click();
+    await expect(page).toHaveURL(/\/user$/);
+
+    await page.getByRole('button', { name: 'Bye!' }).click();
+
+    await expect(page).toHaveURL(/\/login$/);
+    await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();
+  });
+
+  test('stays signed out: the profile page is not reachable after logging out', async ({ page }) => {
+    await page.getByRole('button', { name: 'Bye!' }).click();
+    await expect(page).toHaveURL(/\/login$/);
+
+    await page.goto('/user');
+
+    await expect(page).toHaveURL(/\/login$/);
+  });
+
 });
