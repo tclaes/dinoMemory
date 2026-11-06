@@ -25,7 +25,7 @@ describe('ScoreboardComponent', () => {
       providers: [
         {provide: GameService, useValue: {user, deck: signal({name: 'dinos'}), scoreSaved, markScoreSaved}},
         {provide: ScoreService, useValue: scoreService},
-        {provide: TimerService, useValue: {currentTime: signal('0h - 0m - 30s')}},
+        {provide: TimerService, useValue: {elapsedMs: signal(30500)}},
         {provide: ClicksService, useValue: {countedClicks: signal(8)}},
         {provide: GlobalService, useValue: globalService}
       ]
@@ -46,14 +46,23 @@ describe('ScoreboardComponent', () => {
     const text = setup().nativeElement.textContent;
 
     expect(text).toContain('8 tries');
-    expect(text).toContain('0h - 0m - 30s');
+    expect(text).toContain('00:30');
+  });
+
+  it('shows the time of each listed score as a clock', () => {
+    scoreService.loadScores.mockReturnValue(of([{user: 'Rex', deck: 'dinos', clicks: 8, durationMs: 65300}]));
+
+    const fixture = setup();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('td.mat-column-time').textContent.trim()).toBe('01:05');
   });
 
   it('saves the score once and loads the scores of the deck when a user is signed in', () => {
     setup();
 
     expect(scoreService.updateScores).toHaveBeenCalledTimes(1);
-    expect(scoreService.updateScores).toHaveBeenCalledWith('Rex', 8, '0h - 0m - 30s', 'dinos');
+    expect(scoreService.updateScores).toHaveBeenCalledWith('Rex', 8, 30500, 'dinos');
     expect(scoreService.loadScores).toHaveBeenCalledWith('dinos');
   });
 

@@ -2,6 +2,8 @@ import {effect, inject, Injectable, linkedSignal} from '@angular/core';
 import {GlobalService} from '../../global/services/global.service';
 import {GameService} from '../../playfield/services/game.service';
 
+const TICK_MS = 1000;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -9,53 +11,52 @@ export class TimerService {
   #globalService = inject(GlobalService);
   #gameService = inject(GameService);
   // resets to zero whenever the game starts or stops
-  #timer = linkedSignal({
+  #elapsedMs = linkedSignal({
     source: this.#globalService.gameStarted$,
-    computation: () => '0h - 0m - 0s',
+    computation: () => 0,
   });
-  currentTime = this.#timer.asReadonly();
-  intervalId: ReturnType<typeof setInterval>;
+  /** Milliseconds elapsed since the game started, frozen at the winning moment. */
+  elapsedMs = this.#elapsedMs.asReadonly();
+  #intervalId: ReturnType<typeof setInterval> | undefined;
+  #startedAt: number | undefined;
 
   constructor() {
     effect(() => {
-      if (this.#globalService.gameStarted$() && !this.#gameService.gameWon()) {
+      const started = this.#globalService.gameStarted$();
+      const won = this.#gameService.gameWon();
+      if (started && !won) {
         this.startTimer();
+      } else if (started && won) {
+        this.#freezeTimer();
       } else {
         this.#stopTimer();
       }
     });
   }
 
-   startTimer() {
-     this.#stopTimer();
-     let hours = 0;
-     let minutes = 0;
-     let seconds = 0;
+  startTimer() {
+    this.#stopTimer();
+    this.#startedAt = Date.now();
+    this.#intervalId = setInterval(() => this.#measure(), TICK_MS);
+  }
 
-    this.intervalId = setInterval(() => {
-      if (seconds < 59) {
-        seconds++;
-      } else {
-        seconds = 0;
-        if (minutes < 59) {
-          minutes++;
-        } else {
-          if (hours < 24) {
-            hours++;
-          }
-        }
-      }
-      this.#timer.set(`${hours}h - ${minutes}m - ${seconds}s`);
-    }, 1000)
-   }
+  #measure() {
+    if (this.#startedAt !== undefined) {
+      this.#elapsedMs.set(Date.now() - this.#startedAt);
+    }
+  }
 
-   #stopTimer() {
-     clearInterval(this.intervalId);
-   }
+  // take one last exact reading, so the final time is the winning moment and not the last tick
+  #freezeTimer() {
+    if (this.#intervalId !== undefined) {
+      this.#measure();
+    }
+    this.#stopTimer();
+  }
 
-   resetTimer() {
-     this.#stopTimer()
-     this.#timer.set(`0h - 0m - 0s`);
-   }
-
+  #stopTimer() {
+    clearInterval(this.#intervalId);
+    this.#intervalId = undefined;
+    this.#startedAt = undefined;
+  }
 }

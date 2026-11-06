@@ -7,7 +7,8 @@ export interface Score {
   user: string;
   deck: string;
   clicks: number;
-  time: string;
+  /** Game time in milliseconds. */
+  durationMs: number;
 }
 
 @Injectable({
@@ -26,7 +27,7 @@ export class ScoreService {
       scoresRef,
       this.ops.where('deck', '==', deck),
       this.ops.orderBy('clicks'),
-      this.ops.orderBy('time'),
+      this.ops.orderBy('durationMs'),
       this.ops.startAt(0),
       this.ops.endAt(100),
       this.ops.limit(10)
@@ -35,13 +36,13 @@ export class ScoreService {
     return this.collection$;
   }
 
-  updateScores(user, clicks, time, deck) {
+  updateScores(user: string, clicks: number, durationMs: number, deck: string) {
     this.loadScores(deck);
     const data = {
       user: user,
       deck: deck,
       clicks: clicks,
-      time: time
+      durationMs: durationMs
     };
 
     this.ops.addDoc(this.ops.collection(this.firestore, 'scores'), data);

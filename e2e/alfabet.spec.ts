@@ -92,6 +92,9 @@ test.describe('Alfabet deck', () => {
     await expect(scoreboard).toBeVisible();
     await expect(scoreboard).toContainText('8 tries');
     await expect(scoreboard.getByRole('cell', { name: playerName })).toHaveCount(1);
+    await expect(scoreboard.locator('p').nth(1)).toHaveText(/^\s*\d{2}:\d{2}\s*$/);
+    const playerRow = scoreboard.getByRole('row').filter({ has: page.getByRole('cell', { name: playerName }) });
+    await expect(playerRow.locator('td.mat-column-time')).toHaveText(/^\s*\d{2}:\d{2}\s*$/);
 
     await scoreboard.getByRole('button', { name: 'New game?' }).click();
 

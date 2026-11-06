@@ -18,6 +18,7 @@ import {
   MatTable
 } from '@angular/material/table';
 import {MatButton} from '@angular/material/button';
+import {DurationPipe} from '../game-status-bar/format/duration.pipe';
 
 @Component({
   selector: 'app-scoreboard',
@@ -25,7 +26,7 @@ import {MatButton} from '@angular/material/button';
       <div class="score">
           <h3>Game Won !!!</h3>
 <p>{{ nrOfClicks() }} tries</p>
-          <p>{{ stopwatch() }}</p>
+          <p>{{ elapsedMs() | duration }}</p>
 
           <div class="scoreboard">
               <table mat-table [dataSource]="collection$" class="mat-elevation-z8">
@@ -39,7 +40,7 @@ import {MatButton} from '@angular/material/button';
                   </ng-container>
                   <ng-container matColumnDef="time">
                       <th mat-header-cell *matHeaderCellDef> Time</th>
-                      <td mat-cell *matCellDef="let score"> {{ score.time }}</td>
+                      <td mat-cell *matCellDef="let score"> {{ score.durationMs | duration }}</td>
                   </ng-container>
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -50,6 +51,7 @@ import {MatButton} from '@angular/material/button';
   `,
   styleUrls: ['./scoreboard.component.scss'],
   imports: [
+    DurationPipe,
     MatRow,
     MatHeaderRow,
     MatColumnDef,
@@ -72,7 +74,7 @@ export class ScoreboardComponent implements OnInit {
   nrOfClicks = this.#clicksService.countedClicks;
   #scoreService = inject(ScoreService);
   #timerService = inject(TimerService);
-  stopwatch = this.#timerService.currentTime;
+  elapsedMs = this.#timerService.elapsedMs;
 
   newGame() {
     this.#globalService.stopGame();
@@ -82,7 +84,7 @@ export class ScoreboardComponent implements OnInit {
     const deck = this.gameService.deck()?.name;
     const user = this.gameService.user();
     if (user && !this.gameService.scoreSaved()) {
-      this.#scoreService.updateScores(user.displayName, this.nrOfClicks(), this.stopwatch(), deck);
+      this.#scoreService.updateScores(user.displayName, this.nrOfClicks(), this.elapsedMs(), deck);
       this.gameService.markScoreSaved();
     }
     this.collection$ = this.#scoreService.loadScores(deck);
