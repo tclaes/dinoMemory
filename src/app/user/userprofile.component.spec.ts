@@ -101,7 +101,7 @@ describe("UserprofileComponent", () => {
 
     it("blocks a too short new password with the shared message", async () => {
       await setup();
-      type(screen.getByLabelText("Current password"), "old-pass");
+      type(screen.getByLabelText("Current password"), "fixture-current");
       type(screen.getByLabelText("New password"), "abc");
 
       expect(await screen.findByText("Password minimum of 6 characters")).toBeTruthy();
@@ -110,12 +110,12 @@ describe("UserprofileComponent", () => {
 
     it("changes the password, confirms and clears the fields", async () => {
       const { authService } = await setup();
-      type(screen.getByLabelText("Current password"), "old-pass");
-      type(screen.getByLabelText("New password"), "new-pass");
+      type(screen.getByLabelText("Current password"), "fixture-current");
+      type(screen.getByLabelText("New password"), "fixture-next");
       savePassword().click();
 
       expect(await screen.findByText("Your password has been changed.")).toBeTruthy();
-      expect(authService.changePassword).toHaveBeenCalledWith("old-pass", "new-pass");
+      expect(authService.changePassword).toHaveBeenCalledWith("fixture-current", "fixture-next");
       expect((screen.getByLabelText("Current password") as HTMLInputElement).value).toBe("");
       expect((screen.getByLabelText("New password") as HTMLInputElement).value).toBe("");
     });
@@ -123,8 +123,8 @@ describe("UserprofileComponent", () => {
     it("shows the wrong-password message", async () => {
       const { authService } = await setup();
       authService.changePassword.mockRejectedValue(new WrongPasswordError());
-      type(screen.getByLabelText("Current password"), "nope-nope");
-      type(screen.getByLabelText("New password"), "new-pass");
+      type(screen.getByLabelText("Current password"), "fixture-wrong");
+      type(screen.getByLabelText("New password"), "fixture-next");
       savePassword().click();
 
       expect(await screen.findByText("Your current password is incorrect.")).toBeTruthy();
@@ -133,8 +133,8 @@ describe("UserprofileComponent", () => {
     it("shows the generic message for any other failure", async () => {
       const { authService } = await setup();
       authService.changePassword.mockRejectedValue(new Error("offline"));
-      type(screen.getByLabelText("Current password"), "old-pass");
-      type(screen.getByLabelText("New password"), "new-pass");
+      type(screen.getByLabelText("Current password"), "fixture-current");
+      type(screen.getByLabelText("New password"), "fixture-next");
       savePassword().click();
 
       expect(

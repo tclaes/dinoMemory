@@ -50,6 +50,15 @@ test.describe('Profile page', () => {
     await page.getByRole('button', { name: 'Change password' }).click();
 
     await expect(page.getByText('Your current password is incorrect.')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Change password' })).toBeEnabled();
+
+    // The failed attempt must not have changed the password.
+    await page.getByRole('button', { name: 'Bye!' }).click();
+    await expect(page).toHaveURL(/\/login$/);
+    await page.getByLabel('Email').fill(email);
+    await page.getByLabel('Password').fill('secret123');
+    await page.getByRole('button', { name: 'Sign in' }).click();
+    await expect(page.getByRole('button', { name: 'Bye!' })).toBeVisible();
   });
 
   test('changes the password and signs in with the new one', async ({ page }) => {
