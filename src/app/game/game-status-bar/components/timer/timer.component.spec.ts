@@ -9,28 +9,28 @@ describe('TimerComponent', () => {
   it('should create', async () => {
     await render(TimerComponent, {
       providers: [
-        {provide: TimerService, useValue: {currentTime: signal(0)}}
+        {provide: TimerService, useValue: {elapsedMs: signal(0)}}
       ]
     });
   })
 
-  it('should update the current time', async () => {
-    const currentTime = signal('0h - 0m - 0s');
+  it('shows the elapsed time as a clock and updates it', async () => {
+    const elapsedMs = signal(0);
 
     const {fixture} = await render(TimerComponent, {
       providers: [
-        {provide: TimerService, useValue: {currentTime}}
+        {provide: TimerService, useValue: {elapsedMs}}
       ]
     });
 
-    expect(screen.getByText('0h - 0m - 0s')).toBeTruthy();
+    expect(screen.getByText('00:00')).toBeTruthy();
 
-    currentTime.set('0h - 0m - 1s');
+    elapsedMs.set(1000);
     fixture.detectChanges();
 
     await waitFor(() => {
-      expect(screen.getByText('0h - 0m - 1s')).toBeTruthy();
+      expect(screen.getByText('00:01')).toBeTruthy();
     });
-    expect(screen.queryByText('0h - 0m - 0s')).toBeNull();
+    expect(screen.queryByText('00:00')).toBeNull();
   })
 })

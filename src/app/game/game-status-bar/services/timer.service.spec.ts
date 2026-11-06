@@ -11,6 +11,11 @@ describe('TimerService', () => {
   let globalService: GlobalService;
   const gameWon = signal(false);
 
+  function startGame() {
+    globalService.startGame();
+    TestBed.tick();
+  }
+
   beforeEach(() => {
     vi.useFakeTimers();
     gameWon.set(false);
@@ -30,30 +35,29 @@ describe('TimerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('starts at the zeroed stopwatch value', () => {
-    expect(service.currentTime()).toBe('0h - 0m - 0s');
+  it('starts at zero', () => {
+    expect(service.elapsedMs()).toBe(0);
   });
 
   it('should not tick while the game has not started', () => {
     vi.advanceTimersByTime(3000);
 
-    expect(service.currentTime()).toBe('0h - 0m - 0s');
+    expect(service.elapsedMs()).toBe(0);
+    expect(vi.getTimerCount()).toBe(0);
   });
 
-  it('should start the timer when the game starts', () => {
-    globalService.startGame();
-    TestBed.tick();
+  it('should count the elapsed milliseconds once the game starts', () => {
+    startGame();
 
     vi.advanceTimersByTime(1000);
-    expect(service.currentTime()).toBe('0h - 0m - 1s');
+    expect(service.elapsedMs()).toBe(1000);
 
     vi.advanceTimersByTime(2000);
-    expect(service.currentTime()).toBe('0h - 0m - 3s');
+    expect(service.elapsedMs()).toBe(3000);
   });
 
   it('should not run a second interval when startTimer is called while the timer is running', () => {
-    globalService.startGame();
-    TestBed.tick();
+    startGame();
 
     service.startTimer();
 
@@ -61,46 +65,64 @@ describe('TimerService', () => {
   });
 
   it('should stop and reset the timer when the game stops', () => {
-    globalService.startGame();
-    TestBed.tick();
+    startGame();
     vi.advanceTimersByTime(2000);
-    expect(service.currentTime()).toBe('0h - 0m - 2s');
+    expect(service.elapsedMs()).toBe(2000);
 
     globalService.stopGame();
     TestBed.tick();
 
-    expect(service.currentTime()).toBe('0h - 0m - 0s');
+    expect(service.elapsedMs()).toBe(0);
     expect(vi.getTimerCount()).toBe(0);
 
     vi.advanceTimersByTime(3000);
-    expect(service.currentTime()).toBe('0h - 0m - 0s');
+    expect(service.elapsedMs()).toBe(0);
   });
 
   it('should start counting from zero when the game is restarted', () => {
-    globalService.startGame();
-    TestBed.tick();
+    startGame();
     vi.advanceTimersByTime(2000);
 
     globalService.stopGame();
     TestBed.tick();
-    globalService.startGame();
-    TestBed.tick();
+    startGame();
 
-    expect(service.currentTime()).toBe('0h - 0m - 0s');
+    expect(service.elapsedMs()).toBe(0);
     vi.advanceTimersByTime(1000);
-    expect(service.currentTime()).toBe('0h - 0m - 1s');
+    expect(service.elapsedMs()).toBe(1000);
   });
 
-  it('should freeze the time when the game is won', () => {
-    globalService.startGame();
-    TestBed.tick();
-    vi.advanceTimersByTime(2000);
+  it('should freeze the time at the exact winning moment, not at the last tick', () => {
+    startGame();
+    vi.advanceTimersByTime(3720);
+    expect(service.elapsedMs()).toBe(3000);
 
     gameWon.set(true);
     TestBed.tick();
-    vi.advanceTimersByTime(3000);
 
-    expect(service.currentTime()).toBe('0h - 0m - 2s');
+    expect(service.elapsedMs()).toBe(3720);
     expect(vi.getTimerCount()).toBe(0);
+
+    vi.advanceTimersByTime(3000);
+    expect(service.elapsedMs()).toBe(3720);
+  });
+
+  it('should measure from the clock, so delayed ticks do not lose time', () => {
+    startGame();
+
+    // the clock jumps 59 s without any interval firing, as in a throttled background tab;
+    // the single delayed tick then lands at 60 s on the clock
+    vi.setSystemTime(Date.now() + 59_000);
+    vi.advanceTimersToNextTimer();
+
+    expect(service.elapsedMs()).toBe(60_000);
+  });
+
+  it('should keep counting past one hour', () => {
+    startGame();
+
+    vi.advanceTimersByTime(3_605_000);
+
+    expect(service.elapsedMs()).toBe(3_605_000);
   });
 });

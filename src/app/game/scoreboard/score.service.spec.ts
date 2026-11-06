@@ -13,7 +13,7 @@ describe('ScoreService', () => {
   const fakeFirestore = {};
 
   beforeEach(() => {
-    opsSpy = createMockFirestoreOps([{ user: 'Rex', deck: 'dinos', clicks: 8, time: '0h - 0m - 30s' }]);
+    opsSpy = createMockFirestoreOps([{ user: 'Rex', deck: 'dinos', clicks: 8, durationMs: 30500 }]);
     opsSpy.collection.mockReturnValue('scores-ref');
     opsSpy.query.mockReturnValue('scores-query');
     opsSpy.where.mockReturnValue('where-constraint');
@@ -43,18 +43,18 @@ describe('ScoreService', () => {
     expect(opsSpy.collection).toHaveBeenCalledWith(fakeFirestore, 'scores');
     expect(opsSpy.where).toHaveBeenCalledWith('deck', '==', 'dinos');
     expect(opsSpy.orderBy).toHaveBeenCalledWith('clicks');
-    expect(opsSpy.orderBy).toHaveBeenCalledWith('time');
-    expect(result).toEqual([{ user: 'Rex', deck: 'dinos', clicks: 8, time: '0h - 0m - 30s' }]);
+    expect(opsSpy.orderBy).toHaveBeenCalledWith('durationMs');
+    expect(result).toEqual([{ user: 'Rex', deck: 'dinos', clicks: 8, durationMs: 30500 }]);
   });
 
   it('updateScores() reloads the collection and adds a new game-status-bar with the right shape', () => {
-    service.updateScores('Rex', 12, '0h - 0m - 45s', 'dinos');
+    service.updateScores('Rex', 12, 45300, 'dinos');
 
     expect(opsSpy.addDoc).toHaveBeenCalledWith('scores-ref', {
       user: 'Rex',
       deck: 'dinos',
       clicks: 12,
-      time: '0h - 0m - 45s'
+      durationMs: 45300
     });
   });
 });
