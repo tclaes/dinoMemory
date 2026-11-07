@@ -13,7 +13,7 @@ The system SHALL offer a deck named "alfabet" alongside the existing decks, sele
 - **THEN** "alfabet" is in the list of available decks
 
 #### Scenario: Selecting the deck
-- **WHEN** the user chooses "alfabet"
+- **WHEN** the user chooses the link "alfabet" in the navigation, or opens `/game/alfabet`
 - **THEN** the board shows the cards of the alphabet deck
 
 ### Requirement: Content follows the first-grade curriculum
