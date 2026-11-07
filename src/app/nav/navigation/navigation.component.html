@@ -1,10 +1,11 @@
 <nav aria-label="Choose a card set" class="nav">
-    @for (button of decks$(); track button) {
-        <button (click)="selectDeck(button.name)"
-                class="focusable deck-pill drawer-pill"
-                type="button">
-            {{ button.name }}
-        </button>
+    @for (deck of decks$(); track deck.name) {
+        <a (click)="restartIfCurrent(deck.name)"
+           [attr.aria-current]="currentDeck() === deck.name ? 'page' : null"
+           [routerLink]="['/game', deck.name]"
+           class="focusable deck-pill drawer-pill">
+            {{ deck.name }}
+        </a>
     }
 </nav>
 

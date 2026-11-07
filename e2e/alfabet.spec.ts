@@ -28,7 +28,8 @@ test.describe('Alfabet deck', () => {
     await page.getByRole('button', { name: 'Sign in' }).click();
     await expect(page.getByRole('button', { name: 'Bye!' })).toBeVisible();
 
-    await page.getByRole('button', { name: 'alfabet' }).click();
+    await page.getByRole('link', { name: 'alfabet' }).click();
+    await expect(page).toHaveURL(/\/game\/alfabet$/);
   });
 
   const letterCards = (page: Page) => page.locator('app-card').filter({ has: page.locator('.letter-face') });
@@ -75,6 +76,16 @@ test.describe('Alfabet deck', () => {
     await expect(first).not.toHaveClass(/flip/, { timeout: 3000 });
     await expect(second).not.toHaveClass(/flip/);
     await expect(page.locator('app-card.matched')).toHaveCount(0);
+  });
+
+  test('starts a new game when the shown deck is chosen again', async ({ page }) => {
+    await flip(letterCards(page).first());
+    await expect(page.locator('app-card.flip')).toHaveCount(1);
+
+    await page.getByRole('link', { name: 'alfabet' }).click();
+
+    await expect(page).toHaveURL(/\/game\/alfabet$/);
+    await expect(page.locator('app-card.flip')).toHaveCount(0);
   });
 
   test('shows the scoreboard with the saved score after winning, and starts a new game', async ({ page }) => {
