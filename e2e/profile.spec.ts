@@ -94,6 +94,26 @@ test.describe('Profile page', () => {
     expect(overflow).toBe(false);
   });
 
+  test('goes back to the game through the deck navigation', async ({ page }) => {
+    await page.getByRole('link', { name: 'Your profile' }).click();
+    await expect(page).toHaveURL(/\/user$/);
+
+    await page.getByRole('navigation', { name: 'Choose a card set' }).getByRole('link', { name: 'alfabet' }).click();
+
+    await expect(page).toHaveURL(/\/game\/alfabet$/);
+    await expect(page.getByRole('link', { name: 'alfabet' })).toHaveAttribute('aria-current', 'page');
+    await expect(page.locator('app-card').filter({ has: page.locator('.letter-face') })).toHaveCount(8);
+  });
+
+  test('sends an unknown deck address to the start page with the default deck', async ({ page }) => {
+    await page.goto('/game/unknown');
+
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByRole('link', { name: 'dinos' })).toHaveAttribute('aria-current', 'page');
+    await expect(page.locator('app-card').filter({ has: page.locator('.letter-face') })).toHaveCount(0);
+    await expect(page.locator('app-card')).not.toHaveCount(0);
+  });
+
   test('sends a signed-out visitor to the login page', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();

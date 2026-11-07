@@ -58,14 +58,16 @@
   box-shadow: 3px 3px 0 var(--dd-ink);
   color: var(--dd-ink);
   cursor: pointer;
+  display: inline-flex;
   flex: 0 0 auto;
   font-family: 'Fredoka', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   padding: 11px 22px;
+  text-decoration: none;
   text-transform: capitalize;
 
-  &[aria-pressed="true"] {
+  &[aria-current="page"] {
     background: var(--dd-pink);
     color: var(--white);
   }

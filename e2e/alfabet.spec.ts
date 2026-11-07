@@ -28,7 +28,8 @@ test.describe('Alfabet deck', () => {
     await page.getByRole('button', { name: 'Sign in' }).click();
     await expect(page.getByRole('button', { name: 'Bye!' })).toBeVisible();
 
-    await page.getByRole('button', { name: 'alfabet' }).click();
+    await page.getByRole('link', { name: 'alfabet' }).click();
+    await expect(page).toHaveURL(/\/game\/alfabet$/);
   });
 
   const letterCards = (page: Page) => page.locator('app-card').filter({ has: page.locator('.letter-face') });

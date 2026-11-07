@@ -1,5 +1,5 @@
 import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
-import {provideRouter} from '@angular/router';
+import {provideRouter, withComponentInputBinding} from '@angular/router';
 import {provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 import {provideServiceWorker} from '@angular/service-worker';
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
@@ -12,7 +12,7 @@ import {routes} from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection(),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideServiceWorker('/ngsw-worker.js', {
       enabled: environment.production,

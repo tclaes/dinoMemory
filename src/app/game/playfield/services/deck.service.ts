@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Deck} from '../model/deck';
 
+export const DEFAULT_DECK = 'dinos';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +14,7 @@ export class DeckService {
   decksUrl = '../../assets/data.json';
   #decks = toSignal<{ deck: Deck[] }>(this.http.get(this.decksUrl));
   availableDecks = computed(() => this.#decks()?.deck);
-  #selected = signal('dinos');
+  #selected = signal(DEFAULT_DECK);
   selectedDeck = computed(() => this.#decks()?.deck?.find(deck => deck.name === this.#selected()));
 
   selectDeck(name: string) {
