@@ -7,6 +7,7 @@ import {render, screen} from '@testing-library/angular';
 import {NavigationComponent} from './navigation.component';
 import {AuthService} from '../../core/auth/services/auth.service';
 import {DeckService} from '../../game/playfield/services/deck.service';
+import {GlobalService} from '../../game/global/services/global.service';
 
 @Component({template: ''})
 class EmptyPageComponent {}
@@ -24,12 +25,13 @@ const authService = {
 
 const decks = [{name: 'dinos'}, {name: 'alfabet'}];
 
-const renderNav = async ({url = '/', selected = 'dinos', logOut = authService.logOut} = {}) => {
+const renderNav = async ({url = '/', selected = 'dinos', logOut = authService.logOut, stopGame = vi.fn()} = {}) => {
   const result = await render(NavigationComponent, {
     routes,
     providers: [
       {provide: AuthService, useValue: {...authService, logOut}},
       {provide: DeckService, useValue: {availableDecks: signal(decks), selectedDeck: signal({name: selected})}},
+      {provide: GlobalService, useValue: {stopGame}},
     ],
   });
   await result.navigate(url);
@@ -79,6 +81,24 @@ describe('NavigationComponent', () => {
 
     expect(screen.getByRole('link', {name: 'dinos'}).hasAttribute('aria-current')).toBe(false);
     expect(screen.getByRole('link', {name: 'alfabet'}).hasAttribute('aria-current')).toBe(false);
+  });
+
+  it('restarts the game when the shown deck is chosen again', async () => {
+    const stopGame = vi.fn();
+    await renderNav({url: '/game/alfabet', selected: 'alfabet', stopGame});
+
+    screen.getByRole('link', {name: 'alfabet'}).click();
+
+    expect(stopGame).toHaveBeenCalled();
+  });
+
+  it('leaves restarting to the game page when another deck is chosen', async () => {
+    const stopGame = vi.fn();
+    await renderNav({url: '/game/alfabet', selected: 'alfabet', stopGame});
+
+    screen.getByRole('link', {name: 'dinos'}).click();
+
+    expect(stopGame).not.toHaveBeenCalled();
   });
 
   it('should link to the profile page', async () => {

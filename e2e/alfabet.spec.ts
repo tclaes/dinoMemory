@@ -78,6 +78,16 @@ test.describe('Alfabet deck', () => {
     await expect(page.locator('app-card.matched')).toHaveCount(0);
   });
 
+  test('starts a new game when the shown deck is chosen again', async ({ page }) => {
+    await flip(letterCards(page).first());
+    await expect(page.locator('app-card.flip')).toHaveCount(1);
+
+    await page.getByRole('link', { name: 'alfabet' }).click();
+
+    await expect(page).toHaveURL(/\/game\/alfabet$/);
+    await expect(page.locator('app-card.flip')).toHaveCount(0);
+  });
+
   test('shows the scoreboard with the saved score after winning, and starts a new game', async ({ page }) => {
     const count = await letterCards(page).count();
     for (let i = 0; i < count; i++) {

@@ -49,6 +49,11 @@ Opening the address `/game/<deck name>` SHALL show the game with that deck. Open
 ### Requirement: Opening a deck starts a new game
 Opening a deck through the navigation or its address SHALL start a new game: no cards are face up or matched, and the timer and the number of tries start from zero.
 
+#### Scenario: Choosing the shown deck again
+- **WHEN** the player has flipped cards in a running game and chooses the link of the deck that is shown
+- **THEN** the board has no face-up or matched cards
+- **AND** the timer and the tries counter are back at zero
+
 #### Scenario: Switching deck mid-game
 - **WHEN** the player has flipped cards in a running game and chooses another deck
 - **THEN** the new board has no face-up or matched cards

@@ -9,10 +9,11 @@
 
 ## 2. Navigation items become links
 
-- [x] 2.1 Replace the deck `<button>`s in `navigation.component.html` with `<a [routerLink]="['/game', deck.name]">` anchors and remove `selectDeck()` and the `GlobalService` injection from `NavigationComponent`; verify the nav spec asserts a link per deck with `href="/game/dinos"` and no deck buttons
+- [x] 2.1 Replace the deck `<button>`s in `navigation.component.html` with `<a [routerLink]="['/game', deck.name]">` anchors and remove `selectDeck()` from `NavigationComponent`; verify the nav spec asserts a link per deck with `href="/game/dinos"` and no deck buttons
 - [x] 2.2 Add a `currentDeck` computed (selected deck name while the URL is `/` or `/game/…`, else `null`) and bind `[attr.aria-current]="currentDeck() === deck.name ? 'page' : null"`; verify with specs that on `/game/alfabet` only "alfabet" has `aria-current="page"` and on `/user` none has
 - [x] 2.3 Update `.deck-pill` in `navigation.component.scss`: active selector `[aria-current="page"]`, plus `text-decoration: none` and `display: inline-flex` for anchors; verify `npm run lint:styles` passes and the pills look unchanged in `npm start`
 - [x] 2.4 Keep the "Bye!" control a `<button>`; verify the existing logout spec still passes
+- [x] 2.5 Restart the game when the link of the shown deck is clicked (`restartIfCurrent()` calls `GlobalService.stopGame()`), since the router ignores same-URL navigation; verify with nav specs (current deck → `stopGame`, other deck → not) and an e2e test in `alfabet.spec.ts`
 
 ## 3. End-to-end coverage
 

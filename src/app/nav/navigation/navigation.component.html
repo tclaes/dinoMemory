@@ -1,6 +1,7 @@
 <nav aria-label="Choose a card set" class="nav">
     @for (deck of decks$(); track deck.name) {
-        <a [attr.aria-current]="currentDeck() === deck.name ? 'page' : null"
+        <a (click)="restartIfCurrent(deck.name)"
+           [attr.aria-current]="currentDeck() === deck.name ? 'page' : null"
            [routerLink]="['/game', deck.name]"
            class="focusable deck-pill drawer-pill">
             {{ deck.name }}
