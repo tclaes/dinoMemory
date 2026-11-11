@@ -3,7 +3,7 @@ import {fireEvent, render, screen} from '@testing-library/angular';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 
 import {ShowScoresComponent} from './show-scores.component';
-import {GameService} from '../../../playfield/services/game.service';
+import {GameService} from '@game/playfield/services/game.service';
 
 describe('ShowScoresComponent', () => {
   const gameWon = signal(false);

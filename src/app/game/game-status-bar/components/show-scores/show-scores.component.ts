@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {GameService} from '../../../playfield/services/game.service';
+import {GameService} from '@game/playfield/services/game.service';
 
 /** Reopens the scoreboard after it was closed on a won game. */
 @Component({

@@ -4,6 +4,7 @@
 
 ## Where things live (`src/app/`)
 
+- Import alias: `@game/*` → `src/app/game/*` (tsconfig `paths`); use it instead of `../../..` chains.
 - Decks: `nav/navigation` (picker) → `game/playfield/services/game.service.ts` → `deck.service.ts`; models in `game/playfield/model/`.
 - Auth: `core/auth/auth-ops.ts` → `services/auth.service.ts` → `guards/auth.guard.ts` → `app.routes.ts`; login UI in `user/components/`, shell in `ui/layout`.
 - Scores: `game/scoreboard/` (`firestore-ops.ts` wraps Firestore).
