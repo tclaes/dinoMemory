@@ -16,7 +16,7 @@ export function canTransitionDisplay(): boolean {
   const probe = document.createElement('div');
   probe.style.cssText = 'transition: display 1s allow-discrete !important; display: block;';
   document.body.appendChild(probe);
-  getComputedStyle(probe).display;
+  getComputedStyle(probe).display; // flush styles so the next change starts a transition
   probe.style.display = 'none';
   displayTransitionSupported = getComputedStyle(probe).display === 'block';
   probe.remove();

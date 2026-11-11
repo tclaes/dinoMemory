@@ -109,38 +109,49 @@ export class ScoreboardComponent {
     return this.scores().findIndex(score => score.user === user.displayName
       && score.clicks === this.nrOfClicks() && score.durationMs === this.elapsedMs());
   });
-  title = computed(() => this.ownIndex() >= 0 ? `You're #${this.ownIndex() + 1}` : 'Game won');
+  title = computed(() => {
+    const index = this.ownIndex();
+    return index >= 0 ? `You're #${index + 1}` : 'Game won';
+  });
   #pressedOutside = false;
   #dismissed = signal(false);
 
   constructor() {
     const deck = this.gameService.deck()?.name;
+    this.#saveScore(deck);
+    this.scores = this.#freezeOnDismiss(toSignal(this.#scoreService.loadScores(deck)));
+    effect(() => {
+      const open = this.gameService.scoreboardOpen();
+      const dialog = this.dialog()?.nativeElement;
+      if (dialog) {
+        untracked(() => this.#syncDialog(dialog, open));
+      }
+    });
+  }
+
+  #saveScore(deck: string) {
     const user = this.gameService.user();
     if (user && !this.gameService.scoreSaved()) {
       this.#scoreService.updateScores(user.displayName, this.nrOfClicks(), this.elapsedMs(), deck);
       this.gameService.markScoreSaved();
     }
-    const live = toSignal(this.#scoreService.loadScores(deck));
-    // A dismissal after the first emission freezes the list; one before it still takes that first emission.
-    this.scores = linkedSignal<Score[] | undefined, Score[]>({
+  }
+
+  // A dismissal after the first emission freezes the list; one before it still takes that first emission.
+  #freezeOnDismiss(live: Signal<Score[] | undefined>): Signal<Score[]> {
+    return linkedSignal<Score[] | undefined, Score[]>({
       source: live,
       computation: (next, previous) =>
         previous?.source !== undefined && untracked(this.#dismissed) ? previous.value : (next ?? [])
     });
-    effect(() => {
-      const open = this.gameService.scoreboardOpen();
-      const dialog = this.dialog()?.nativeElement;
-      if (!dialog) {
-        return;
-      }
-      untracked(() => {
-        if (open && !dialog.open) {
-          dialog.showModal();
-        } else if (!open && dialog.open) {
-          void closeTopLayer(dialog);
-        }
-      });
-    });
+  }
+
+  #syncDialog(dialog: HTMLDialogElement, open: boolean) {
+    if (open && !dialog.open) {
+      dialog.showModal();
+    } else if (!open && dialog.open) {
+      void closeTopLayer(dialog);
+    }
   }
 
   newGame() {
