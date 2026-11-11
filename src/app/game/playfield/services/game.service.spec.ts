@@ -180,6 +180,17 @@ describe('Game Service', () => {
     expect(service.scoreSaved()).toBe(false);
   });
 
+  it('forgets a saved score even when nobody read it while the game was stopped', () => {
+    const global = TestBed.inject(GlobalService);
+    service.flipCard('rex-a');
+    service.markScoreSaved();
+
+    global.stopGame();
+    global.startGame();
+
+    expect(service.scoreSaved()).toBe(false);
+  });
+
   describe('scoreboard dialog state', () => {
     const win = () => ['rex-a', 'rex-b', 'trike-a', 'trike-b'].forEach(id => service.flipCard(id));
 

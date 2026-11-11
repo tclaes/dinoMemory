@@ -120,6 +120,23 @@ test.describe('Alfabet deck', () => {
     await expect(page.locator('app-card.flip')).toHaveCount(0);
   });
 
+  test('saves the score of every game that is won, not only the first', async ({ page }) => {
+    await winGame(page);
+    const scoreboard = page.getByRole('dialog');
+    await expect(scoreboard.getByRole('cell', { name: playerName })).toHaveCount(1);
+    await scoreboard.getByRole('button', { name: 'New game?' }).click();
+    await expect(page.locator('app-card.matched')).toHaveCount(0);
+
+    await winGame(page);
+    await expect(scoreboard).toBeVisible();
+    await expect(scoreboard.getByRole('cell', { name: playerName })).toHaveCount(2);
+
+    await page.keyboard.press('Escape');
+    await page.getByRole('button', { name: 'Restart' }).click();
+    await winGame(page);
+    await expect(scoreboard.getByRole('cell', { name: playerName })).toHaveCount(3);
+  });
+
   test('closes the scoreboard, keeps the won board, and reopens it from the status bar', async ({ page }) => {
     await winGame(page);
     const scoreboard = page.getByRole('dialog');

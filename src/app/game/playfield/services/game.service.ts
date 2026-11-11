@@ -27,9 +27,10 @@ export class GameService {
   matchedIds = this.#matchedIds.asReadonly();
   faceUpIds = computed(() => new Set([...this.#flippedIds(), ...this.#matchedIds()]));
   // Whether the score of the current game was saved; resets when the game stops.
-  #scoreSaved = linkedSignal<boolean, boolean>({
-    source: this.#globalService.gameStarted$,
-    computation: (started, previous) => started && previous ? previous.value : false
+  // Keyed on the stop count: a linkedSignal on gameStarted$ misses a stop and start nobody read in between.
+  #scoreSaved = linkedSignal<number, boolean>({
+    source: this.#globalService.gamesStopped,
+    computation: () => false
   });
   scoreSaved = this.#scoreSaved.asReadonly();
   gameWon = computed(() => {
