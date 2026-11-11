@@ -1,7 +1,18 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  linkedSignal,
+  Signal,
+  signal,
+  untracked,
+  viewChild
+} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {GameService} from '../playfield/services/game.service';
 import {Score, ScoreService} from './score.service';
-import {Observable} from 'rxjs';
 import {ClicksService} from '../game-status-bar/services/clicks.service';
 import {GlobalService} from '../global/services/global.service';
 import {TimerService} from '../game-status-bar/services/timer.service';
@@ -19,35 +30,47 @@ import {
 } from '@angular/material/table';
 import {MatButton} from '@angular/material/button';
 import {DurationPipe} from '../game-status-bar/format/duration.pipe';
+import {closeTopLayer, isOutsideDialog, lacksClosedBy, supportsTopLayerExit} from './top-layer';
 
 @Component({
   selector: 'app-scoreboard',
   template: `
-      <div class="score">
-          <h3>Game Won !!!</h3>
-<p>{{ nrOfClicks() }} tries</p>
-          <p>{{ elapsedMs() | duration }}</p>
+      <dialog #dialog class="scoreboard-dialog" closedby="any" aria-labelledby="scoreboard-title"
+              (close)="onClosed()" (cancel)="onCancel($event)"
+              (pointerdown)="onPointerDown($event)" (pointerup)="onPointerUp($event)">
+          <header class="scoreboard-header">
+              <svg class="scoreboard-trophy" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 4h8v5a4 4 0 0 1-8 0V4ZM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h2 id="scoreboard-title" aria-live="polite">{{ title() }}</h2>
+              <button type="button" class="scoreboard-close" aria-label="Close scoreboard" (click)="close()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  </svg>
+              </button>
+          </header>
+          <p class="scoreboard-summary">{{ nrOfClicks() }} tries in {{ elapsedMs() | duration }}</p>
 
-          <div class="scoreboard">
-              <table mat-table [dataSource]="collection$" class="mat-elevation-z8">
-                  <ng-container matColumnDef="user">
-                      <th mat-header-cell *matHeaderCellDef> User</th>
-                      <td mat-cell *matCellDef="let score"> {{ score.user }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="clicks">
-                      <th mat-header-cell *matHeaderCellDef> Clicks</th>
-                      <td mat-cell *matCellDef="let score"> {{ score.clicks }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="time">
-                      <th mat-header-cell *matHeaderCellDef> Time</th>
-                      <td mat-cell *matCellDef="let score"> {{ score.durationMs | duration }}</td>
-                  </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
-          </div>
-          <button id="won" class="button" (click)="newGame()" mat-stroked-button>New game?</button>
-      </div>
+          <table mat-table [dataSource]="scores()">
+              <ng-container matColumnDef="user">
+                  <th mat-header-cell *matHeaderCellDef> User</th>
+                  <td mat-cell *matCellDef="let score"> {{ score.user }}</td>
+              </ng-container>
+              <ng-container matColumnDef="clicks">
+                  <th mat-header-cell *matHeaderCellDef> Clicks</th>
+                  <td mat-cell *matCellDef="let score"> {{ score.clicks }}</td>
+              </ng-container>
+              <ng-container matColumnDef="time">
+                  <th mat-header-cell *matHeaderCellDef> Time</th>
+                  <td mat-cell *matCellDef="let score"> {{ score.durationMs | duration }}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index"
+                  [class.mine]="i === ownIndex()" [attr.aria-current]="i === ownIndex() ? 'true' : null"></tr>
+          </table>
+          <button id="won" class="button" autofocus (click)="newGame()" mat-stroked-button>New game?</button>
+      </dialog>
   `,
   styleUrls: ['./scoreboard.component.scss'],
   imports: [
@@ -65,9 +88,10 @@ import {DurationPipe} from '../game-status-bar/format/duration.pipe';
     MatTable
   ]
 })
-export class ScoreboardComponent implements OnInit {
+export class ScoreboardComponent {
   gameService = inject(GameService);
-  collection$: Observable<Score[]>;
+  /** The top 10 of the deck; frozen once the dialog was dismissed, so a reopened dialog shows the same rank. */
+  readonly scores: Signal<Score[]>;
   displayedColumns: string[] = ['user', 'clicks', 'time'];
   #clicksService = inject(ClicksService);
   #globalService = inject(GlobalService);
@@ -75,18 +99,91 @@ export class ScoreboardComponent implements OnInit {
   #scoreService = inject(ScoreService);
   #timerService = inject(TimerService);
   elapsedMs = this.#timerService.elapsedMs;
+  dialog = viewChild<ElementRef<HTMLDialogElement>>('dialog');
+  /** Position of the score of the game just won in the shown top 10, or -1 when it is not listed. */
+  ownIndex = computed(() => {
+    const user = this.gameService.user();
+    if (!user) {
+      return -1;
+    }
+    return this.scores().findIndex(score => score.user === user.displayName
+      && score.clicks === this.nrOfClicks() && score.durationMs === this.elapsedMs());
+  });
+  title = computed(() => {
+    const index = this.ownIndex();
+    return index >= 0 ? `You're #${index + 1}` : 'Game won';
+  });
+  #pressedOutside = false;
+  #dismissed = signal(false);
 
-  newGame() {
-    this.#globalService.stopGame();
+  constructor() {
+    const deck = this.gameService.deck()?.name;
+    this.#saveScore(deck);
+    this.scores = this.#freezeOnDismiss(toSignal(this.#scoreService.loadScores(deck)));
+    effect(() => {
+      const open = this.gameService.scoreboardOpen();
+      const dialog = this.dialog()?.nativeElement;
+      if (dialog) {
+        untracked(() => this.#syncDialog(dialog, open));
+      }
+    });
   }
 
-  ngOnInit() {
-    const deck = this.gameService.deck()?.name;
+  #saveScore(deck: string) {
     const user = this.gameService.user();
     if (user && !this.gameService.scoreSaved()) {
       this.#scoreService.updateScores(user.displayName, this.nrOfClicks(), this.elapsedMs(), deck);
       this.gameService.markScoreSaved();
     }
-    this.collection$ = this.#scoreService.loadScores(deck);
+  }
+
+  // A dismissal after the first emission freezes the list; one before it still takes that first emission.
+  #freezeOnDismiss(live: Signal<Score[] | undefined>): Signal<Score[]> {
+    return linkedSignal<Score[] | undefined, Score[]>({
+      source: live,
+      computation: (next, previous) =>
+        previous?.source !== undefined && untracked(this.#dismissed) ? previous.value : (next ?? [])
+    });
+  }
+
+  #syncDialog(dialog: HTMLDialogElement, open: boolean) {
+    if (open && !dialog.open) {
+      dialog.showModal();
+    } else if (!open && dialog.open) {
+      void closeTopLayer(dialog);
+    }
+  }
+
+  newGame() {
+    this.#globalService.stopGame();
+  }
+
+  onClosed() {
+    this.#dismissed.set(true);
+    this.gameService.closeScoreboard();
+  }
+
+  close() {
+    void closeTopLayer(this.dialog().nativeElement);
+  }
+
+  // Esc and light dismiss close the dialog natively; where the exit cannot animate, close it by hand.
+  onCancel(event: Event) {
+    if (!supportsTopLayerExit()) {
+      event.preventDefault();
+      this.close();
+    }
+  }
+
+  onPointerDown(event: PointerEvent) {
+    this.#pressedOutside = lacksClosedBy() && isOutsideDialog(event, this.dialog().nativeElement);
+  }
+
+  // Both press and release must be outside, so a text selection that ends on the backdrop does not dismiss.
+  onPointerUp(event: PointerEvent) {
+    if (this.#pressedOutside && isOutsideDialog(event, this.dialog().nativeElement)) {
+      this.close();
+    }
+    this.#pressedOutside = false;
   }
 }

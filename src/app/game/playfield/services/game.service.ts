@@ -27,17 +27,25 @@ export class GameService {
   matchedIds = this.#matchedIds.asReadonly();
   faceUpIds = computed(() => new Set([...this.#flippedIds(), ...this.#matchedIds()]));
   // Whether the score of the current game was saved; resets when the game stops.
-  #scoreSaved = linkedSignal<boolean, boolean>({
-    source: this.#globalService.gameStarted$,
-    computation: (started, previous) => started && previous ? previous.value : false
+  // Keyed on the stop count: a linkedSignal on gameStarted$ misses a stop and start nobody read in between.
+  #scoreSaved = linkedSignal<number, boolean>({
+    source: this.#globalService.gamesStopped,
+    computation: () => false
   });
   scoreSaved = this.#scoreSaved.asReadonly();
   gameWon = computed(() => {
     return this.board().length > 0 && this.matchedIds().size === this.board().length
   })
+  // Whether the scoreboard dialog is open: opens on a win, can be closed and reopened, resets when the game stops.
+  // Keyed on the stop count too: a stop and win nobody read in between would otherwise keep a manual close.
+  #scoreboardOpen = linkedSignal<{won: boolean, stops: number}, boolean>({
+    source: () => ({won: this.gameWon(), stops: this.#globalService.gamesStopped()}),
+    computation: ({won}) => won
+  });
+  scoreboardOpen = this.#scoreboardOpen.asReadonly();
 
 
-  board = linkedSignal<{started: boolean, deck: Deck | undefined}, BoardCard[]>({
+  board =linkedSignal<{started: boolean, deck: Deck | undefined}, BoardCard[]>({
     source: () => ({started: this.#globalService.gameStarted$(), deck: this.deck()}),
     computation: ({started, deck}, previous) => {
       if (started && previous) {
@@ -51,6 +59,16 @@ export class GameService {
 
   markScoreSaved() {
     this.#scoreSaved.set(true);
+  }
+
+  openScoreboard() {
+    if (this.gameWon()) {
+      this.#scoreboardOpen.set(true);
+    }
+  }
+
+  closeScoreboard() {
+    this.#scoreboardOpen.set(false);
   }
 
   flipCard(id: string) {

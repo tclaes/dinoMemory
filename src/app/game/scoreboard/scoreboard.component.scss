@@ -1,37 +1,124 @@
-:host {
-    align-items: center;
-    background: var(--black-50);
-    display: flex;
-    inset: 0;
-    justify-content: center;
-    position: fixed;
-    z-index: 10;
-}
-
-.score {
+.scoreboard-dialog {
     background: var(--white);
-    border-radius: 12px;
-    font-size: 1.8rem;
-    max-height: 90vh;
-    overflow: auto;
-    padding: 16px 24px;
+    border: 2px solid var(--dd-ink);
+    border-radius: var(--radius-l);
+    box-shadow: 4px 4px 0 var(--dd-ink);
+    color: var(--dd-ink);
+    font-family: 'Fredoka', sans-serif;
+    // The global reset zeroes margins, which would pin the dialog to the top left instead of centering it.
+    margin: auto;
+    max-height: calc(100dvh - 32px);
+    max-width: calc(100vw - 32px);
+    opacity: 0;
+    overscroll-behavior: contain;
+    padding: var(--padding-default) var(--padding-l);
     text-align: center;
+    transition-behavior: allow-discrete;
+    transition-duration: 0.3s;
+    transition-property: opacity, transform, display, overlay;
+    transition-timing-function: ease-out;
+    width: 360px;
+
+    @media (prefers-reduced-motion: no-preference) {
+        transform: scale(0.9);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition-duration: 0.1s;
+    }
+
+    &::backdrop {
+        background-color: transparent;
+        overflow: hidden;
+        overscroll-behavior: contain;
+        transition-behavior: allow-discrete;
+        transition-duration: 0.3s;
+        transition-property: background-color, display, overlay;
+        transition-timing-function: ease-out;
+    }
+
+    // data-closing starts the exit transition in browsers that cannot animate a closing top layer element.
+    &:is([open]):where(:not([data-closing])) {
+        opacity: 1;
+
+        @starting-style {
+            opacity: 0;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            transform: scale(1);
+
+            @starting-style {
+                transform: scale(0.9);
+            }
+        }
+
+        &::backdrop {
+            background-color: var(--black-50);
+
+            @starting-style {
+                background-color: transparent;
+            }
+        }
+    }
 
     table {
         border-collapse: collapse;
+        font-size: var(--font-size-base);
         text-align: left;
         width: 100%;
     }
 
-    thead {
+    th {
         background: var(--main-bg-color);
-        border-radius: 5px;
-        font-size: 1.5rem;
+    }
+
+    tr {
+        height: 36px;
+    }
+
+    .mine {
+        background: var(--dd-yellow);
+        font-weight: 600;
     }
 }
 
-.scoreboard {
-    font-size: 1.2rem;
-    margin: 15px;
-    width: 80%;
+.scoreboard-header {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+
+    h2 {
+        flex: 1;
+        font-size: var(--font-size-l);
+        margin: 0;
+        text-align: left;
+    }
+}
+
+.scoreboard-trophy {
+    flex: none;
+}
+
+.scoreboard-close {
+    background: none;
+    border: 0;
+    border-radius: var(--radius-s);
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    padding: var(--padding-xs);
+}
+
+.scoreboard-summary {
+    font-size: var(--font-size-base);
+    margin: var(--gap-xs) 0 var(--gap-s);
+    text-align: left;
+}
+
+#won {
+    // The app theme is dark, so the stock outlined button is light on white here.
+    --mat-button-outlined-label-text-color: var(--dd-ink);
+    --mat-button-outlined-outline-color: var(--dd-ink);
+    margin-top: 14px;
 }
