@@ -1,16 +1,31 @@
 :root {
-  /* Gaps */
-  --gap-default: 16px;
-  --gap-xs: 4px;
-  --gap-s: 12px;
-  --gap-l: calc(var(--gap-default) * 1.5);
+  /* Gaps: all steps are derived from --gap-base */
+  --gap-base: 1rem;
 
-  /* Padding */
-  --padding-base: 16px;
+  --gap-default: var(--gap-base);
+  --gap-xs: calc(var(--gap-base) * 0.25);
+  --gap-sm: calc(var(--gap-base) * 0.5);
+  --gap-s: calc(var(--gap-base) * 0.75);
+  --gap-l: calc(var(--gap-base) * 1.5);
 
-  --padding-xs: 6px;
-  --padding-small: calc(var(--gap-default) * 0.8);
+  /* Padding: all steps are derived from --padding-base */
+  --padding-base: 1rem;
+
   --padding-default: var(--padding-base);
+  --padding-xs: calc(var(--padding-base) * 0.375);
+  --padding-s: calc(var(--padding-base) * 0.75);
+  --padding-m: calc(var(--padding-base) * 1.25);
   --padding-l: calc(var(--padding-base) * 1.5);
-  --padding-xl: 32px;
+  --padding-xl: calc(var(--padding-base) * 2);
+  --padding-xxl: calc(var(--padding-base) * 3);
+
+  /* Margin: all steps are derived from --margin-base */
+  --margin-base: 1rem;
+
+  --margin-default: var(--margin-base);
+  --margin-xs: calc(var(--margin-base) * 0.25);
+  --margin-sm: calc(var(--margin-base) * 0.5);
+  --margin-s: calc(var(--margin-base) * 0.75);
+  --margin-l: calc(var(--margin-base) * 1.5);
+  --margin-xl: calc(var(--margin-base) * 2);
 }

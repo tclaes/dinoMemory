@@ -86,7 +86,7 @@
 .scoreboard-header {
     align-items: center;
     display: flex;
-    gap: 8px;
+    gap: var(--gap-sm);
 
     h2 {
         flex: 1;
@@ -112,7 +112,7 @@
 
 .scoreboard-summary {
     font-size: var(--font-size-base);
-    margin: var(--gap-xs) 0 var(--gap-s);
+    margin: var(--margin-xs) 0 var(--margin-s);
     text-align: left;
 }
 
@@ -120,5 +120,5 @@
     // The app theme is dark, so the stock outlined button is light on white here.
     --mat-button-outlined-label-text-color: var(--dd-ink);
     --mat-button-outlined-outline-color: var(--dd-ink);
-    margin-top: 14px;
+    margin-top: var(--margin-s);
 }

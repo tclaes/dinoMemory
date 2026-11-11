@@ -49,7 +49,7 @@ header {
   font-family: 'Fredoka', sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
-  gap: 12px;
+  gap: var(--gap-s);
   letter-spacing: -0.3px;
   margin: 0;
   text-decoration: none;

@@ -6,14 +6,14 @@
   height: 100%;
   justify-content: center;
   overflow: hidden;
-  padding-block-end: 12px;
-  padding-inline: var(--padding-default, 16px);
+  padding-block-end: var(--padding-s);
+  padding-inline: var(--padding-default);
 }
 
 .deck {
   container: deck / inline-size;
   display: flex;
   justify-content: center;
-  padding: 0 var(--padding-default) var(--padding-small);
+  padding: 0 var(--padding-default) var(--padding-s);
   width: calc(100vw);
 }

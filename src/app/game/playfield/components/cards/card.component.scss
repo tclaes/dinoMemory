@@ -34,13 +34,13 @@
   border-radius: 18px;
   box-shadow: 4px 4px 0 var(--dd-ink);
   box-sizing: border-box;
-  padding: 12px;
+  padding: var(--padding-s);
   position: absolute;
 
   @media screen and (max-width: 800px) {
     border-width: 3px;
     box-shadow: 3px 3px 0 var(--dd-ink);
-    padding: 6px;
+    padding: var(--padding-xs);
   }
 }
 
@@ -100,7 +100,7 @@
 
 .word-face {
   flex-direction: column;
-  gap: 4px;
+  gap: var(--gap-xs);
 
   .word-emoji {
     font-size: clamp(1.8rem, 6vw, 3.5rem);
