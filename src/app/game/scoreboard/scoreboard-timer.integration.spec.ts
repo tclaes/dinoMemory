@@ -40,6 +40,8 @@ describe('Scoreboard with the real timer', () => {
             deck: signal({name: 'dinos'}),
             scoreSaved,
             markScoreSaved: () => scoreSaved.set(true),
+            scoreboardOpen: gameWon,
+            closeScoreboard: () => undefined,
           },
         },
         {provide: ScoreService, useValue: scoreService},

@@ -179,4 +179,47 @@ describe('Game Service', () => {
     global.stopGame();
     expect(service.scoreSaved()).toBe(false);
   });
+
+  describe('scoreboard dialog state', () => {
+    const win = () => ['rex-a', 'rex-b', 'trike-a', 'trike-b'].forEach(id => service.flipCard(id));
+
+    it('is closed during play and opens on a win', () => {
+      service.flipCard('rex-a');
+      expect(service.scoreboardOpen()).toBe(false);
+
+      service.flipCard('rex-b');
+      service.flipCard('trike-a');
+      service.flipCard('trike-b');
+      expect(service.scoreboardOpen()).toBe(true);
+    });
+
+    it('can be closed and reopened while the game stays won', () => {
+      win();
+
+      service.closeScoreboard();
+      expect(service.scoreboardOpen()).toBe(false);
+      expect(service.gameWon()).toBe(true);
+
+      service.openScoreboard();
+      expect(service.scoreboardOpen()).toBe(true);
+    });
+
+    it('does not open before the game is won', () => {
+      service.flipCard('rex-a');
+      service.openScoreboard();
+
+      expect(service.scoreboardOpen()).toBe(false);
+    });
+
+    it('resets when the game stops and opens again on the next win', () => {
+      win();
+      service.closeScoreboard();
+
+      TestBed.inject(GlobalService).stopGame();
+      expect(service.scoreboardOpen()).toBe(false);
+
+      win();
+      expect(service.scoreboardOpen()).toBe(true);
+    });
+  });
 });

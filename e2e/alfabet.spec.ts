@@ -88,7 +88,7 @@ test.describe('Alfabet deck', () => {
     await expect(page.locator('app-card.flip')).toHaveCount(0);
   });
 
-  test('shows the scoreboard with the saved score after winning, and starts a new game', async ({ page }) => {
+  const winGame = async (page: Page) => {
     const count = await letterCards(page).count();
     for (let i = 0; i < count; i++) {
       const letterCard = letterCards(page).nth(i);
@@ -98,20 +98,54 @@ test.describe('Alfabet deck', () => {
       await flip(wordCard);
       await expect(wordCard).toHaveClass(/matched/);
     }
+  };
 
-    const scoreboard = page.locator('app-scoreboard');
+  test('shows the scoreboard with the saved score after winning, and starts a new game', async ({ page }) => {
+    await winGame(page);
+
+    const scoreboard = page.getByRole('dialog', { name: /You're #\d+|Game won/ });
     await expect(scoreboard).toBeVisible();
     await expect(scoreboard).toContainText('8 tries');
     await expect(scoreboard.getByRole('cell', { name: playerName })).toHaveCount(1);
-    await expect(scoreboard.locator('p').nth(1)).toHaveText(/^\s*\d{2}:\d{2}\s*$/);
+    await expect(scoreboard.locator('.scoreboard-summary')).toHaveText(/^8 tries in \d{2}:\d{2}$/);
     const playerRow = scoreboard.getByRole('row').filter({ has: page.getByRole('cell', { name: playerName }) });
     await expect(playerRow.locator('td.mat-column-time')).toHaveText(/^\s*\d{2}:\d{2}\s*$/);
+    await expect(playerRow).toHaveAttribute('aria-current', 'true');
+    await expect(scoreboard.getByRole('heading')).toHaveText(/^You're #\d+$/);
 
     await scoreboard.getByRole('button', { name: 'New game?' }).click();
 
-    await expect(scoreboard).toHaveCount(0);
+    await expect(page.locator('app-scoreboard')).toHaveCount(0);
     await expect(page.locator('app-card.matched')).toHaveCount(0);
     await expect(page.locator('app-card.flip')).toHaveCount(0);
+  });
+
+  test('closes the scoreboard, keeps the won board, and reopens it from the status bar', async ({ page }) => {
+    await winGame(page);
+    const scoreboard = page.getByRole('dialog');
+    const showScores = page.getByRole('button', { name: 'Show scores' });
+    await expect(scoreboard).toBeVisible();
+    await expect(showScores).toHaveCount(0);
+
+    await page.keyboard.press('Escape');
+    await expect(scoreboard).toBeHidden();
+    await expect(page.locator('app-card.matched')).toHaveCount(16);
+    await expect(showScores).toBeVisible();
+
+    await showScores.click();
+    await expect(scoreboard).toBeVisible();
+    await expect(scoreboard.getByRole('cell', { name: playerName })).toHaveCount(1);
+
+    await page.mouse.click(5, 5);
+    await expect(scoreboard).toBeHidden();
+
+    await showScores.click();
+    await scoreboard.getByRole('button', { name: 'Close scoreboard' }).click();
+    await expect(scoreboard).toBeHidden();
+
+    await page.getByRole('button', { name: 'Restart' }).click();
+    await expect(page.locator('app-card.matched')).toHaveCount(0);
+    await expect(showScores).toHaveCount(0);
   });
 
 });

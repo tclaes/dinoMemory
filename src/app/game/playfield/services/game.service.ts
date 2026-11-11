@@ -35,9 +35,15 @@ export class GameService {
   gameWon = computed(() => {
     return this.board().length > 0 && this.matchedIds().size === this.board().length
   })
+  // Whether the scoreboard dialog is open: opens on a win, can be closed and reopened, resets when the game stops.
+  #scoreboardOpen = linkedSignal<boolean, boolean>({
+    source: this.gameWon,
+    computation: won => won
+  });
+  scoreboardOpen = this.#scoreboardOpen.asReadonly();
 
 
-  board = linkedSignal<{started: boolean, deck: Deck | undefined}, BoardCard[]>({
+  board =linkedSignal<{started: boolean, deck: Deck | undefined}, BoardCard[]>({
     source: () => ({started: this.#globalService.gameStarted$(), deck: this.deck()}),
     computation: ({started, deck}, previous) => {
       if (started && previous) {
@@ -51,6 +57,16 @@ export class GameService {
 
   markScoreSaved() {
     this.#scoreSaved.set(true);
+  }
+
+  openScoreboard() {
+    if (this.gameWon()) {
+      this.#scoreboardOpen.set(true);
+    }
+  }
+
+  closeScoreboard() {
+    this.#scoreboardOpen.set(false);
   }
 
   flipCard(id: string) {

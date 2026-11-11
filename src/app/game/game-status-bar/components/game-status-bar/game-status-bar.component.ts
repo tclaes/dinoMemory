@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {TimerComponent} from '../timer/timer.component';
 import {ClicksComponent} from '../clicks/clicks.component';
 import {RestartComponent} from '../restart/restart.component';
+import {ShowScoresComponent} from '../show-scores/show-scores.component';
 
 @Component({
   selector: 'app-game-status-bar',
@@ -9,11 +10,13 @@ import {RestartComponent} from '../restart/restart.component';
   imports: [
     TimerComponent,
     ClicksComponent,
-    RestartComponent
+    RestartComponent,
+    ShowScoresComponent
   ],
   template: `
       <app-clicks />
       <app-timer />
+      <app-show-scores />
       <app-restart />
   `
 })

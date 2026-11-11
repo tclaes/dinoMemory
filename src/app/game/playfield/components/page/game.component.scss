@@ -1,7 +1,8 @@
 :host {
   background: var(--dd-bg);
   display: grid;
-  grid-template-rows: 80px minmax(0, 1fr);
+  // The status bar wraps on narrow screens; a fixed row would hide the buttons that wrap out of view.
+  grid-template-rows: minmax(80px, auto) minmax(0, 1fr);
   height: 100%;
   justify-content: center;
   overflow: hidden;
