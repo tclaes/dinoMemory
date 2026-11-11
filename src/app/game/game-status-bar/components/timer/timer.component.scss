@@ -9,6 +9,6 @@
   font-family: var(--font-family-display);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  gap: 11px;
-  padding: 13px 24px;
+  gap: var(--gap-s);
+  padding: var(--padding-s) var(--padding-l);
 }

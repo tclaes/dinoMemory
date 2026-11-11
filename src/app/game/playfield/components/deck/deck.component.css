@@ -1,7 +1,7 @@
 :host {
   --card-count: 0;
   --grid-columns: 4;
-  --grid-gap: 8px;
+  --grid-gap: var(--gap-sm);
   --grid-rows: round(up, calc(var(--card-count) / var(--grid-columns)), 1);
   --max-playfield-width: 1100px;
 
@@ -23,7 +23,7 @@
 
   @media screen and (min-width: 600px) {
     --grid-columns: 5;
-    --grid-gap: 16px;
+    --grid-gap: var(--gap-default);
   }
 }
 

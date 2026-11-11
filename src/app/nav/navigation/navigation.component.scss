@@ -1,6 +1,6 @@
 :host {
   display: flex;
-  gap: 16px;
+  gap: var(--gap-default);
   width: 100%;
 }
 
@@ -40,14 +40,14 @@
   font-family: var(--font-family-display);
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-semibold);
-  padding: 11px 20px;
+  padding: var(--padding-s) var(--padding-m);
 }
 
 .deck-nav {
   align-items: center;
   display: flex;
   flex: 1 1 auto;
-  gap: 12px;
+  gap: var(--gap-s);
   overflow-x: auto;
 }
 
@@ -63,7 +63,7 @@
   font-family: var(--font-family-display);
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-semibold);
-  padding: 11px 22px;
+  padding: var(--padding-s) var(--padding-m);
   text-decoration: none;
   text-transform: capitalize;
 
@@ -76,6 +76,6 @@
 .header-actions {
   align-items: center;
   display: flex;
-  gap: 12px;
+  gap: var(--gap-s);
   margin-left: auto;
 }

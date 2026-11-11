@@ -49,7 +49,7 @@ header {
   font-family: var(--font-family-display);
   font-size: var(--font-size-l);
   font-weight: var(--font-weight-bold);
-  gap: 12px;
+  gap: var(--gap-s);
   letter-spacing: -0.3px;
   margin: 0;
   text-decoration: none;
