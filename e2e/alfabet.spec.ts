@@ -111,6 +111,8 @@ test.describe('Alfabet deck', () => {
     const playerRow = scoreboard.getByRole('row').filter({ has: page.getByRole('cell', { name: playerName }) });
     await expect(playerRow.locator('td.mat-column-time')).toHaveText(/^\s*\d{2}:\d{2}\s*$/);
     await expect(playerRow).toHaveAttribute('aria-current', 'true');
+    await expect(playerRow).toHaveCSS('background-color', 'rgb(255, 210, 63)');
+    await expect(scoreboard).toHaveCSS('opacity', '1');
     await expect(scoreboard.getByRole('heading')).toHaveText(/^You're #\d+$/);
 
     await scoreboard.getByRole('button', { name: 'New game?' }).click();

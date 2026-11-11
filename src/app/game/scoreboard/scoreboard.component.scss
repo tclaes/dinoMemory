@@ -1,7 +1,7 @@
 .scoreboard-dialog {
     background: var(--white);
     border: 2px solid var(--dd-ink);
-    border-radius: 14px;
+    border-radius: var(--radius-l);
     box-shadow: 4px 4px 0 var(--dd-ink);
     color: var(--dd-ink);
     font-family: 'Fredoka', sans-serif;
@@ -103,7 +103,7 @@
 .scoreboard-close {
     background: none;
     border: 0;
-    border-radius: 8px;
+    border-radius: var(--radius-s);
     color: inherit;
     cursor: pointer;
     display: flex;

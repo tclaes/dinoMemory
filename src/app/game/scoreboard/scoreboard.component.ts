@@ -8,8 +8,7 @@ import {
   Signal,
   signal,
   untracked,
-  viewChild,
-  ViewEncapsulation
+  viewChild
 } from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {GameService} from '../playfield/services/game.service';
@@ -35,7 +34,6 @@ import {closeTopLayer, isOutsideDialog, lacksClosedBy, supportsTopLayerExit} fro
 
 @Component({
   selector: 'app-scoreboard',
-  encapsulation: ViewEncapsulation.None,
   template: `
       <dialog #dialog class="scoreboard-dialog" closedby="any" aria-labelledby="scoreboard-title"
               (close)="onClosed()" (cancel)="onCancel($event)"
