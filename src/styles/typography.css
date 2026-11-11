@@ -1,5 +1,24 @@
 :root {
+  /* Font families (each ends in a generic fallback) */
+  --font-family-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
+  --font-family-body: 'Quicksand', ui-rounded, system-ui, sans-serif;
+  --font-family-default: 'Roboto', system-ui, sans-serif;
+
+  /* Font weights */
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
   /* Font sizes */
+  --font-size-xs: 0.85rem;
+  --font-size-s: 0.9rem;
+  --font-size-m: 0.95rem;
   --font-size-base: 1rem;
+  --font-size-ml: 1.2rem;
   --font-size-l: 1.5rem;
+
+  /* Fluid card font sizes */
+  --font-size-card-letter: clamp(2rem, 8vw, 4.5rem);
+  --font-size-card-emoji: clamp(1.8rem, 6vw, 3.5rem);
+  --font-size-card-word: clamp(0.8rem, 2.4vw, 1.4rem);
 }

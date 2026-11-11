@@ -16,15 +16,15 @@
 
 .profile-section-title {
   color: var(--dd-ink);
-  font-family: 'Fredoka', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-ml);
+  font-weight: var(--font-weight-bold);
   margin: 32px 0 16px;
 }
 
 .field-success {
   color: var(--dd-ink);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   margin: 0;
 }

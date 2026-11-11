@@ -4,7 +4,7 @@
     border-radius: var(--radius-l);
     box-shadow: 4px 4px 0 var(--dd-ink);
     color: var(--dd-ink);
-    font-family: 'Fredoka', sans-serif;
+    font-family: var(--font-family-display);
     // The global reset zeroes margins, which would pin the dialog to the top left instead of centering it.
     margin: auto;
     max-height: calc(100dvh - 32px);
@@ -79,7 +79,7 @@
 
     .mine {
         background: var(--dd-yellow);
-        font-weight: 600;
+        font-weight: var(--font-weight-semibold);
     }
 }
 
