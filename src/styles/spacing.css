@@ -1,11 +1,14 @@
 :root {
   /* Gaps */
   --gap-default: 16px;
+  --gap-xs: 4px;
+  --gap-s: 12px;
   --gap-l: calc(var(--gap-default) * 1.5);
 
   /* Padding */
   --padding-base: 16px;
 
+  --padding-xs: 6px;
   --padding-small: calc(var(--gap-default) * 0.8);
   --padding-default: var(--padding-base);
   --padding-l: calc(var(--padding-base) * 1.5);

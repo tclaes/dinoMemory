@@ -11,7 +11,7 @@
     max-width: calc(100vw - 32px);
     opacity: 0;
     overscroll-behavior: contain;
-    padding: 16px 20px;
+    padding: var(--padding-default) var(--padding-l);
     text-align: center;
     transition-behavior: allow-discrete;
     transition-duration: 0.3s;
@@ -64,7 +64,7 @@
 
     table {
         border-collapse: collapse;
-        font-size: 1rem;
+        font-size: var(--font-size-base);
         text-align: left;
         width: 100%;
     }
@@ -90,7 +90,7 @@
 
     h2 {
         flex: 1;
-        font-size: 1.5rem;
+        font-size: var(--font-size-l);
         margin: 0;
         text-align: left;
     }
@@ -107,12 +107,12 @@
     color: inherit;
     cursor: pointer;
     display: flex;
-    padding: 6px;
+    padding: var(--padding-xs);
 }
 
 .scoreboard-summary {
-    font-size: 1rem;
-    margin: 4px 0 12px;
+    font-size: var(--font-size-base);
+    margin: var(--gap-xs) 0 var(--gap-s);
     text-align: left;
 }
 

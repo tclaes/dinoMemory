@@ -1,17 +1,17 @@
 import {
   Component,
   computed,
-  DestroyRef,
   effect,
   ElementRef,
   inject,
-  OnInit,
+  linkedSignal,
+  Signal,
   signal,
   untracked,
   viewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {GameService} from '../playfield/services/game.service';
 import {Score, ScoreService} from './score.service';
 import {ClicksService} from '../game-status-bar/services/clicks.service';
@@ -90,12 +90,12 @@ import {closeTopLayer, isOutsideDialog, lacksClosedBy, supportsTopLayerExit} fro
     MatTable
   ]
 })
-export class ScoreboardComponent implements OnInit {
+export class ScoreboardComponent {
   gameService = inject(GameService);
-  scores = signal<Score[]>([]);
+  /** The top 10 of the deck; frozen once the dialog was dismissed, so a reopened dialog shows the same rank. */
+  readonly scores: Signal<Score[]>;
   displayedColumns: string[] = ['user', 'clicks', 'time'];
   #clicksService = inject(ClicksService);
-  #destroyRef = inject(DestroyRef);
   #globalService = inject(GlobalService);
   nrOfClicks = this.#clicksService.countedClicks;
   #scoreService = inject(ScoreService);
@@ -113,12 +113,22 @@ export class ScoreboardComponent implements OnInit {
   });
   title = computed(() => this.ownIndex() >= 0 ? `You're #${this.ownIndex() + 1}` : 'Game won');
   #pressedOutside = false;
-  // Once the dialog was dismissed after the scores arrived, later emissions must not change the rank or
-  // highlight shown on reopening. A dismissal before the first emission still takes that first one.
-  #dismissed = false;
-  #loaded = false;
+  #dismissed = signal(false);
 
   constructor() {
+    const deck = this.gameService.deck()?.name;
+    const user = this.gameService.user();
+    if (user && !this.gameService.scoreSaved()) {
+      this.#scoreService.updateScores(user.displayName, this.nrOfClicks(), this.elapsedMs(), deck);
+      this.gameService.markScoreSaved();
+    }
+    const live = toSignal(this.#scoreService.loadScores(deck));
+    // A dismissal after the first emission freezes the list; one before it still takes that first emission.
+    this.scores = linkedSignal<Score[] | undefined, Score[]>({
+      source: live,
+      computation: (next, previous) =>
+        previous?.source !== undefined && untracked(this.#dismissed) ? previous.value : (next ?? [])
+    });
     effect(() => {
       const open = this.gameService.scoreboardOpen();
       const dialog = this.dialog()?.nativeElement;
@@ -140,7 +150,7 @@ export class ScoreboardComponent implements OnInit {
   }
 
   onClosed() {
-    this.#dismissed = true;
+    this.#dismissed.set(true);
     this.gameService.closeScoreboard();
   }
 
@@ -166,22 +176,5 @@ export class ScoreboardComponent implements OnInit {
       this.close();
     }
     this.#pressedOutside = false;
-  }
-
-  ngOnInit() {
-    const deck = this.gameService.deck()?.name;
-    const user = this.gameService.user();
-    if (user && !this.gameService.scoreSaved()) {
-      this.#scoreService.updateScores(user.displayName, this.nrOfClicks(), this.elapsedMs(), deck);
-      this.gameService.markScoreSaved();
-    }
-    this.#scoreService.loadScores(deck)
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe(scores => {
-        if (!(this.#dismissed && this.#loaded)) {
-          this.scores.set(scores);
-        }
-        this.#loaded = true;
-      });
   }
 }
