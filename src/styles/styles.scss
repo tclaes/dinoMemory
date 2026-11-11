@@ -7,7 +7,7 @@
 html, body { height: 100%; }
 body {
   background: var(--main-bg-color);
-  font-family: 'Roboto',sans-serif;
+  font-family: var(--font-family-default);
   margin: 0;
 }
 

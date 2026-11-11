@@ -1,4 +1,5 @@
-// Colors are defined once in src/styles/colors.css; everywhere else must use var(--…).
+// Colors are defined once in src/styles/colors.css and fonts (family, size, weight) in
+// src/styles/typography.css; everywhere else must use var(--…).
 export default {
   customSyntax: 'postcss-scss',
   plugins: ['stylelint-order'],
@@ -9,6 +10,11 @@ export default {
     'function-disallowed-list': [
       'rgb', 'rgba', 'hsl', 'hsla', 'hwb', 'lab', 'lch', 'oklab', 'oklch', 'color', 'color-mix',
     ],
+    'declaration-property-value-allowed-list': {
+      '/^font-(family|size|weight)$/': ['/^var\\(--[\\w-]+\\)$/', 'inherit', 'initial', 'unset', 'revert'],
+    },
+    // The `font` shorthand would bypass the check above.
+    'property-disallowed-list': ['font'],
   },
   overrides: [
     {
@@ -17,6 +23,19 @@ export default {
       rules: {
         'color-no-hex': null,
         'function-disallowed-list': null,
+      },
+    },
+    {
+      files: ['src/styles/typography.css'],
+      customSyntax: 'postcss',
+      rules: {
+        'declaration-property-value-allowed-list': null,
+        // Only the scale below may exist. A new token means a deliberate edit here, so
+        // component- or role-specific tokens (e.g. --font-size-title) cannot slip in.
+        'custom-property-pattern': [
+          '^font-(family-(display|body|default)|weight-(semibold|bold|extrabold)|size-(xs|s|m|ml|base|l|card-(letter|emoji|word)))$',
+          { message: 'Reuse an existing font token; add a scale step only by extending this pattern.' },
+        ],
       },
     },
   ],

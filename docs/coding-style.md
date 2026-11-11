@@ -30,3 +30,10 @@ return user.name;
 
 - Build only what the current task needs. No speculative parameters, options, hooks or layers "for later".
 - Delete unused code instead of keeping it around.
+
+## Styling: reuse the font tokens
+
+- Fonts come only from `src/styles/typography.css`: `font-family`, `font-size` and `font-weight` must be `var(--font-…)` (enforced by `npm run lint:styles`).
+- Pick the nearest existing step of the scale. Do not add a token for one component or role (no `--font-size-title`, `--font-size-button`). A title and a button that are both large use the same `--font-size-l`.
+- Only add a scale step when no existing step fits across several places, and say why in the PR. Adding one means extending the `custom-property-pattern` in `stylelint.config.mjs`; the lint will reject any other new `--font-…` name.
+- Every `--font-family-*` token ends in a generic fallback family (`sans-serif`).

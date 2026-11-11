@@ -1,7 +1,7 @@
 # Dino Memory Game
 
 - create a new branch for new feature, named `<type>/<kebab-name>` with type `feature`, `fix`, `chore` or `ci`
-- Code style (early returns, KISS, YAGNI): see [coding-style.md](docs/coding-style.md) before writing code.
+- Code style (early returns, KISS, YAGNI, font tokens): see [coding-style.md](docs/coding-style.md) before writing code.
 
 ## Where things live (`src/app/`)
 

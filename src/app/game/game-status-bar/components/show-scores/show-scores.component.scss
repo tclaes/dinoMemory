@@ -8,9 +8,9 @@ button {
   color: var(--white);
   cursor: pointer;
   display: flex;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semibold);
   gap: 10px;
   padding: 13px 24px;
 }
