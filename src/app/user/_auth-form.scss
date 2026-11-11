@@ -5,7 +5,7 @@
   border: 5px solid var(--dd-ink);
   border-radius: 28px;
   box-shadow: 8px 8px 0 var(--dd-ink);
-  font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
+  font-family: var(--font-family-body);
   max-width: 420px;
   padding: var(--padding-xl) var(--padding-l);
   position: relative;
@@ -19,15 +19,15 @@
 
 .auth-title {
   color: var(--dd-ink);
-  font-family: 'Fredoka', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
   margin: 0 0 var(--margin-xs);
 }
 
 .auth-subtitle {
   color: var(--dd-ink);
-  font-size: 0.95rem;
+  font-size: var(--font-size-m);
   margin: 0 0 var(--margin-l);
   opacity: 0.75;
 }
@@ -46,8 +46,8 @@
 
 .field-label {
   color: var(--dd-ink);
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semibold);
 }
 
 .field-input {
@@ -55,8 +55,8 @@
   border: 2px solid var(--dd-ink);
   border-radius: 12px;
   color: var(--dd-ink);
-  font-family: 'Quicksand', ui-rounded, system-ui, sans-serif;
-  font-size: 1rem;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-base);
   padding: var(--padding-s) var(--padding-default);
   width: 100%;
 
@@ -67,8 +67,8 @@
 
 .field-error {
   color: var(--dd-pink);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   margin: 0;
 }
 
@@ -86,9 +86,9 @@
   box-shadow: 3px 3px 0 var(--dd-ink);
   color: var(--white);
   cursor: pointer;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semibold);
   padding: var(--padding-s) var(--padding-l);
 
   &:disabled {
@@ -107,9 +107,9 @@
   color: var(--dd-ink);
   cursor: pointer;
   display: flex;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semibold);
   gap: var(--gap-sm);
   justify-content: center;
   padding: var(--padding-s) var(--padding-l);
@@ -117,14 +117,14 @@
 
 .auth-footer {
   color: var(--dd-ink);
-  font-size: 0.9rem;
+  font-size: var(--font-size-s);
   margin: var(--margin-l) 0 0;
   text-align: center;
 }
 
 .auth-link {
   color: var(--dd-pink);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-decoration: underline;
 
   &:hover {

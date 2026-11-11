@@ -37,9 +37,9 @@
   box-shadow: 3px 3px 0 var(--dd-ink);
   color: var(--dd-ink);
   cursor: pointer;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semibold);
   padding: var(--padding-s) var(--padding-m);
 }
 
@@ -60,9 +60,9 @@
   cursor: pointer;
   display: inline-flex;
   flex: 0 0 auto;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semibold);
   padding: var(--padding-s) var(--padding-m);
   text-decoration: none;
   text-transform: capitalize;

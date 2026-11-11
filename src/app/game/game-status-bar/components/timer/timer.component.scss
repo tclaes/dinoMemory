@@ -6,9 +6,9 @@
   box-shadow: 3px 3px 0 var(--dd-ink);
   color: var(--dd-ink);
   display: flex;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   gap: var(--gap-s);
   padding: var(--padding-s) var(--padding-l);
 }

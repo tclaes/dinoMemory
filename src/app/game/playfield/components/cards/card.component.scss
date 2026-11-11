@@ -93,8 +93,8 @@
 
 .letter-face {
   color: var(--dd-ink);
-  font-size: clamp(2rem, 8vw, 4.5rem);
-  font-weight: 800;
+  font-size: var(--font-size-card-letter);
+  font-weight: var(--font-weight-extrabold);
   line-height: 1;
 }
 
@@ -103,14 +103,14 @@
   gap: var(--gap-xs);
 
   .word-emoji {
-    font-size: clamp(1.8rem, 6vw, 3.5rem);
+    font-size: var(--font-size-card-emoji);
     line-height: 1;
   }
 
   .word-text {
     color: var(--dd-ink);
-    font-size: clamp(0.8rem, 2.4vw, 1.4rem);
-    font-weight: 700;
+    font-size: var(--font-size-card-word);
+    font-weight: var(--font-weight-bold);
   }
 
   mark {
