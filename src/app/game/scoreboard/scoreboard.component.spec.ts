@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {of} from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 import {signal} from '@angular/core';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 
@@ -248,6 +248,28 @@ describe('ScoreboardComponent', () => {
 
       expect(titleOf(fixture)).toBe("You're #1");
       expect(mineRows(fixture)).toHaveLength(1);
+    });
+
+    it('keeps the rank when better scores arrive while the scoreboard is closed', () => {
+      const live = new BehaviorSubject([
+        {user: 'Ann', deck: 'dinos', clicks: 6, durationMs: 20000},
+        {user: 'Rex', deck: 'dinos', clicks: 8, durationMs: 30500}
+      ]);
+      scoreService.loadScores.mockReturnValue(live);
+      const fixture = setup();
+      expect(titleOf(fixture)).toBe("You're #2");
+
+      dialogOf(fixture).close();
+      live.next([
+        {user: 'Zed', deck: 'dinos', clicks: 5, durationMs: 10000},
+        {user: 'Ann', deck: 'dinos', clicks: 6, durationMs: 20000},
+        {user: 'Rex', deck: 'dinos', clicks: 8, durationMs: 30500}
+      ]);
+      scoreboardOpen.set(true);
+      fixture.detectChanges();
+
+      expect(titleOf(fixture)).toBe("You're #2");
+      expect(mineRows(fixture)[0].textContent).toContain('Rex');
     });
 
     it('keeps the rank when the scoreboard is closed and reopened', () => {

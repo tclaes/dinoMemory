@@ -38,14 +38,14 @@ import {closeTopLayer, isOutsideDialog, lacksClosedBy, supportsTopLayerExit} fro
   encapsulation: ViewEncapsulation.None,
   template: `
       <dialog #dialog class="scoreboard-dialog" closedby="any" aria-labelledby="scoreboard-title"
-              (close)="gameService.closeScoreboard()" (cancel)="onCancel($event)"
+              (close)="onClosed()" (cancel)="onCancel($event)"
               (pointerdown)="onPointerDown($event)" (pointerup)="onPointerUp($event)">
           <header class="scoreboard-header">
               <svg class="scoreboard-trophy" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M8 4h8v5a4 4 0 0 1-8 0V4ZM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              <h2 id="scoreboard-title">{{ title() }}</h2>
+              <h2 id="scoreboard-title" aria-live="polite">{{ title() }}</h2>
               <button type="button" class="scoreboard-close" aria-label="Close scoreboard" (click)="close()">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
@@ -113,6 +113,10 @@ export class ScoreboardComponent implements OnInit {
   });
   title = computed(() => this.ownIndex() >= 0 ? `You're #${this.ownIndex() + 1}` : 'Game won');
   #pressedOutside = false;
+  // Once the dialog was dismissed after the scores arrived, later emissions must not change the rank or
+  // highlight shown on reopening. A dismissal before the first emission still takes that first one.
+  #dismissed = false;
+  #loaded = false;
 
   constructor() {
     effect(() => {
@@ -133,6 +137,11 @@ export class ScoreboardComponent implements OnInit {
 
   newGame() {
     this.#globalService.stopGame();
+  }
+
+  onClosed() {
+    this.#dismissed = true;
+    this.gameService.closeScoreboard();
   }
 
   close() {
@@ -168,6 +177,11 @@ export class ScoreboardComponent implements OnInit {
     }
     this.#scoreService.loadScores(deck)
       .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe(scores => this.scores.set(scores));
+      .subscribe(scores => {
+        if (!(this.#dismissed && this.#loaded)) {
+          this.scores.set(scores);
+        }
+        this.#loaded = true;
+      });
   }
 }

@@ -232,5 +232,15 @@ describe('Game Service', () => {
       win();
       expect(service.scoreboardOpen()).toBe(true);
     });
+
+    it('opens on the next win even when nothing read it after the stop', () => {
+      win();
+      service.closeScoreboard();
+
+      TestBed.inject(GlobalService).stopGame();
+      win();
+
+      expect(service.scoreboardOpen()).toBe(true);
+    });
   });
 });

@@ -37,9 +37,10 @@ export class GameService {
     return this.board().length > 0 && this.matchedIds().size === this.board().length
   })
   // Whether the scoreboard dialog is open: opens on a win, can be closed and reopened, resets when the game stops.
-  #scoreboardOpen = linkedSignal<boolean, boolean>({
-    source: this.gameWon,
-    computation: won => won
+  // Keyed on the stop count too: a stop and win nobody read in between would otherwise keep a manual close.
+  #scoreboardOpen = linkedSignal<{won: boolean, stops: number}, boolean>({
+    source: () => ({won: this.gameWon(), stops: this.#globalService.gamesStopped()}),
+    computation: ({won}) => won
   });
   scoreboardOpen = this.#scoreboardOpen.asReadonly();
 
