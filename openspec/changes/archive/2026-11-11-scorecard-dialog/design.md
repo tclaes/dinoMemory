@@ -56,4 +56,4 @@ Add `dialog:modal { overscroll-behavior: contain }` and the same on `::backdrop`
 
 ## Open Questions
 
-- Whether the highlight needs an accessible cue besides color (for example visually hidden text "your score"); settle it during implementation, color alone must not carry the meaning.
+None. The own-row highlight does not rely on color alone: the row is also bold, carries `aria-current="true"`, and the heading ("You're #N", a polite live region) names the rank. No extra visually hidden text is needed.
