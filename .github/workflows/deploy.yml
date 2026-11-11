@@ -3,6 +3,11 @@ name: deploy
 on:
   push:
     branches: [master]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'openspec/**'
+      - '.agents/**'
 
 concurrency:
   group: deploy
